@@ -21,4 +21,3 @@ const connection = mysql.createConnection({
 connection.connect()
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
