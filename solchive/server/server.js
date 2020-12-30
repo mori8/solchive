@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -19,6 +19,15 @@ const connection = mysql.createConnection({
 })
 
 connection.connect()
+
+app.get('/api/hello', (req, res) => {
+    connection.query(
+        `SELECT * FROM project`,
+        (err, rows, fields) => {
+            console.log(rows);
+        }
+    )
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
