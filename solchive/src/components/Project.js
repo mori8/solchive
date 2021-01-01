@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
+import ProjectListItem from './ProjectListItem';
+import DeleteProject from './DeleteProject';
 
 class Project extends Component {
     state = {
@@ -19,6 +21,8 @@ class Project extends Component {
         body_images: ""
     }
 
+    
+
     // componentDidMount() {
     //     this.callAPI().then(
     //         res => {
@@ -36,8 +40,13 @@ class Project extends Component {
     // }
 
     render() {
+
         return (
+            
             <div className="body--wrapper">
+                <div> 
+                    <DeleteProject id = {this.state.id}/>
+                </div>
                 <div className="description--section">
                     <div className="body--title">
                         <h1>{this.state.title}</h1>
