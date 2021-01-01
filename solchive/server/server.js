@@ -22,16 +22,16 @@ connection.connect()
 
 // CREATE
 app.post('/api/project', (req, res) => {
-    var title=req.body.title;   //플젝 제목
-    var team=req.body.team; //팀명
-    var period=req.body.period; //기간
-    var framework=req.body.framework;   //프레임워크
-    var body_text=req.body.body_text;   //플젝 설명
-    var body_images=req.body.body_images;   //이미지
-    var summary=req.body.summary;   //플젝 요약
-    var git_url=req.body.git_url;   //github 주소
+    var title=req.body.title;   
+    var team=req.body.team; 
+    var period=req.body.period; 
+    var framework=req.body.framework;  
+    var body_text=req.body.body_text;   
+    var body_images=req.body.body_images;   
+    var summary=req.body.summary;   
+    var git_url=req.body.git_url;   
     var isDeleted=0;
-    // var impression=req.body.impression; //소감
+    // var impression=req.body.impression; 
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
@@ -57,16 +57,16 @@ app.delete('/api/project/:id', (req,res) => {
 // UPDATE
 app.post('/api/project', (req,res) => {
     var id=req.body.id;
-    var title=req.body.title;   //플젝 제목
-    var team=req.body.team; //팀명
-    var period=req.body.period; //기간
-    var framework=req.body.framework;   //프레임워크
-    var body_text=req.body.body_text;   //플젝 설명
-    var body_images=req.body.body_images;   //이미지
-    var summary=req.body.summary;   //플젝 요약
-    var git_url=req.body.git_url;   //github 주소
+    var title=req.body.title;   
+    var team=req.body.team; 
+    var period=req.body.period; 
+    var framework=req.body.framework;   
+    var body_text=req.body.body_text;   
+    var body_images=req.body.body_images;   
+    var summary=req.body.summary;  
+    var git_url=req.body.git_url;   
     var isDeleted=0;
-    // var impression=req.body.impression; //소감
+    // var impression=req.body.impression; 
 
     var sql={id, title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('update project set ?', sql, (err,rows, fields) => {
