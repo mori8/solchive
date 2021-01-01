@@ -5,7 +5,7 @@ class ProjectListItem extends Component {
         const { id, title, team, period, body_text, body_images } = this.props.info;
         return (
             <div className="project--item">
-                <Link to="#">
+                <Link to={`/projects/${id}`}>
                     <div className="project--image--wrapper">
                         <div className="project--image">
                             <div className="centered">

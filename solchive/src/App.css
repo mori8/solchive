@@ -19,7 +19,6 @@ p {
   }
   
   .header .logo {
-    margin-left: 18px;
     font-size: 1.3em;
     font-weight: 600;
     vertical-align: middle;
@@ -126,4 +125,15 @@ p {
 
 .project--team {
 
+}
+
+.body--title {
+  margin: 2.4rem auto;
+  text-align: center;
+  font-size: 1.4em;
+}
+
+.body--wrapper {
+  margin: 0 auto;
+  width: 65rem;
 }
