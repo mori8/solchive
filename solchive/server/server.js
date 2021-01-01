@@ -42,8 +42,9 @@ app.post('/api/project', (req, res) => {
 });
 
 // READ
-app.get('/api/project', (req,res) => {
-    var query=connection.query('select * from project where isDeleted=0  ', (err, rows) => {
+app.get('/api/project/:id', (req,res) => {
+    var id=req.params.id;
+    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
