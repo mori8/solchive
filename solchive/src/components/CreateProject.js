@@ -33,7 +33,7 @@ class CreateProject extends Component {
 
     addProject = async () => {
         // TODO: url 받아서 채워넣기
-        const url = 'http://localhost:3000/api/project';
+        const url = 'http://localhost:5000/api/project';
         let formData = {
             title: this.state.title,
             team: this.state.team,
