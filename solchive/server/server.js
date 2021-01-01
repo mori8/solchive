@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -32,6 +32,8 @@ app.post('/api/project', (req, res) => {
     var git_url=req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
+
+    console.log("프로젝트 추가");
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
