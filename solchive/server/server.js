@@ -61,7 +61,7 @@ app.delete('/api/project/:id', (req,res) => {
 })
 
 // UPDATE
-app.post('/api/project', (req,res) => {
+app.post('/api/update', (req,res) => {
     var id=req.body.id;
     var title=req.body.title;   
     var team=req.body.team; 
