@@ -21,17 +21,18 @@ class UpdateProject extends Component {
 
     }
 
+    //처음에 this.props.state.title을 했다가 https://gongbu-ing.tistory.com/45을 참고하여 location 추가함.
     componentDidMount(){
         this.setState({
-            title: this.props.state.title,
-            framework: this.props.state.framework,
-            team: this.props.state.team,
-            git_url: this.props.state.git_url,
-            period: this.props.state.period,
-            body_images: this.props.state.body_images,
-            summary: this.props.state.summary,
-            body_text: this.props.state.body_text,
-            id: this.props.state.id,
+            title: this.props.location.state.title,
+            framework: this.props.location.state.framework,
+            team: this.props.location.state.team,
+            git_url: this.props.location.state.git_url,
+            period: this.props.location.state.period,
+            body_images: this.props.location.state.body_images,
+            summary: this.props.location.state.summary,
+            body_text: this.props.location.state.body_text,
+            id: this.props.location.state.id,
         })
     }
 
@@ -39,7 +40,7 @@ class UpdateProject extends Component {
         e.preventDefault();
         this.updateProject();
         alert("수정 완료되었습니다.");
-        windows.location.href = '/projects/${id}';
+        //window.location.href = '/projects/${id}';
     }
 
     handleValueChange(e) {
@@ -64,7 +65,18 @@ class UpdateProject extends Component {
             id: this.props.match.params.id,
         };
 
-        ////
+        let res = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        }).then((res) => {
+            if (res.ok) return res.json();
+            throw new Error('error');
+        }).then((data) => {
+            return data;
+        }).catch((error) => {
+            return console.log(error.message);
+        });
     }
 
     render() {
@@ -98,7 +110,7 @@ class UpdateProject extends Component {
         return (
             <div style={wrapperStyle}>
                 <h3>프로젝트 내용 수정하기</h3>
-                <form style={formStyle} onSubmit={this.handleFormSubmit} method="post"> 
+                <form style={formStyle} onSubmit={this.handleFormModifySubmit} method="post"> 
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>프로젝트 제목</label>
