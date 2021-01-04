@@ -20,6 +20,13 @@ const connection = mysql.createConnection({
 
 connection.connect()
 
+app.get('/api/project', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+})
+
+const cors = require('cors');
+app.use(cors());
+
 // CREATE
 app.post('/api/project', (req, res) => {
     var title=req.body.title;   
@@ -35,7 +42,7 @@ app.post('/api/project', (req, res) => {
 
     console.log("프로젝트 추가");
 
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
     var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
         res.send(rows);
     })
