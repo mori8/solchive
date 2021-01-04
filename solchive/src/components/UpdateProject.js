@@ -1,56 +1,86 @@
 import React, { Component } from 'react';
-import { post } from 'axios';
 
-class CreateProject extends Component {
-    constructor(props) {
+class UpdateProject extends Component {
+
+    constructor(props){
         super(props);
-        this.state = {
+        this.state ={
             title: "",
-            team: "",
-            period: "",
             framework: "",
-            body_text: "",
+            team: "",
+            git_url: "",
+            period: "",
             body_images: "",
             summary: "",
-            git_url: ""
-        };
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+            body_text: "",
+            id: "",
+        }
+        this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.addProject = this.addProject.bind(this);
+        this.updateProject = this.updateProject.bind(this);
+
     }
 
-    handleFormSubmit(e) {
+    //처음에 this.props.state.title을 했다가 https://gongbu-ing.tistory.com/45을 참고하여 location 추가함.
+    componentDidMount(){
+        this.setState({
+            title: this.props.location.state.title,
+            framework: this.props.location.state.framework,
+            team: this.props.location.state.team,
+            git_url: this.props.location.state.git_url,
+            period: this.props.location.state.period,
+            body_images: this.props.location.state.body_images,
+            summary: this.props.location.state.summary,
+            body_text: this.props.location.state.body_text,
+            id: this.props.location.state.id,
+        })
+    }
+
+    handleFormModifySubmit(e){
         e.preventDefault();
-        this.addProject().then((res) => {
-            console.log(res.data);
-        });
-        window.location.href = '/projects';
+        this.updateProject();
+        alert("수정 완료되었습니다.");
+        //window.location.href = '/projects/${id}';
     }
 
     handleValueChange(e) {
-        let nextState = {};
-        nextState[e.target.name] = e.target.value;
-        this.setState(nextState);
-        console.log(this.state.title);
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
 
-    addProject = async () => {
-        const url = 'http://localhost:5000/api/project';
-        const formData = new URLSearchParams();
-        formData.append('title', this.state.title);
-        formData.append('team', this.state.team);
-        formData.append('period', this.state.period);
-        formData.append('framework', this.state.framework);
-        formData.append('body_text', this.state.body_text);
-        formData.append('body_images', this.state.body_images);
-        formData.append('summary', this.state.summary);
-        formData.append('git_url', this.state.git_url);
+    updateProject = async () => {
 
-        console.log(formData);
-        return post(url, formData);
+        const url = 'http://localhost:5000/api/update';
+
+        let formData = {
+            title: this.state.title,
+            framework: this.state.framework,
+            team: this.state.team,
+            git_url: this.state.git_url,
+            period: this.state.period,
+            body_images: this.state.body_images,
+            summary: this.state.summary,
+            body_text: this.state.body_text,
+            id: this.props.match.params.id,
+        };
+
+        let res = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        }).then((res) => {
+            if (res.ok) return res.json();
+            throw new Error('error');
+        }).then((data) => {
+            return data;
+        }).catch((error) => {
+            return console.log(error.message);
+        });
     }
 
     render() {
+
         const formStyle = {
             width: "82rem",
             margin: "15px auto",
@@ -79,8 +109,8 @@ class CreateProject extends Component {
 
         return (
             <div style={wrapperStyle}>
-                <h3>프로젝트 생성하기</h3>
-                <form style={formStyle} onSubmit={this.handleFormSubmit}> 
+                <h3>프로젝트 내용 수정하기</h3>
+                <form style={formStyle} onSubmit={this.handleFormModifySubmit} method="post"> 
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>프로젝트 제목</label>
@@ -120,7 +150,7 @@ class CreateProject extends Component {
                         <textarea className="form-control" name="body_text" value={this.state.body_text} rows="20" onChange={this.handleValueChange}></textarea>
                     </div>
                     <div style={btnDivStyle}>
-                        <button type="submit" className="btn btn-primary" style={btnStyle}>작성하기!</button>
+                        <button type="submit" className="btn btn-primary" style={btnStyle}>수정 완료</button>
                         <button type="button" className="btn btn-secondary">취소</button>
                     </div>
                 </form>
@@ -129,4 +159,4 @@ class CreateProject extends Component {
     }
 }
 
-export default CreateProject;
+export default UpdateProject;

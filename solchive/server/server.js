@@ -18,22 +18,30 @@ const connection = mysql.createConnection({
     database: conf.database
 })
 
-connection.connect()
+connection.connect();
+
+app.get('/api/project', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+})
+
+const cors = require('cors');
+app.use(cors());
 
 // CREATE
 app.post('/api/project', (req, res) => {
-    var title=req.body.title;   //?????? ??????
-    var team=req.body.team; //??????
-    var period=req.body.period; //??????
-    var framework=req.body.framework;   //???????????????
-    var body_text=req.body.body_text;   //?????? ??????
-    var body_images=req.body.body_images;   //?????????
-    var summary=req.body.summary;   //?????? ??????
-    var git_url=req.body.git_url;   //github ??????
+    var title=req.body.title;   
+    var team=req.body.team; 
+    var period=req.body.period; 
+    var framework=req.body.framework;  
+    var body_text=req.body.body_text;   
+    var body_images=req.body.body_images;   
+    var summary=req.body.summary;   
+    var git_url=req.body.git_url;   
     var isDeleted=0;
-    // var impression=req.body.impression; //??????
+    // var impression=req.body.impression; 
+    console.log("프로젝트 추가");
 
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
     var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
         res.send(rows);
     })
@@ -41,32 +49,46 @@ app.post('/api/project', (req, res) => {
 
 // READ
 app.get('/api/project', (req,res) => {
-    var query=connection.query('select * from project where isDeleted=0  ', (err, rows) => {
+    var query=connection.query('select * from project where isDeleted=0', (err, rows, fields) => {
+        res.send(rows);
+    })
+})
+
+// READ id
+app.get('/api/project/:id', (req,res) => {
+    var id=req.params.id;
+    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
+        res.send(rows);
+    })
+})
+app.get('/api/project/:id', (req,res) => {
+    var id=req.params.id;
+    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
 
 // DELETE
-app.delete('/api/project/:id', (req,res) => {
-    var id= req.params.id;
-    var query=connection.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
+app.delete('/api/project/:id', (req, res) => {
+    var id = req.params.id;
+    var query=connectiosn.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
 
 // UPDATE
-app.post('/api/project', (req,res) => {
+app.post('/api/update', (req,res) => {
     var id=req.body.id;
-    var title=req.body.title;   //?????? ??????
-    var team=req.body.team; //??????
-    var period=req.body.period; //??????
-    var framework=req.body.framework;   //???????????????
-    var body_text=req.body.body_text;   //?????? ??????
-    var body_images=req.body.body_images;   //?????????
-    var summary=req.body.summary;   //?????? ??????
-    var git_url=req.body.git_url;   //github ??????
+    var title=req.body.title;   
+    var team=req.body.team; 
+    var period=req.body.period; 
+    var framework=req.body.framework;   
+    var body_text=req.body.body_text;   
+    var body_images=req.body.body_images;   
+    var summary=req.body.summary;  
+    var git_url=req.body.git_url;   
     var isDeleted=0;
-    // var impression=req.body.impression; //??????
+    // var impression=req.body.impression; 
 
     var sql={id, title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('update project set ?', sql, (err,rows, fields) => {
