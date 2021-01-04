@@ -57,7 +57,7 @@ app.get('/api/project', (req,res) => {
 // READ id
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
-    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
+    var query=connection.query('select * from project where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
@@ -67,7 +67,6 @@ app.delete('/api/project/:id', (req, res) => {
     var id = req.params.id;
     var query=connection.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
-        console.log( id +" 삭제 완료");
     })
 })
 
