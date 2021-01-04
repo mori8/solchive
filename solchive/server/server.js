@@ -20,12 +20,12 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-app.get('/api/project', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-})
-
 const cors = require('cors');
 app.use(cors());
+
+app.get('/', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+})
 
 // CREATE
 app.post('/api/project', (req, res) => {
