@@ -20,7 +20,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-app.get('/api/project', (req, res) => {
+app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
@@ -61,17 +61,11 @@ app.get('/api/project/:id', (req,res) => {
         res.send(rows);
     })
 })
-app.get('/api/project/:id', (req,res) => {
-    var id=req.params.id;
-    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
-        res.send(rows);
-    })
-})
 
 // DELETE
 app.delete('/api/project/:id', (req, res) => {
     var id = req.params.id;
-    var query=connectiosn.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
+    var query=connection.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
