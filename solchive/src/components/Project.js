@@ -7,27 +7,26 @@ import UpdateProject from './UpdateProject';
 
 class Project extends Component {
     state = {
-        project: []
+        projects: [],
     }
 
-componentDidMount() {
-    this.callAPI().then(
-        res => {
-            this.setState({project: res[0]});
-    }).catch(
-        error => { console.log(error);
-    });
-}
+    componentDidMount() {
+        this.callAPI().then(
+            res => {
+                this.setState({projects: res[0]});
+        }).catch(
+            error => { console.log(error);
+        });
+    }
 
-callAPI = async () => {
-    const { id } = this.props.match.params;
-    const res = await fetch(`/api/project/${id}`);
-    const body = await res.json();
-    return body;
-}
+    callAPI = async () => {
+        const { id } = this.props.match.params;
+        const res = await fetch(`/api/project/${id}`);
+        const body = await res.json();
+        return body;
+    }
 
     render() {
-
         const btnModifyStyle = {
             margin: "5px",
             marginRight: "15px",
@@ -35,46 +34,44 @@ callAPI = async () => {
         }
 
         return (
-            
             <div className="body--wrapper">
                 <div> 
-                    <Link to ={{
-                        pathname: `/update/${this.state.id}`,
+                    <Link to={{
+                        pathname: `/update/${this.props.match.params.id}`,
                         state: {
-                            title: this.state.title,
-                            framework: this.state.framework,
-                            team: this.state.team,
-                            git_url: this.state.git_url,
-                            period: this.state.period,
-                            body_images: this.state.body_images,
-                            summary: this.state.summary,
-                            body_text: this.state.body_text,
+                            title: this.state.projects.title,
+                            framework: this.state.projects.framework,
+                            team: this.state.projects.team,
+                            git_url: this.state.projects.git_url,
+                            period: this.state.projects.period,
+                            body_images: this.state.projects.body_images,
+                            summary: this.state.projects.summary,
+                            body_text: this.state.projects.body_text,
                         }
                     }}>
                         <button style={btnModifyStyle}>수정</button>
                     </Link>
-                    <DeleteProject id = {this.state.id}/>
-
+                    <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
                 </div>
                 <div className="description--section">
                     <div className="body--title">
-                        <h1>{this.state.title}</h1>
+                        <h1>{this.state.projects.title}</h1>
                     </div>
                     { /* 이미지 들어갈 부분 */ }
                     <div className="body--subinfo">
-                        <span>{this.state.team}</span>
-                        <span>{this.state.period}</span>
+                        <span>{this.state.projects.team}</span>
+                        <span>{this.state.projects.period}</span>
                     </div>
                     <div className="body--framework">
                         <span>사용 프레임워크</span>
-                        <span>{this.state.framework}</span>
+                        <span>{this.state.projects.framework}</span>
                     </div>
                     <div className="body--short">
-                        <p>{this.state.title} 한줄소개 👀</p>
-                        <p>{this.state.body_text}</p>
+                        <p>{this.state.projects.title} 한줄소개 👀</p>
+                        <p>{this.state.projects.body_text}</p>
                     </div>
                     <div className="body--content">
-                        <p>{this.state.body_content}</p>
+                        <p>{this.state.projects.body_content}</p>
                     </div>
                     <div className="body--comments">
 

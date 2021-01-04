@@ -23,6 +23,11 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+
+app.get('/', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+})
+
 const cors = require('cors');
 app.use(cors());
 
@@ -46,22 +51,23 @@ app.post('/api/project', upload.single('image'), (req, res) => {
     // var impression=req.body.impression; 
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
-    var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
+    var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
 
 // READ
 app.get('/api/project', (req,res) => {
-    var query=connection.query('select * from project where isDeleted=0', (err, rows, fields) => {
+    var query=connection.query('SELECT * FROM project WHERE isDeleted=0', (err, rows, fields) => {
         res.send(rows);
     })
 })
 
 // READ id
 app.get('/api/project/:id', (req,res) => {
-    var id=req.params.id;
-    var query=connection.query('select * from project where id =?', [id], (err, rows, fields) => {
+    var id = req.params.id;
+    var query=connection.query('SELECT * FROM project WHERE id =?', [id], (err, rows, fields) => {
+        console.log(rows);
         res.send(rows);
     })
 })
