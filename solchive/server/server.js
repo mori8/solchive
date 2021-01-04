@@ -22,7 +22,6 @@ connection.connect();
 
 // CREATE
 app.post('/api/project', (req, res) => {
-    console.log(req.body);
     var title=req.body.title;   
     var team=req.body.team; 
     var period=req.body.period; 
@@ -33,7 +32,6 @@ app.post('/api/project', (req, res) => {
     var git_url=req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
-
     console.log("프로젝트 추가");
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
@@ -50,6 +48,12 @@ app.get('/api/project', (req,res) => {
 })
 
 // READ id
+app.get('/api/project/:id', (req,res) => {
+    var id=req.params.id;
+    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
+        res.send(rows);
+    })
+})
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
     var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {

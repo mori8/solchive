@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import ProjectListItem from './ProjectListItem';
+import UpdateProject from './UpdateProject';
+
 class ProjectList extends Component {
     state = {
-        projects: []
+        projects: [],
+        onUpdate: () => console.warn('onUpdate not defined'),
     }
 
     componentDidMount() {
@@ -21,8 +24,16 @@ class ProjectList extends Component {
     }
 
     render() {
+
+        const{onUpdate} = this.props;
+
         const projectList = this.state.projects.map(
-            info => (<ProjectListItem info={info} key={info.id}/>)
+            info => (
+                <ProjectListItem 
+                    info={info} 
+                    key={info.id}
+                    onUpdate={onUpdate}
+                />)
         );
 
         return (

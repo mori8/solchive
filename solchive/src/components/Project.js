@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 import '../App.css';
 import ProjectListItem from './ProjectListItem';
 import DeleteProject from './DeleteProject';
+import UpdateProject from './UpdateProject';
 
 class Project extends Component {
     state = {
@@ -26,11 +28,33 @@ callAPI = async () => {
 
     render() {
 
+        const btnModifyStyle = {
+            margin: "5px",
+            marginRight: "15px",
+            float: "right",
+        }
+
         return (
             
             <div className="body--wrapper">
                 <div> 
+                    <Link to ={{
+                        pathname: `/update/${this.state.id}`,
+                        state: {
+                            title: this.state.title,
+                            framework: this.state.framework,
+                            team: this.state.team,
+                            git_url: this.state.git_url,
+                            period: this.state.period,
+                            body_images: this.state.body_images,
+                            summary: this.state.summary,
+                            body_text: this.state.body_text,
+                        }
+                    }}>
+                        <button style={btnModifyStyle}>수정</button>
+                    </Link>
                     <DeleteProject id = {this.state.id}/>
+
                 </div>
                 <div className="description--section">
                     <div className="body--title">
