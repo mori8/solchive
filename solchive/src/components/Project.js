@@ -7,24 +7,24 @@ import UpdateProject from './UpdateProject';
 
 class Project extends Component {
     state = {
-        project: []
+        projects: [],
     }
 
-componentDidMount() {
-    this.callAPI().then(
-        res => {
-            this.setState({project: res[0]});
-    }).catch(
-        error => { console.log(error);
-    });
-}
+    componentDidMount() {
+        this.callAPI().then(
+            res => {
+                this.setState({projects: res[0]});
+        }).catch(
+            error => { console.log(error);
+        });
+    }
 
-callAPI = async () => {
-    const { id } = this.props.match.params;
-    const res = await fetch(`/api/project/${id}`);
-    const body = await res.json();
-    return body;
-}
+    callAPI = async () => {
+        const { id } = this.props.match.params;
+        const res = await fetch(`/api/project/${id}`);
+        const body = await res.json();
+        return body;
+    }
 
     render() {
 
@@ -39,22 +39,21 @@ callAPI = async () => {
             <div className="body--wrapper">
                 <div> 
                     <Link to ={{
-                        pathname: `/update/${this.state.id}`,
+                        pathname: `/update/${this.props.match.params.id}`,
                         state: {
-                            title: this.state.title,
-                            framework: this.state.framework,
-                            team: this.state.team,
-                            git_url: this.state.git_url,
-                            period: this.state.period,
-                            body_images: this.state.body_images,
-                            summary: this.state.summary,
-                            body_text: this.state.body_text,
+                            title: this.state.projects.title,
+                            framework: this.state.projects.framework,
+                            team: this.state.projects.team,
+                            git_url: this.state.projects.git_url,
+                            period: this.state.projects.period,
+                            body_images: this.state.projects.body_images,
+                            summary: this.state.projects.summary,
+                            body_text: this.state.projects.body_text,
                         }
                     }}>
                         <button style={btnModifyStyle}>수정</button>
                     </Link>
-                    <DeleteProject id = {this.state.id}/>
-
+                    <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
                 </div>
                 <div className="description--section">
                     <div className="body--title">
