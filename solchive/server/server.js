@@ -18,10 +18,11 @@ const connection = mysql.createConnection({
     database: conf.database
 })
 
-connection.connect()
+connection.connect();
 
 // CREATE
 app.post('/api/project', (req, res) => {
+    console.log(req.body);
     var title=req.body.title;   
     var team=req.body.team; 
     var period=req.body.period; 
@@ -47,15 +48,15 @@ app.get('/api/project', (req,res) => {
 })
 
 // DELETE
-app.delete('/api/project/:id', (req,res) => {
-    var id= req.params.id;
+app.delete('/api/project/:id', (req, res) => {
+    var id = req.params.id;
     var query=connectiosn.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
 
 // UPDATE
-app.post('/api/project', (req,res) => {
+app.post('/api/update', (req,res) => {
     var id=req.body.id;
     var title=req.body.title;   
     var team=req.body.team; 
