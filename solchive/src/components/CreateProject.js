@@ -10,13 +10,22 @@ class CreateProject extends Component {
             period: "",
             framework: "",
             body_text: "",
-            body_images: "",
+            body_images: null,
+            file_name: "",
             summary: "",
             git_url: ""
         };
+        this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.addProject = this.addProject.bind(this);
+    }
+
+    handleFileChange(e) {
+        this.setState({
+            body_images: e.target.files[0],
+            file_name: e.target.value
+        })
     }
 
     handleFormSubmit(e) {
@@ -46,8 +55,11 @@ class CreateProject extends Component {
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
 
-        console.log(formData);
-        return post(url, formData);
+        const config = {
+            'content-type': 'multipart/form-data'
+        }
+
+        return post(url, formData, config);
     }
 
     render() {
@@ -108,7 +120,7 @@ class CreateProject extends Component {
                         </div>
                         <div className="form-group col-md-6">
                             <label>대표 이미지</label>
-                            <input type="text" name="body_images" value={this.state.body_images} className="form-control" onChange={this.handleValueChange}/>
+                            <input type="file" name="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}/>
                         </div>
                     </div>
                     <div className="form-group" style={textAreaStyle}>
