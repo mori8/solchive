@@ -6,6 +6,7 @@ import Project from './components/Project';
 import ProjectList from './components/ProjectList';
 import CreateProject from './components/CreateProject';
 import UpdateProject from './components/UpdateProject';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/projects/:id" component={Project}/>
         <Route path="/create" component={CreateProject}/>
         <Route path="/update" component={UpdateProject}/>
+        <Route path="/login" component={Login}/>
         <Footer/>
     </div>
   );
