@@ -27,7 +27,6 @@ class Project extends Component {
     }
 
     render() {
-
         const btnModifyStyle = {
             margin: "5px",
             marginRight: "15px",
@@ -35,10 +34,9 @@ class Project extends Component {
         }
 
         return (
-            
             <div className="body--wrapper">
                 <div> 
-                    <Link to ={{
+                    <Link to={{
                         pathname: `/update/${this.props.match.params.id}`,
                         state: {
                             title: this.state.projects.title,
@@ -57,23 +55,23 @@ class Project extends Component {
                 </div>
                 <div className="description--section">
                     <div className="body--title">
-                        <h1>{this.state.title}</h1>
+                        <h1>{this.state.projects.title}</h1>
                     </div>
                     { /* 이미지 들어갈 부분 */ }
                     <div className="body--subinfo">
-                        <span>{this.state.team}</span>
-                        <span>{this.state.period}</span>
+                        <span>{this.state.projects.team}</span>
+                        <span>{this.state.projects.period}</span>
                     </div>
                     <div className="body--framework">
                         <span>사용 프레임워크</span>
-                        <span>{this.state.framework}</span>
+                        <span>{this.state.projects.framework}</span>
                     </div>
                     <div className="body--short">
-                        <p>{this.state.title} 한줄소개 👀</p>
-                        <p>{this.state.body_text}</p>
+                        <p>{this.state.projects.title} 한줄소개 👀</p>
+                        <p>{this.state.projects.body_text}</p>
                     </div>
                     <div className="body--content">
-                        <p>{this.state.body_content}</p>
+                        <p>{this.state.projects.body_content}</p>
                     </div>
                     <div className="body--comments">
 
