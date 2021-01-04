@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class DeleteProject extends Component {
 
     deleteProject(id){
-        const url = 'http://localhost:3000/api/project/' + id;
+        const url = 'http://localhost:3000/api/project/:' + id;
         fetch(url, {
             method:'DELETE'
         });
