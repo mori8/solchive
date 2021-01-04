@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
     database: conf.database
 })
 
-connection.connect()
+connection.connect();
 
 // CREATE
 app.post('/api/project', (req, res) => {
@@ -32,6 +32,7 @@ app.post('/api/project', (req, res) => {
     var git_url=req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
+    console.log("프로젝트 추가");
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
@@ -41,7 +42,15 @@ app.post('/api/project', (req, res) => {
 
 // READ
 app.get('/api/project', (req,res) => {
-    var query=connection.query('select * from project where isDeleted=0  ', (err, rows) => {
+    var query=connection.query('select * from project where isDeleted=0', (err, rows, fields) => {
+        res.send(rows);
+    })
+})
+
+// READ id
+app.get('/api/project/:id', (req,res) => {
+    var id=req.params.id;
+    var query=connection.query('select * from project where isDeleted=0 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
@@ -53,8 +62,8 @@ app.get('/api/project/:id', (req,res) => {
 })
 
 // DELETE
-app.delete('/api/project/:id', (req,res) => {
-    var id= req.params.id;
+app.delete('/api/project/:id', (req, res) => {
+    var id = req.params.id;
     var query=connectiosn.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })

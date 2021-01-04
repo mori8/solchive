@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { post } from 'axios';
 
 class CreateProject extends Component {
     constructor(props) {
@@ -20,43 +21,33 @@ class CreateProject extends Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        this.addProject();
+        this.addProject().then((res) => {
+            console.log(res.data);
+        });
         window.location.href = '/projects';
     }
 
     handleValueChange(e) {
-        // 불변성 유지
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
+        console.log(this.state.title);
     }
 
     addProject = async () => {
-        // TODO: url 받아서 채워넣기
         const url = 'http://localhost:5000/api/project';
-        let formData = {
-            title: this.state.title,
-            team: this.state.team,
-            period: this.state.period,
-            framework: this.state.framework,
-            body_text: this.state.body_text,
-            body_images: this.state.body_images,
-            summary: this.state.summary,
-            git_rul: this.state.git_rul
-        };
-        // 데이터 요청
-        let res = await fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formData)
-        }).then((res) => {
-            if (res.ok) return res.json();
-            throw new Error('error');
-        }).then((data) => {
-            return data;
-        }).catch((error) => {
-            return console.log(error.message);
-        });
+        const formData = new URLSearchParams();
+        formData.append('title', this.state.title);
+        formData.append('team', this.state.team);
+        formData.append('period', this.state.period);
+        formData.append('framework', this.state.framework);
+        formData.append('body_text', this.state.body_text);
+        formData.append('body_images', this.state.body_images);
+        formData.append('summary', this.state.summary);
+        formData.append('git_url', this.state.git_url);
+
+        console.log(formData);
+        return post(url, formData);
     }
 
     render() {
@@ -89,7 +80,7 @@ class CreateProject extends Component {
         return (
             <div style={wrapperStyle}>
                 <h3>프로젝트 생성하기</h3>
-                <form style={formStyle} onSubmit={this.handleFormSubmit} method="post"> 
+                <form style={formStyle} onSubmit={this.handleFormSubmit}> 
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>프로젝트 제목</label>
