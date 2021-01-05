@@ -49,7 +49,7 @@ class Project extends Component {
                             body_text: this.state.projects.body_text,
                         }
                     }}>
-                        <button style={btnModifyStyle}>수정</button>
+                        <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
                 </div>
