@@ -6,12 +6,9 @@ import Project from './components/Project';
 import ProjectList from './components/ProjectList';
 import CreateProject from './components/CreateProject';
 import UpdateProject from './components/UpdateProject';
-<<<<<<< HEAD
 import Login from './components/Login';
-=======
 import Main from './components/Main';
 import "./fonts/fonts.css";
->>>>>>> upstream/main
 
 function App() {
   return (

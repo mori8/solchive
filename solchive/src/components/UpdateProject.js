@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { post } from 'axios';
 
 class UpdateProject extends Component {
 
@@ -47,6 +48,7 @@ class UpdateProject extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
+        console.log(e.target.name, e.target.value);
     }
 
     updateProject = async () => {
@@ -62,21 +64,26 @@ class UpdateProject extends Component {
             body_images: this.state.body_images,
             summary: this.state.summary,
             body_text: this.state.body_text,
-            id: this.props.match.params.id,
         };
 
+        console.log(formData);
+        //https://velog.io/@prayme/Fetch-API
         let res = await fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            
         }).then((res) => {
+            console.log(res);
             if (res.ok) return res.json();
             throw new Error('error');
         }).then((data) => {
+            console.log(data);
             return data;
         }).catch((error) => {
             return console.log(error.message);
         });
+
     }
 
     render() {
