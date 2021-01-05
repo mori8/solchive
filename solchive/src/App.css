@@ -122,13 +122,44 @@ p {
   left: 0;
 }
 
-.body--title {
+/* Project.js */
+.body--title h1 {
   margin: 2.4rem auto;
   text-align: center;
-  font-size: 1.4em;
+  font-size: 2.7em;
+  font-weight: bold;
 }
 
 .body--wrapper {
   margin: 0 auto;
-  width: 65rem;
+  width: 75rem;
+  font-family: 'Noto Sans KR';
+}
+
+.body--subinfo {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  color: #555555;
+  font-size: 1.2em;
+}
+
+.body--team:before {
+  content: "Team ";
+  color: #999999;
+}
+
+.body--period:before {
+  content: "진행기간 ";
+  color: #999999;
+}
+
+.body--small--title {
+  margin: 4.5rem 0 2.4rem;
+  font-size: 1.6em;
+  font-weight: 700;
+}
+
+.body--contents {
+  font-size: 1.2em;
 }

@@ -36,7 +36,7 @@ class ProjectList extends Component {
         );
 
         const projectWrapperStyle = {
-            margin: "2.4rem auto 6rem",
+            margin: "2.4rem auto 0",
             display: "flex",
             flexWrap: "wrap",
             width: "90vw"
