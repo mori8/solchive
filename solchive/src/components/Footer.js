@@ -5,7 +5,8 @@ class Footer extends Component {
         const style = {
             width: "100%",
             textAlign: "center",
-            padding: "50px"
+            padding: "70px",
+            marginTop: "7rem"
         }
 
         return (

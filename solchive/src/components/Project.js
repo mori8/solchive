@@ -35,6 +35,34 @@ class Project extends Component {
 
         return (
             <div className="body--wrapper">
+                <div className="description--section">
+                    <div className="body--title">
+                        <h1>{this.state.projects.title}</h1>
+                    </div>
+                    { /* 이미지 들어갈 부분 */ }
+                    <div className="body--subinfo">
+                        <span className="body--team">{this.state.projects.team}</span>
+                        <div className="spacer"></div>
+                        <span className="body--period">{this.state.projects.period}</span>
+                    </div>
+                    <div className="body--framework">
+                        <p className="body--small--title">👷🏻 사용 프레임워크</p>
+                        <p className="body--contents">{this.state.projects.framework}</p>
+                    </div>
+                    <div className="body--short">
+                        <p className="body--small--title">👀 프로젝트 한줄소개</p>
+                        <p className="body--contents">{this.state.projects.summary}</p>
+                    </div>
+                    <div className="body--content">
+                        <p className="body--small--title">👩🏻‍💻 개발 스토리</p>
+                        <p className="body--contents">{this.state.projects.body_text}</p>
+                    </div>
+                    <div className="body--comments">
+
+                    </div>
+                </div>
+                <div className="image--section">
+                </div>
                 <div> 
                     <Link to={{
                         pathname: `/update/${this.props.match.params.id}`,
@@ -49,36 +77,9 @@ class Project extends Component {
                             body_text: this.state.projects.body_text,
                         }
                     }}>
-                        <button style={btnModifyStyle}>수정</button>
+                        <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
-                </div>
-                <div className="description--section">
-                    <div className="body--title">
-                        <h1>{this.state.projects.title}</h1>
-                    </div>
-                    { /* 이미지 들어갈 부분 */ }
-                    <div className="body--subinfo">
-                        <span>{this.state.projects.team}</span>
-                        <span>{this.state.projects.period}</span>
-                    </div>
-                    <div className="body--framework">
-                        <span>사용 프레임워크</span>
-                        <span>{this.state.projects.framework}</span>
-                    </div>
-                    <div className="body--short">
-                        <p>{this.state.projects.title} 한줄소개 👀</p>
-                        <p>{this.state.projects.body_text}</p>
-                    </div>
-                    <div className="body--content">
-                        <p>{this.state.projects.body_content}</p>
-                    </div>
-                    <div className="body--comments">
-
-                    </div>
-                </div>
-                <div className="image--section">
-
                 </div>
             </div>
         );

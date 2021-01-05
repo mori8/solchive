@@ -6,6 +6,11 @@ class ProjectListItem extends Component {
         return (
             <div className="project--item">
                 <Link to={`/projects/${id}`}>
+                    <div className="project--textarea">
+                        <div className="project--title--wrapper">
+                            <h4 className="project--title">{title}</h4>
+                        </div>
+                    </div>
                     <div className="project--image--wrapper">
                         <div className="project--image">
                             <div className="centered">
@@ -13,7 +18,8 @@ class ProjectListItem extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="project-textarea">
+                    { /* TODO: 마우스 오버 시 이벤트. 위에껄 div로 묶고 hover -> display: none */ }
+                    <div className="project--details--hover">
                         <h4 className="project--title">{title}</h4>
                         <div className="project--details">
                             <span className="project--team">{team}</span>

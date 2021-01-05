@@ -4,16 +4,12 @@ import '../App.css'
 // TODO: a -> Link로 수정
 class Header extends Component {
     render() {
-        const btnMarginStyle = {
-            marginRight: "2rem"
-        }
-
         return (
             <Fragment>
-                <header className="header">
-                    <a href="/projects" className="logo"><span>SOLCHIVE</span></a>
+                <header className="header" style={{padding: "0 2rem"}}>
+                    <a href="/" className="logo"><span>Solchive.</span></a>
                     <div className="spacer"></div>
-                    <a href="/create"><button type="button" className="btn" style={btnMarginStyle}>프로젝트 추가</button></a>
+                    <a href="/create"><button type="button" className="btn">프로젝트 추가</button></a>
                 </header>
             </Fragment>
         );

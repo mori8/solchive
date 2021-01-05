@@ -24,7 +24,6 @@ class ProjectList extends Component {
     }
 
     render() {
-
         const{onUpdate} = this.props;
 
         const projectList = this.state.projects.map(
@@ -36,8 +35,15 @@ class ProjectList extends Component {
                 />)
         );
 
+        const projectWrapperStyle = {
+            margin: "2.4rem auto 0",
+            display: "flex",
+            flexWrap: "wrap",
+            width: "90vw"
+        };
+
         return (
-            <div>
+            <div style={projectWrapperStyle}>
                 {projectList}
             </div>
         );

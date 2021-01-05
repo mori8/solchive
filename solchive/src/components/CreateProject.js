@@ -33,7 +33,7 @@ class CreateProject extends Component {
         this.addProject().then((res) => {
             console.log(res.data);
         });
-        window.location.href = '/projects';
+        window.location.href = '/';
     }
 
     handleValueChange(e) {
