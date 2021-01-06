@@ -3,15 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
 const data = fs.readFileSync('../database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
-
 const dotenv=require('dotenv');
 const session=require('express-session');
+const cors = require('cors');
+const multer=require('multer');
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -23,15 +21,24 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-const cors = require('cors');
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
-const multer=require('multer');
-const upload = multer({dest: './upload/'});
+var storage=multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './upload')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
+
+const upload = multer({storage: storage});
 
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
