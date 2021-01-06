@@ -44,7 +44,7 @@ class UpdateProject extends Component {
         e.preventDefault();
         this.updateProject();
         alert("수정 완료되었습니다.");
-        window.location.href = '/projects/${id}';
+        window.location.href = '/';
     }
 
     handleValueChange(e) {
