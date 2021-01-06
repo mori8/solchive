@@ -89,9 +89,13 @@ app.post('/api/update', (req,res) => {
     var git_url=req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
+    console.log(req.body.id);
+    console.log(req.body.title);
+    console.log(req.body.team);
+    console.log(req.body.framework);
 
-    var sql={id, title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
-    var query=connection.query('update project set ?', sql, (err,rows, fields) => {
+    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
+    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? WHERE id =?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
