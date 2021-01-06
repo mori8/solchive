@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
+import { post } from 'axios';
 
 class UpdateProject extends Component {
 
     constructor(props){
         super(props);
         this.state ={
+            id: "",
             title: "",
             framework: "",
             team: "",
@@ -13,17 +16,17 @@ class UpdateProject extends Component {
             body_images: "",
             summary: "",
             body_text: "",
-            id: "",
         }
         this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.updateProject = this.updateProject.bind(this);
-
     }
 
     //처음에 this.props.state.title을 했다가 https://gongbu-ing.tistory.com/45을 참고하여 location 추가함.
     componentDidMount(){
+       
         this.setState({
+            id: this.props.location.state.id,
             title: this.props.location.state.title,
             framework: this.props.location.state.framework,
             team: this.props.location.state.team,
@@ -34,50 +37,47 @@ class UpdateProject extends Component {
             body_text: this.props.location.state.body_text,
             id: this.props.location.state.id,
         })
+        console.log(this.props.location.state.id);
     }
 
     handleFormModifySubmit(e){
         e.preventDefault();
         this.updateProject();
         alert("수정 완료되었습니다.");
-        //window.location.href = '/projects/${id}';
+        window.location.href = '/projects/${id}';
     }
 
     handleValueChange(e) {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
+        let nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+        console.log(this.state);
     }
 
+    
     updateProject = async () => {
 
         const url = 'http://localhost:5000/api/update';
 
         let formData = {
+            id: this.state.id,
             title: this.state.title,
-            framework: this.state.framework,
             team: this.state.team,
-            git_url: this.state.git_url,
             period: this.state.period,
+            framework: this.state.framework,
+            body_text: this.state.body_text,
             body_images: this.state.body_images,
             summary: this.state.summary,
-            body_text: this.state.body_text,
-            id: this.props.match.params.id,
+            git_url: this.state.git_url,
         };
 
-        let res = await fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formData)
-        }).then((res) => {
-            if (res.ok) return res.json();
-            throw new Error('error');
-        }).then((data) => {
-            return data;
-        }).catch((error) => {
-            return console.log(error.message);
-        });
-    }
+        const config = {
+            'content-type': 'multipart/form-data'
+        }
+
+        return post(url, formData, config);
+   }
+    
 
     render() {
 
