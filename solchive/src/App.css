@@ -70,6 +70,36 @@ p {
   display: inline-block;
   flex-direction: column;
   position: relative;
+  box-sizing: initial;
+}
+
+.project--contents {
+  display: block;
+  position: relative;
+}
+
+.project--item:hover .project--textarea {
+  display: none;
+}
+
+.project--item:hover .project--image--wrapper {
+  height: 43.5rem;
+}
+
+.project--item--hover {
+  display: none;
+}
+
+.project--item:hover .project--item--hover {
+  display: block;
+  width: 43.5rem;
+  height: 43.5rem;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  padding: 3rem;
+  top: 0;
+  left: 0;
 }
 
 .project--image--wrapper {
@@ -80,8 +110,31 @@ p {
   justify-content: center;
 }
 
+.project--item--hover .project--title {
+  color: white;
+}
+
+.project--item--hover .project--details {
+  font-size: 2rem;
+  color: white;
+  text-align: right;
+  margin: 3rem 1rem;
+}
+
+.project--item--hover .project--description {
+  color: #dddddd;
+  font-size: 1.3em;
+  line-height: 1.5;
+}
+
+.project--item--hover .project--details:before {
+  content: "Team ";
+}
+
 .project--image--wrapper img {
   height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .project--title {
@@ -90,23 +143,10 @@ p {
   width: 35rem;
   display: block;
   font-family: "Noto Sans KR";
-  height: 100%;
-}
-
-.project--details {
-  overflow: hidden;
-  margin-bottom: 0.9rem;
-  font-size: 0.95rem;
-  color: #666666;
 }
 
 .project--period {
   float: right;
-}
-
-.project--description {
-  color: #666666;
-  font-size: 0.95em;
 }
 
 .project--textarea {
