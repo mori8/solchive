@@ -11,6 +11,12 @@ const dotenv=require('dotenv');
 const session=require('express-session');
 const cors = require('cors');
 const multer=require('multer');
+=======
+const multer = require('multer');
+const upload = multer({dest: '../public/upload'});
+const dotenv = require('dotenv');
+const session = require('express-session');
+>>>>>>> upstream/main
 
 const connection = mysql.createConnection({
     host: conf.host,
