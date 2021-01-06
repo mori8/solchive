@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
 import { post } from 'axios';
 
 class UpdateProject extends Component {
@@ -6,6 +7,7 @@ class UpdateProject extends Component {
     constructor(props){
         super(props);
         this.state ={
+            id: "",
             title: "",
             framework: "",
             team: "",
@@ -14,17 +16,17 @@ class UpdateProject extends Component {
             body_images: "",
             summary: "",
             body_text: "",
-            id: "",
         }
         this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.updateProject = this.updateProject.bind(this);
-
     }
 
     //처음에 this.props.state.title을 했다가 https://gongbu-ing.tistory.com/45을 참고하여 location 추가함.
     componentDidMount(){
+       
         this.setState({
+            id: this.props.location.state.id,
             title: this.props.location.state.title,
             framework: this.props.location.state.framework,
             team: this.props.location.state.team,
@@ -35,6 +37,7 @@ class UpdateProject extends Component {
             body_text: this.props.location.state.body_text,
             id: this.props.location.state.id,
         })
+        console.log(this.props.location.state.id);
     }
 
     handleFormModifySubmit(e){
@@ -45,46 +48,65 @@ class UpdateProject extends Component {
     }
 
     handleValueChange(e) {
+        let nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+        console.log(this.state);
+        /*
         this.setState({
             [e.target.name]: e.target.value
         });
-        console.log(e.target.name, e.target.value);
+        console.log(e.target.name, e.target.value);*/
     }
 
+    
     updateProject = async () => {
 
         const url = 'http://localhost:5000/api/update';
 
         let formData = {
+            id: this.state.id,
             title: this.state.title,
-            framework: this.state.framework,
             team: this.state.team,
-            git_url: this.state.git_url,
             period: this.state.period,
+            framework: this.state.framework,
+            body_text: this.state.body_text,
             body_images: this.state.body_images,
             summary: this.state.summary,
-            body_text: this.state.body_text,
+            git_url: this.state.git_url,
         };
 
+        const config = {
+            'content-type': 'multipart/form-data'
+        }
+
+        return post(url, formData, config);
+        /*
         console.log(formData);
         //https://velog.io/@prayme/Fetch-API
         let res = await fetch(url, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formData),
+            headers: {'Content-Type': 'multipart/form-data'},
+            body: JSON.stringify(formData)
             
-        }).then((res) => {
-            console.log(res);
-            if (res.ok) return res.json();
+            
+        }).then(function(res){
+            
+            if (res.status == 200) {
+                console.log(res);
+                return res.json();
+                //return post(url, formData, config);
+            }
             throw new Error('error');
-        }).then((data) => {
-            console.log(data);
-            return data;
-        }).catch((error) => {
+        }).then(function(formData){
+            console.log(formData);
+            return formData;
+        }).catch(function(error){
             return console.log(error.message);
         });
-
-    }
+    */  
+   }
+    
 
     render() {
 
