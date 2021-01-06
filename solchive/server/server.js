@@ -78,16 +78,16 @@ app.delete('/api/project/:id', (req, res) => {
 
 // UPDATE
 app.post('/api/update', (req,res) => {
-    var id=req.body.id;
-    var title=req.body.title;
-    var team=req.body.team;
-    var period=req.body.period;
-    var framework=req.body.framework;
-    var body_text=req.body.body_text;
-    var body_images=req.body.body_images;
-    var summary=req.body.summary;
-    var git_url=req.body.git_url;
-    var isDeleted=0;
+    var id = req.body.id;
+    var title = req.body.title;
+    var team = req.body.team;
+    var period = req.body.period;
+    var framework = req.body.framework;
+    var body_text = req.body.body_text;
+    var body_images = req.body.body_images;
+    var summary = req.body.summary;
+    var git_url = req.body.git_url;
+    var isDeleted = 0;
     // var impression=req.body.impression;
 
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
