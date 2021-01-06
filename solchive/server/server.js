@@ -9,9 +9,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 const data = fs.readFileSync('../database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
-
 const multer = require('multer');
 const upload = multer({dest: '../public/upload'});
+const dotenv = require('dotenv');
+const session = require('express-session');
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -23,11 +24,6 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-
-app.get('/', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-})
-
 const cors = require('cors');
 app.use(cors());
 
@@ -35,20 +31,23 @@ app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
+const multer=require('multer');
+const upload = multer({dest: './upload/'});
+
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
-    var title = req.body.title;   
-    var team = req.body.team; 
-    var period = req.body.period; 
-    var framework = req.body.framework;  
-    var body_text = req.body.body_text;   
-    var body_images = '/upload/' + req.file.filename;   
-    var summary = req.body.summary;   
-    var git_url = req.body.git_url;   
+    var title = req.body.title;
+    var team = req.body.team;
+    var period = req.body.period;
+    var framework = req.body.framework;
+    var body_text = req.body.body_text;
+    var body_images = '/upload/' + req.file.filename;
+    var summary = req.body.summary;
+    var git_url = req.body.git_url;
     var isDeleted=0;
-    // var impression=req.body.impression; 
+    // var impression=req.body.impression;
 
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
         res.send(rows);
     })
@@ -63,9 +62,8 @@ app.get('/api/project', (req,res) => {
 
 // READ id
 app.get('/api/project/:id', (req,res) => {
-    var id = req.params.id;
+    var id=req.params.id;
     var query=connection.query('SELECT * FROM project WHERE id =?', [id], (err, rows, fields) => {
-        console.log(rows);
         res.send(rows);
     })
 })
@@ -73,7 +71,7 @@ app.get('/api/project/:id', (req,res) => {
 // DELETE
 app.delete('/api/project/:id', (req, res) => {
     var id = req.params.id;
-    var query=connection.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
+    var query=connection.query('UPDATE project SET isDeleted = 1 WHERE id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
@@ -81,22 +79,21 @@ app.delete('/api/project/:id', (req, res) => {
 // UPDATE
 app.post('/api/update', (req,res) => {
     var id=req.body.id;
-    var title=req.body.title;   
-    var team=req.body.team; 
-    var period=req.body.period; 
-    var framework=req.body.framework;   
-    var body_text=req.body.body_text;   
-    var body_images=req.body.body_images;   
-    var summary=req.body.summary;  
-    var git_url=req.body.git_url;   
+    var title=req.body.title;
+    var team=req.body.team;
+    var period=req.body.period;
+    var framework=req.body.framework;
+    var body_text=req.body.body_text;
+    var body_images=req.body.body_images;
+    var summary=req.body.summary;
+    var git_url=req.body.git_url;
     var isDeleted=0;
-    // var impression=req.body.impression; 
+    // var impression=req.body.impression;
 
-    var sql={id, title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
-    var query=connection.query('update project set ?', sql, (err,rows, fields) => {
+    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
+    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? WHERE id =?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
