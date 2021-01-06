@@ -10,6 +10,9 @@ const data = fs.readFileSync('../database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
 
+const multer = require('multer');
+const upload = multer({dest: '../public/upload'});
+
 const connection = mysql.createConnection({
     host: conf.host,
     user: conf.user,
@@ -33,18 +36,17 @@ app.get('/', (req, res) => {
 })
 
 // CREATE
-app.post('/api/project', (req, res) => {
-    var title=req.body.title;   
-    var team=req.body.team; 
-    var period=req.body.period; 
-    var framework=req.body.framework;  
-    var body_text=req.body.body_text;   
-    var body_images=req.body.body_images;   
-    var summary=req.body.summary;   
-    var git_url=req.body.git_url;   
+app.post('/api/project', upload.single('body_images'), (req, res) => {
+    var title = req.body.title;   
+    var team = req.body.team; 
+    var period = req.body.period; 
+    var framework = req.body.framework;  
+    var body_text = req.body.body_text;   
+    var body_images = '/upload/' + req.file.filename;   
+    var summary = req.body.summary;   
+    var git_url = req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
-    console.log("프로젝트 추가");
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {

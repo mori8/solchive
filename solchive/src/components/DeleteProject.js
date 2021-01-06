@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 class DeleteProject extends Component {
-
     deleteProject(id){
         console.log(id);
         const url = 'http://localhost:5000/api/project/'+ id;
@@ -9,11 +8,10 @@ class DeleteProject extends Component {
             method:'DELETE'
         });
         alert("글이 삭제되었습니다.");
-        window.location.href = "/projects"
+        window.location.href = "/"
     }
 
     render() {
-
         const btnDelStyle = {
             margin: "5px",
             float: "right",

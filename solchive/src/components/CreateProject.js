@@ -25,7 +25,7 @@ class CreateProject extends Component {
         this.setState({
             body_images: e.target.files[0],
             file_name: e.target.value
-        })
+        });
     }
 
     handleFormSubmit(e) {
@@ -33,19 +33,18 @@ class CreateProject extends Component {
         this.addProject().then((res) => {
             console.log(res.data);
         });
-        window.location.href = '/';
+        // window.location.href = '/';
     }
 
     handleValueChange(e) {
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
-        console.log(this.state.title);
     }
 
     addProject = async () => {
         const url = 'http://localhost:5000/api/project';
-        const formData = new URLSearchParams();
+        const formData = new FormData();
         formData.append('title', this.state.title);
         formData.append('team', this.state.team);
         formData.append('period', this.state.period);
@@ -92,7 +91,7 @@ class CreateProject extends Component {
         return (
             <div style={wrapperStyle}>
                 <h3>프로젝트 생성하기</h3>
-                <form style={formStyle} onSubmit={this.handleFormSubmit}> 
+                <form style={formStyle} onSubmit={this.handleFormSubmit} method="post"> 
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>프로젝트 제목</label>
@@ -120,7 +119,7 @@ class CreateProject extends Component {
                         </div>
                         <div className="form-group col-md-6">
                             <label>대표 이미지</label>
-                            <input type="file" name="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}/>
+                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}/>
                         </div>
                     </div>
                     <div className="form-group" style={textAreaStyle}>

@@ -39,11 +39,13 @@ class Project extends Component {
                     <div className="body--title">
                         <h1>{this.state.projects.title}</h1>
                     </div>
-                    { /* 이미지 들어갈 부분 */ }
                     <div className="body--subinfo">
                         <span className="body--team">{this.state.projects.team}</span>
                         <div className="spacer"></div>
                         <span className="body--period">{this.state.projects.period}</span>
+                    </div>
+                    <div className="body--image">
+                        <img src={this.state.projects.body_images}/>
                     </div>
                     <div className="body--framework">
                         <p className="body--small--title">👷🏻 사용 프레임워크</p>
