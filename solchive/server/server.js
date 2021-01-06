@@ -10,8 +10,8 @@ const data = fs.readFileSync('../database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
 const multer=require('multer');
-const upload=multer({dest: './upload'})
 const dotenv=require('dotenv');
+const session=require('express-session');
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -23,11 +23,6 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-
-app.get('/', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-})
-
 const cors = require('cors');
 app.use(cors());
 
@@ -35,39 +30,53 @@ app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
-app.use('/image',express.static('./upload'));
+var storage=multer.diskStorage({
+    destination: (req, file, cb) => {
+        console.log("파일 업로드")
+        cb(null, './upload/images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
+
+const upload=multer({storage: storage})
 
 // CREATE
-app.post('/api/project', upload.single('image'), (req, res) => {
+app.post('/api/project', upload.single('body_images'), (req, res) => {
+    console.log(req.file);
+    console.log(req.file.path);
+    console.log(upload);
+    console.log(upload.storage.getFilename);
+
     var title=req.body.title;   
     var team=req.body.team; 
     var period=req.body.period; 
     var framework=req.body.framework;  
     var body_text=req.body.body_text;   
-    var body_images='/image/'+req.file.filename;   
+    var body_images=req.file.path;   
     var summary=req.body.summary;   
     var git_url=req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
-    var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
+    var query=connection.query('insert into project set ?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
 
 // READ
 app.get('/api/project', (req,res) => {
-    var query=connection.query('SELECT * FROM project WHERE isDeleted=0', (err, rows, fields) => {
+    var query=connection.query('select * from project where isDeleted=0', (err, rows, fields) => {
         res.send(rows);
     })
 })
 
 // READ id
 app.get('/api/project/:id', (req,res) => {
-    var id = req.params.id;
-    var query=connection.query('SELECT * FROM project WHERE id =?', [id], (err, rows, fields) => {
-        console.log(rows);
+    var id=req.params.id;
+    var query=connection.query('select * from project where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
@@ -75,7 +84,7 @@ app.get('/api/project/:id', (req,res) => {
 // DELETE
 app.delete('/api/project/:id', (req, res) => {
     var id = req.params.id;
-    var query=connection.query('UPDATE project SET where id =?', [id], (err, rows, fields) => {
+    var query=connection.query('UPDATE project SET isDeleted = 1 where id =?', [id], (err, rows, fields) => {
         res.send(rows);
     })
 })
@@ -99,25 +108,5 @@ app.post('/api/update', (req,res) => {
         res.send(rows);
     })
 });
-
-app.post('/chkuser', (req, res) => {
-    if (!req.body) res.redirect('/');
-    else {
-      //유저가 리스트에 있으면
-      if (
-        req.body.id == process.env.LOGIN_ID &&
-        req.body.pw == process.env.LOGIN_PW
-      ) {
-        req.session.user = {};
-        req.session.user.id = req.body.id;
-        req.session.user.pw = req.body.pw;
-        req.session.save(() => {
-          res.redirect('/main');
-        });
-      } else {
-        res.redirect('/');
-      }
-    }
-  });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
