@@ -12,9 +12,8 @@ p {
 
 .header {
     width: 100%;
-    height: 65px;
+    height: 55px;
     display: flex;
-    margin-bottom: 10px;
     align-items: center;
   }
   
@@ -25,6 +24,7 @@ p {
     padding-right: 1rem;
     padding-left: 1rem;
     color: #333333;
+    font-family: "Carmen Sans";
   }
   
   .spacer {
@@ -43,7 +43,7 @@ p {
   }
   
   a:hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   
@@ -59,47 +59,38 @@ p {
 }
 
 .project--item {
-  width: 20rem;
-  height: 22rem;
+  width: 43.5rem;
+  height: 43.5rem;
   background: white;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 16px 0px;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 16px 0px;
   transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
-  margin: 1rem;
+  margin: 3.45rem;
   overflow: hidden;
   display: inline-block;
   flex-direction: column;
+  position: relative;
 }
 
 .project--image--wrapper {
-  width: 100%;
-}
-
-.project--image {
-  position: relative;
-  height: 10rem;
+  height: 22.5rem;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.centered {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transform: translate(50%, 50%);
-}
-
-.project--image img {
-  max-width: 100%;
-  height: 12rem;
-  transform: translate(-50%, -50%);
+.project--image--wrapper img {
+  height: 100%;
 }
 
 .project--title {
-  margin: 0 0 0.85rem;
-  font-size: 1.33em;
-  line-height: 1.2;
+  font-size: 2.4em;
+  font-weight: 700;
+  width: 35rem;
+  display: block;
+  font-family: "Noto Sans KR";
+  height: 100%;
 }
 
 .project--details {
@@ -118,22 +109,57 @@ p {
   font-size: 0.95em;
 }
 
-.project-textarea {
-  padding: 1rem;
-  
+.project--textarea {
+  padding: 3rem;
+  height: 22rem;
+  background-color: #F7CAC9;
 }
 
-.project--team {
-
+.project--item:nth-child(even) .project--textarea {
+  position: absolute;
+  width: 100%;
+  top: 22rem;
+  left: 0;
 }
 
-.body--title {
+/* Project.js */
+.body--title h1 {
   margin: 2.4rem auto;
   text-align: center;
-  font-size: 1.4em;
+  font-size: 2.7em;
+  font-weight: bold;
 }
 
 .body--wrapper {
   margin: 0 auto;
-  width: 65rem;
+  width: 75rem;
+  font-family: 'Noto Sans KR';
+}
+
+.body--subinfo {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  color: #555555;
+  font-size: 1.2em;
+}
+
+.body--team:before {
+  content: "Team ";
+  color: #999999;
+}
+
+.body--period:before {
+  content: "진행기간 ";
+  color: #999999;
+}
+
+.body--small--title {
+  margin: 4.5rem 0 2.4rem;
+  font-size: 1.6em;
+  font-weight: 700;
+}
+
+.body--contents {
+  font-size: 1.2em;
 }

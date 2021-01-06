@@ -6,12 +6,14 @@ import Project from './components/Project';
 import ProjectList from './components/ProjectList';
 import CreateProject from './components/CreateProject';
 import UpdateProject from './components/UpdateProject';
+import Main from './components/Main';
+import "./fonts/fonts.css";
 
 function App() {
   return (
     <div>
         <Header/>
-        <Route exact path="/projects" component={ProjectList}/>
+        <Route exact path="/" component={Main}/>
         <Route path="/projects/:id" component={Project}/>
         <Route path="/create" component={CreateProject}/>
         <Route path="/update" component={UpdateProject}/>
