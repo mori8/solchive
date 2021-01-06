@@ -44,7 +44,7 @@ class UpdateProject extends Component {
         e.preventDefault();
         this.updateProject();
         alert("수정 완료되었습니다.");
-        //window.location.href = '/projects/${id}';
+        window.location.href = '/projects/${id}';
     }
 
     handleValueChange(e) {
@@ -52,11 +52,6 @@ class UpdateProject extends Component {
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
         console.log(this.state);
-        /*
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-        console.log(e.target.name, e.target.value);*/
     }
 
     
@@ -81,30 +76,6 @@ class UpdateProject extends Component {
         }
 
         return post(url, formData, config);
-        /*
-        console.log(formData);
-        //https://velog.io/@prayme/Fetch-API
-        let res = await fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'multipart/form-data'},
-            body: JSON.stringify(formData)
-            
-            
-        }).then(function(res){
-            
-            if (res.status == 200) {
-                console.log(res);
-                return res.json();
-                //return post(url, formData, config);
-            }
-            throw new Error('error');
-        }).then(function(formData){
-            console.log(formData);
-            return formData;
-        }).catch(function(error){
-            return console.log(error.message);
-        });
-    */  
    }
     
 

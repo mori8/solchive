@@ -81,6 +81,7 @@ class Project extends Component {
                         <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+
                 </div>
             </div>
         );
