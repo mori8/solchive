@@ -67,8 +67,9 @@ class Project extends Component {
                 </div>
                 <div> 
                     <Link to={{
-                        pathname: `/update/${this.props.match.params.id}`,
+                        pathname: `/update/${this.state.projects.id}`,
                         state: {
+                            id: this.state.projects.id,
                             title: this.state.projects.title,
                             framework: this.state.projects.framework,
                             team: this.state.projects.team,
@@ -82,6 +83,7 @@ class Project extends Component {
                         <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+
                 </div>
             </div>
         );
