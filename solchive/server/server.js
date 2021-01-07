@@ -31,9 +31,6 @@ app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
-const multer=require('multer');
-const upload = multer({dest: './upload/'});
-
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
     var title = req.body.title;

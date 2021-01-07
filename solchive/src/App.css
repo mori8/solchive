@@ -65,7 +65,7 @@ p {
   border-radius: 2px;
   box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 16px 0px;
   transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
-  margin: 3.45rem;
+  margin: 4rem;
   overflow: hidden;
   display: inline-block;
   flex-direction: column;

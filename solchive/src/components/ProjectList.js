@@ -39,7 +39,8 @@ class ProjectList extends Component {
             margin: "2.4rem auto 0",
             display: "flex",
             flexWrap: "wrap",
-            width: "90vw"
+            width: "90vw",
+            justifyContent: "space-around",
         };
 
         return (
