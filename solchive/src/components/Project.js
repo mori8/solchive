@@ -27,10 +27,18 @@ class Project extends Component {
     }
 
     render() {
+
         const btnModifyStyle = {
             margin: "5px",
             marginRight: "15px",
             float: "right",
+        }
+
+        
+        const imgStyle = {
+            width: "750px",
+            height: "500px",
+            objectfit: "cover",
         }
 
         return (
@@ -45,7 +53,7 @@ class Project extends Component {
                         <span className="body--period">{this.state.projects.period}</span>
                     </div>
                     <div className="body--image">
-                        <img src={this.state.projects.body_images}/>
+                        <img style={imgStyle} src={this.state.projects.body_images}/>
                     </div>
                     <div className="body--framework">
                         <p className="body--small--title">👷🏻 사용 프레임워크</p>
@@ -56,7 +64,7 @@ class Project extends Component {
                         <p className="body--contents">{this.state.projects.summary}</p>
                     </div>
                     <div className="body--content">
-                        <p className="body--small--title">👩🏻‍💻 개발 스토리</p>
+                        <p className="body--small--title">👩🏻 💻 개발 스토리</p>
                         <p className="body--contents">{this.state.projects.body_text}</p>
                     </div>
                     <div className="body--comments">
@@ -67,9 +75,8 @@ class Project extends Component {
                 </div>
                 <div> 
                     <Link to={{
-                        pathname: `/update/${this.state.projects.id}`,
+                        pathname: `/update/${this.props.match.params.id}`,
                         state: {
-                            id: this.state.projects.id,
                             title: this.state.projects.title,
                             framework: this.state.projects.framework,
                             team: this.state.projects.team,
@@ -83,7 +90,6 @@ class Project extends Component {
                         <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
-
                 </div>
             </div>
         );
