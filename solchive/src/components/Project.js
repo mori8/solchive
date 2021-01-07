@@ -45,7 +45,7 @@ class Project extends Component {
                         <span className="body--period">{this.state.projects.period}</span>
                     </div>
                     <div className="body--image">
-                        <img src={this.state.projects.body_images}/>
+                        <img src={'/upload/'+this.state.projects.body_images}/>
                     </div>
                     <div className="body--framework">
                         <p className="body--small--title">👷🏻 사용 프레임워크</p>

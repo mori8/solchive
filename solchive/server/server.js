@@ -31,10 +31,10 @@ app.get('/', (req, res) => {
 
 var storage=multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './upload')
+        cb(null, '../public/upload')
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname)
+        cb(null, Date.now()+"_"+file.originalname)
     }
 })
 const upload = multer({storage: storage});
@@ -46,7 +46,7 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var period=req.body.period; 
     var framework=req.body.framework;  
     var body_text=req.body.body_text;   
-    var body_images='./upload/'+req.file.filename;  
+    var body_images=req.file.filename;  
     var summary=req.body.summary;   
     var git_url=req.body.git_url;   
     var isDeleted=0;
