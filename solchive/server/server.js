@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mysql = require('mysql');
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
@@ -8,11 +9,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const data = fs.readFileSync('../database.json');
 const conf = JSON.parse(data);
-const mysql = require('mysql');
 const multer = require('multer');
 const upload = multer({dest: '../public/upload'});
-const dotenv=require('dotenv');
 const session=require('express-session');
+
+const dotenv = require('dotenv');
+dotenv.config({path:'../.env'});
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -30,6 +32,37 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
+
+// LOGIN
+app.use(session({
+    HttpOnly: true,
+    secure: true,
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 24000 * 60 * 60 }
+}));
+
+app.post('/chkserver', (req, res) => {
+    if (!req.body) res.redirect('/');
+    else {
+      if (      
+        req.body.user_id == process.env.LOGIN_ID &&
+        req.body.user_pw == process.env.LOGIN_PW
+      ) {
+        req.session.user = {};
+        req.session.user.id = req.body.user_id;
+        req.session.user.pw = req.body.user_pw;
+        console.log("right!");
+        req.session.save(() => {
+          res.redirect('/main');
+        });
+      } else {
+        res.redirect('/');
+        console.log("wrong");
+      }
+    }
+  });
 
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
