@@ -1,7 +1,6 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const app = express();
 const port = process.env.PORT || 5000;
 const data = fs.readFileSync('../database.json');
@@ -55,7 +54,7 @@ app.post('/chkserver', (req, res) => {
           res.redirect('/main');
         });
       } else {
-        res.redirect('/');
+        res.redirect('/login');
         console.log("wrong");
       }
     }
@@ -71,7 +70,6 @@ var storage=multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
-
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
     var title = req.body.title;
@@ -79,7 +77,7 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var period = req.body.period;
     var framework = req.body.framework;
     var body_text = req.body.body_text;
-    var body_images = '/upload/' + req.file.filename;  
+    var body_images = req.file.originalname;  
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
@@ -122,7 +120,7 @@ app.post('/api/update', (req,res) => {
     var period=req.body.period; 
     var framework=req.body.framework;   
     var body_text=req.body.body_text;   
-    var body_images='/upload/'+req.file.filename;  
+    var body_images=req.file.originalname;  
     var summary=req.body.summary;  
     var git_url=req.body.git_url;   
     var isDeleted=0;
