@@ -52,8 +52,7 @@ class UpdateProject extends Component {
         e.preventDefault();
         this.updateProject();
         alert("수정 완료되었습니다.");
-        
-        //window.location.href = '/';
+        window.location.href = '/';
     }
 
     handleValueChange(e) {
@@ -152,9 +151,6 @@ class UpdateProject extends Component {
                         </div>
                         <div className="form-group col-md-6">
                         <label>대표 이미지</label>
-                            {/*
-                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}  ref={this.fileInput}/> 
-                            */}
                             <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control" onChange={this.handleFileChange} ref={this.fileInput}/>
                         </div>
                     </div>
