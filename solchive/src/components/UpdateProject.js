@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import React, { Component, createRef } from 'react';
+
 import { post } from 'axios';
 
 class UpdateProject extends Component {
@@ -13,18 +13,19 @@ class UpdateProject extends Component {
             team: "",
             git_url: "",
             period: "",
-            body_images: "",
+            body_images: [],
             summary: "",
             body_text: "",
         }
+        this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
+        this.fileInput = React.createRef();
         this.handleValueChange = this.handleValueChange.bind(this);
         this.updateProject = this.updateProject.bind(this);
     }
 
-    //처음에 this.props.state.title을 했다가 https://gongbu-ing.tistory.com/45을 참고하여 location 추가함.
     componentDidMount(){
-       
+
         this.setState({
             id: this.props.location.state.id,
             title: this.props.location.state.title,
@@ -35,16 +36,24 @@ class UpdateProject extends Component {
             body_images: this.props.location.state.body_images,
             summary: this.props.location.state.summary,
             body_text: this.props.location.state.body_text,
-            id: this.props.location.state.id,
         })
+        
         console.log(this.props.location.state.id);
+        console.log(this.props.location.state.body_images);
+    }
+
+    handleFileChange(e) {
+        this.setState({
+            body_images: e.target.files[0],
+        });
     }
 
     handleFormModifySubmit(e){
         e.preventDefault();
         this.updateProject();
         alert("수정 완료되었습니다.");
-        window.location.href = '/';
+        
+        //window.location.href = '/';
     }
 
     handleValueChange(e) {
@@ -59,27 +68,32 @@ class UpdateProject extends Component {
 
         const url = 'http://localhost:5000/api/update';
 
-        let formData = {
-            id: this.state.id,
-            title: this.state.title,
-            team: this.state.team,
-            period: this.state.period,
-            framework: this.state.framework,
-            body_text: this.state.body_text,
-            body_images: this.state.body_images,
-            summary: this.state.summary,
-            git_url: this.state.git_url,
-        };
-
+        const formData = new FormData();
+        formData.append('id', this.state.id);
+        formData.append('title', this.state.title);
+        formData.append('team', this.state.team);
+        formData.append('period', this.state.period);
+        formData.append('framework', this.state.framework);
+        formData.append('body_text', this.state.body_text);
+        formData.append('body_images', this.state.body_images);
+        formData.append('summary', this.state.summary);
+        formData.append('git_url', this.state.git_url);
+        console.log(this.state.body_images);
+        
         const config = {
             'content-type': 'multipart/form-data'
         }
 
-        return post(url, formData, config);
+        return post(url, formData, config).then(res => {
+            alert('성공')
+          }).catch(err => {
+            console.log(err.message);
+        });
    }
     
 
     render() {
+        const nameRef=createRef();
 
         const formStyle = {
             width: "82rem",
@@ -137,8 +151,11 @@ class UpdateProject extends Component {
                             <input type="text" name="period" className="form-control" placeholder="제목" value={this.state.period} onChange={this.handleValueChange}/>
                         </div>
                         <div className="form-group col-md-6">
-                            <label>대표 이미지</label>
-                            <input type="text" name="body_images" value={this.state.body_images} className="form-control" onChange={this.handleValueChange}/>
+                        <label>대표 이미지</label>
+                            {/*
+                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}  ref={this.fileInput}/> 
+                            */}
+                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control" onChange={this.handleFileChange} ref={this.fileInput}/>
                         </div>
                     </div>
                     <div className="form-group" style={textAreaStyle}>

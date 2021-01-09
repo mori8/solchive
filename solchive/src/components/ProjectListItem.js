@@ -13,7 +13,7 @@ class ProjectListItem extends Component {
                             </div>
                         </div>
                         <div className="project--image--wrapper">
-                            <img src="background.jpg"/>
+                            <img src={'/upload/'+ body_images}/>
                         </div>
                     </div>
                     { /* TODO: 마우스 오버 시 이벤트. 위에껄 div로 묶고 hover -> display: none */ }
