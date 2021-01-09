@@ -27,3 +27,6 @@ database.json
 
 # upload
 public/upload
+
+# login
+.env
