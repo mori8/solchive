@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mysql = require('mysql');
 const app = express();
 const port = process.env.PORT || 5000;
 const data = fs.readFileSync('../database.json');
@@ -9,6 +10,7 @@ const mysql = require('mysql');
 const cors = require('cors');
 const multer=require('multer');
 const dotenv=require('dotenv');
+dotenv.config({path:'../.env'});
 const session=require('express-session');
 
 const connection = mysql.createConnection({
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
+// LOGIN
 app.use(session({
     HttpOnly: true,
     secure: true,
@@ -68,6 +71,7 @@ var storage=multer.diskStorage({
     }
 })
 const upload = multer({storage: storage});
+
 
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
