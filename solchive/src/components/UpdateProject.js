@@ -38,8 +38,6 @@ class UpdateProject extends Component {
             body_text: this.props.location.state.body_text,
         })
         
-        console.log(this.props.location.state.id);
-        console.log(this.props.location.state.body_images);
     }
 
     handleFileChange(e) {
