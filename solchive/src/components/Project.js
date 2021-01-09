@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import '../App.css';
-import ProjectListItem from './ProjectListItem';
 import DeleteProject from './DeleteProject';
-import UpdateProject from './UpdateProject';
 
 class Project extends Component {
     state = {
@@ -53,7 +51,7 @@ class Project extends Component {
                         <span className="body--period">{this.state.projects.period}</span>
                     </div>
                     <div className="body--image">
-                        <img style={imgStyle} src={this.state.projects.body_images}/>
+                        <img style={imgStyle} src={'/upload/' + this.state.projects.body_images}/>
                     </div>
                     <div className="body--framework">
                         <p className="body--small--title">👷🏻 사용 프레임워크</p>
@@ -75,8 +73,9 @@ class Project extends Component {
                 </div>
                 <div> 
                     <Link to={{
-                        pathname: `/update/${this.props.match.params.id}`,
+                        pathname: `/update/${this.state.projects.id}`,
                         state: {
+                            id: this.state.projects.id,
                             title: this.state.projects.title,
                             framework: this.state.projects.framework,
                             team: this.state.projects.team,
@@ -87,6 +86,7 @@ class Project extends Component {
                             body_text: this.state.projects.body_text,
                         }
                     }}>
+                        
                         <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
