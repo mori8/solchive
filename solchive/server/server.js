@@ -65,7 +65,7 @@ var storage=multer.diskStorage({
         cb(null, '../public/upload')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now()+"_"+file.originalname)
+        cb(null, Date.now()+ '-' +file.originalname)
     }
 })
 const upload = multer({storage: storage});
@@ -77,7 +77,7 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var period = req.body.period;
     var framework = req.body.framework;
     var body_text = req.body.body_text;
-    var body_images = req.file.originalname;  
+    var body_images = req.file.filename;  
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
@@ -113,18 +113,20 @@ app.delete('/api/project/:id', (req, res) => {
 })
 
 // UPDATE
-app.post('/api/update', (req,res) => {
+app.post('/api/update', upload.single('body_images'), (req,res) => {
     var id=req.body.id;
     var title=req.body.title;  
     var team=req.body.team; 
     var period=req.body.period; 
     var framework=req.body.framework;   
     var body_text=req.body.body_text;   
-    var body_images=req.file.originalname;  
+    var body_images=req.file.filename;  
     var summary=req.body.summary;  
     var git_url=req.body.git_url;   
     var isDeleted=0;
     // var impression=req.body.impression; 
+
+    console.log(body_images);
 
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
     var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? WHERE id =?', sql, (err,rows, fields) => {
