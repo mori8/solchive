@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mysql = require('mysql');
 const app = express();
 const port = process.env.PORT || 5000;
 const data = fs.readFileSync('../database.json');
@@ -9,8 +10,8 @@ const mysql = require('mysql');
 const cors = require('cors');
 const multer=require('multer');
 const dotenv=require('dotenv');
+dotenv.config({path:'../.env'});
 const session=require('express-session');
-
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -30,6 +31,37 @@ app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 })
 
+// LOGIN
+app.use(session({
+    HttpOnly: true,
+    secure: true,
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 24000 * 60 * 60 }
+}));
+
+app.post('/chkserver', (req, res) => {
+    if (!req.body) res.redirect('/');
+    else {
+      if (      
+        req.body.user_id == process.env.LOGIN_ID &&
+        req.body.user_pw == process.env.LOGIN_PW
+      ) {
+        req.session.user = {};
+        req.session.user.id = req.body.user_id;
+        req.session.user.pw = req.body.user_pw;
+        console.log("right!");
+        req.session.save(() => {
+          res.redirect('/main');
+        });
+      } else {
+        res.redirect('/');
+        console.log("wrong");
+      }
+    }
+  });
+
 var storage=multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, '../public/upload')
@@ -39,6 +71,7 @@ var storage=multer.diskStorage({
     }
 })
 const upload = multer({storage: storage});
+
 
 // CREATE
 app.post('/api/project', upload.single('body_images'), (req, res) => {
