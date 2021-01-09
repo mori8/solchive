@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 class ProjectListItem extends Component {
+    
     render() {
         const { id, title, team, period, summary, body_images } = this.props.info;
         return (

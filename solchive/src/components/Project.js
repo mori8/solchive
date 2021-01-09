@@ -4,6 +4,7 @@ import '../App.css';
 import DeleteProject from './DeleteProject';
 
 class Project extends Component {
+    
     state = {
         projects: [],
     }
