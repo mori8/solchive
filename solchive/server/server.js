@@ -5,6 +5,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const data = fs.readFileSync('../database.json');
 const conf = JSON.parse(data);
+const mysql = require('mysql');
 const cors = require('cors');
 const multer=require('multer');
 const dotenv=require('dotenv');
