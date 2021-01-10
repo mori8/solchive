@@ -1,51 +1,67 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-
-import 'whatwg-fetch';
-
-//import AlertContainer from 'react-alert';
 
 class Login extends Component {
-    //https://ljtaek2.tistory.com/102
-    //https://calyfactory.github.io/%EC%88%9C%EC%88%98-react.js%EB%A1%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/
-    //https://velopert.com/3629 - constructor 공부
     constructor(props){
 		super(props);
 		this.state ={
-			requestID:'',
-			requestPW:''
+			user_id:'',
+			user_pw:''
 		};
 
-		this.requestIDChange = this.requestIDChange.bind(this);
-		this.requestPWChange = this.requestPWChange.bind(this);
+		this.handleValueChange = this.handleValueChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.projectLogin = this.projectLogin.bind(this);
 	}
 
-    onSubmit(){
-		let userInfo={
-			'user_id':this.state.requestID,
-			'user_pw':this.state.requestPW
-		};
+    handleSubmit(e){
 
-		fetch('/login',{
-			method: 'POST',
-			headers:{
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(userInfo)
-	    }).then((response)=> response.json())
-	    .then((responseData)=>{
-	    	if(responseData.loginresult){
-	    		this.props.onSuccess(this.state.requestID);
-	    	}
-	    });
-	}
+        e.preventDefault();
+        this.projectLogin().then((res) => {
+            console.log(res.data);
+        });
 
-	requestIDChange(event){
-		this.setState({requestID: event.target.value});
-	}
-	requestPWChange(event){
-		this.setState({requestPW: event.target.value});
-	}
+    }
+    
+    projectLogin = async () => {
+        const url = 'http://localhost:5000/chkserver';
+
+        let userInfo={
+            'user_id':this.state.user_id,
+            'user_pw':this.state.user_pw
+        };
+
+        fetch(url,{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInfo)
+            
+        })
+        .then((response)=>{
+            return response.json();
+        })
+        .then((res)=>{
+            if(res.loginresult){
+                alert("로그인에 성공했습니다.");
+                window.location.href = '/';
+            }
+            else{
+                alert("일치하는 ID와 PW가 없습니다.");
+                this.setState({
+                    user_id:'',
+                    user_pw: ''
+                });
+            }
+        });
+    }
+
+    handleValueChange(e) {
+        let nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+        console.log(this.state);
+    }
 
     render() {
 
@@ -65,15 +81,15 @@ class Login extends Component {
         }
 
         return (
-            <div class="wrapper">
-                <div style = {containerStyle} class="container">
+            <div className="wrapper">
+                <div style = {containerStyle} className="container">
                     <h1 style = {headTitlestyle} >Welcome to SOLCHIVE!</h1>
-                    <form class="loginForm">
+                    <form className="loginForm">
                         <div>
                             <input 
-                                name="requestID"  
-                                value={this.state.requestID} 
-                                onChange={this.requestIDChange}
+                                name="user_id"  
+                                value={this.state.user_id} 
+                                onChange={this.handleValueChange}
                                 style = {loginAreastyle} 
                                 type="text" 
                                 placeholder="User ID" 
@@ -81,16 +97,16 @@ class Login extends Component {
                         </div>
                         <div>
                             <input 
-                                name="requestPW"  
-                                value={this.state.requestPW} 
-                                onChange={this.requestPWChange}
+                                name="user_pw"  
+                                value={this.state.user_pw} 
+                                onChange={this.handleValueChange}
                                 style = {loginAreastyle} 
                                 type="password" 
                                 placeholder="User PW" 
                             />
                         </div>
                         <div>
-                            <button onClick={this.onSubmit.bind(this)} style = {loginAreastyle} type="submit" id = "login_btn">Login</button>
+                            <button style = {loginAreastyle} type="submit" onClick={this.projectLogin} id = "login_btn">Login</button>
                         </div>
                     </form>
                 </div>
