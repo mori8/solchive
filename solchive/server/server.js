@@ -41,7 +41,7 @@ app.use(session({
 }));
 
 app.post('/chkserver', (req, res) => {
-    if (!req.body) res.redirect('/');
+    if (!req.body) res.send({loginresult:false});
     else {
       if (      
         req.body.user_id == process.env.LOGIN_ID &&
@@ -52,11 +52,11 @@ app.post('/chkserver', (req, res) => {
         req.session.user.pw = req.body.user_pw;
         console.log("right!");
         req.session.save(() => {
-          res.redirect('/main');
+            return res.send({loginresult : true});
         });
       } else {
-        res.redirect('/login');
-        console.log("wrong");
+            console.log("wrong");
+            return res.send({loginresult : false});
       }
     }
   });
