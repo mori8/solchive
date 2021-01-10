@@ -48,10 +48,7 @@ class Login extends Component {
             }
             else{
                 alert("일치하는 ID와 PW가 없습니다.");
-                this.setState({
-                    user_id:'',
-                    user_pw: ''
-                });
+                window.location.href = '/login';
             }
         });
     }
