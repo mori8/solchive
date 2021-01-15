@@ -11,6 +11,7 @@ const multer=require('multer');
 const dotenv=require('dotenv');
 dotenv.config({path:'../.env'});
 const session=require('express-session');
+const cookieParser = require('cookie-parser');
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -22,6 +23,17 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+app.use(cookieParser());
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000*60,
+        secure:false,
+        httopOnly: true
+    },
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
@@ -31,15 +43,6 @@ app.get('/', (req, res) => {
 })
 
 // LOGIN
-app.use(session({
-    HttpOnly: true,
-    secure: true,
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 24000 * 60 * 60 }
-}));
-
 app.post('/chkserver', (req, res) => {
     if (!req.body) res.send({loginresult:false});
     else {
@@ -50,16 +53,29 @@ app.post('/chkserver', (req, res) => {
         req.session.user = {};
         req.session.user.id = req.body.user_id;
         req.session.user.pw = req.body.user_pw;
+        console.log(req.session.user);
         console.log("right!");
         req.session.save(() => {
-            return res.send({loginresult : true});
+            res.send({loginresult : true});
         });
       } else {
             console.log("wrong");
-            return res.send({loginresult : false});
+            res.send({loginresult : false});
       }
     }
   });
+
+app.get('/chkserver', (req, res) => {
+    console.log("session: "+req.session.user);
+    if(req.session.user){
+        console.log("true");
+        res.send({loginresult:true});
+    }
+    else{
+        console.log("false");
+        res.send({loginresult:false});
+    }
+});
 
 var storage=multer.diskStorage({
     destination: (req, file, cb) => {
@@ -82,10 +98,24 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
-    // var impression=req.body.impression;
-  
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};          
+
+    var name1=req.body.name1;
+    var comment1=req.body.comment1;
+    var name2=req.body.name1;
+    var comment1=req.body.comment2;
+    var name3=req.body.name1;
+    var comment1=req.body.comment3;
+    var name4=req.body.name1;
+    var comment1=req.body.comment4;
+    var name5=req.body.name1;
+    var comment1=req.body.comment5;
+
+    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted];          
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
+        res.send(rows);
+    })
+    sql=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, LAST_INSERT_ID()];
+    query=connection.query('INSERT INTO project_comment SET ?', sql, (err, rows, fields) => {
         res.send(rows);
     })
 });
@@ -101,6 +131,7 @@ app.get('/api/project', (req,res) => {
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
     var query=connection.query('SELECT * FROM project WHERE id =?', [id], (err, rows, fields) => {
+        //'(SELECT * FROM project JOIN project_comment ON project.id=project_comment.project_id WHERE id =?)', [id]
         res.send(rows);
     })
 })
@@ -125,13 +156,28 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
     var summary=req.body.summary;  
     var git_url=req.body.git_url;   
     var isDeleted=0;
-    // var impression=req.body.impression; 
+    
     if(req.file!=null){
         body_images=req.file.filename;
     }
 
+    var name1=req.body.name1;
+    var comment1=req.body.comment1;
+    var name2=req.body.name1;
+    var comment1=req.body.comment2;
+    var name3=req.body.name1;
+    var comment1=req.body.comment3;
+    var name4=req.body.name1;
+    var comment1=req.body.comment4;
+    var name5=req.body.name1;
+    var comment1=req.body.comment5;
+
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
     var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? WHERE id =?', sql, (err,rows, fields) => {
+        res.send(rows);
+    })
+    sql=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
+    query=connection.query('UPDATE project_comment SET name1 =? comment1 =? name2 =? comment2 =? name3 =? comment3 =? name4 =? comment4 =? name5 =? comment5 =? WHERE project_id =?', sql, (err, rows, fields) => {
         res.send(rows);
     })
 });
