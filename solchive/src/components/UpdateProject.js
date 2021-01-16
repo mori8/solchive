@@ -16,6 +16,7 @@ class UpdateProject extends Component {
             body_images: [],
             summary: "",
             body_text: "",
+            loginresult: false,
         }
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
@@ -36,6 +37,7 @@ class UpdateProject extends Component {
             body_images: this.props.location.state.body_images,
             summary: this.props.location.state.summary,
             body_text: this.props.location.state.body_text,
+            loginresult: this.props.location.state.loginresult,
         })
         
     }
@@ -118,7 +120,14 @@ class UpdateProject extends Component {
             margin: "5px",
         }
 
+        function checkLogin(){
+            if(this.state.loginresult === false){
+                window.location.href = '/';
+            }
+        }
+
         return (
+            
             <div style={wrapperStyle}>
                 <h3>프로젝트 내용 수정하기</h3>
                 <form style={formStyle} onSubmit={this.handleFormModifySubmit} method="post"> 
