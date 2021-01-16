@@ -17,7 +17,7 @@ function App() {
         <Route exact path="/" component={Main}/>
         <Route path="/projects/:id" component={Project}/>
         <Route path="/create" component={CreateProject}/>
-        <Route path="/update" component={UpdateProject}/>
+        <Route path="/update/:id" component={UpdateProject}/>
         <Route path="/login" component={Login}/>
         <Footer/>
     </div>
