@@ -43,7 +43,7 @@ class Project extends Component {
         .then(responseData => {
             console.log(responseData);
             this.setState({
-                loginresult: responseData.loginresult
+                loginresult:responseData.loginresult,
             });
         }).catch(
             error => { console.log(error);
@@ -101,22 +101,9 @@ class Project extends Component {
                 <div>{ 
                     this.state.loginresult === true ?
                     <div>
-                    <Link to={{
-                        pathname: `/update/${this.state.projects.id}`,
-                        state: {
-                            id: this.state.projects.id,
-                            title: this.state.projects.title,
-                            framework: this.state.projects.framework,
-                            team: this.state.projects.team,
-                            git_url: this.state.projects.git_url,
-                            period: this.state.projects.period,
-                            body_images: this.state.projects.body_images,
-                            summary: this.state.projects.summary,
-                            body_text: this.state.projects.body_text,
-                            loginresult: this.state.loginresult,
-                        }
-                    }}>
-                        
+                        <Link to={{
+                            pathname: `/update/${this.state.projects.id}`,
+                        }}>
                         <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
