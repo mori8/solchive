@@ -78,7 +78,7 @@ class UpdateProject extends Component {
             });
             if(this.state.loginresult === false){
                 alert("로그인 후 이용해 주시길 바랍니다. 감사합니다.");
-                window.location.href = '/';
+                window.location.href = '/login';
             }
         }).catch(
             error => { console.log(error);
@@ -173,7 +173,7 @@ class UpdateProject extends Component {
    }
     
     addCommentsHandler = () => {
-        
+
         let commentsWrapper = document.querySelector(".create--comments--wrapper");
         let comments = document.querySelector(".create--comments").cloneNode(true);
         let nameInput = comments.childNodes[0].childNodes[1];
