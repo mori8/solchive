@@ -7,6 +7,7 @@ class Project extends Component {
     
     state = {
         projects: [],
+        loginresult: false,
     }
 
     componentDidMount() {
@@ -16,6 +17,10 @@ class Project extends Component {
         }).catch(
             error => { console.log(error);
         });
+
+        this.chkId().catch(
+            error => { console.log(error);
+        });
     }
 
     callAPI = async () => {
@@ -23,6 +28,27 @@ class Project extends Component {
         const res = await fetch(`/api/project/${id}`);
         const body = await res.json();
         return body;
+    }
+
+    chkId = async () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        };
+        fetch("http://localhost:5000/chkserver", requestOptions)
+        .then(res => {
+            console.log(res);
+            return res.json();
+        })
+        .then(responseData => {
+            console.log(responseData);
+            this.setState({
+                loginresult: responseData.loginresult
+            });
+        }).catch(
+            error => { console.log(error);
+        });
+
     }
 
     render() {
@@ -72,7 +98,9 @@ class Project extends Component {
                 </div>
                 <div className="image--section">
                 </div>
-                <div> 
+                <div>{ 
+                    this.state.loginresult === true ?
+                    <div>
                     <Link to={{
                         pathname: `/update/${this.state.projects.id}`,
                         state: {
@@ -85,12 +113,17 @@ class Project extends Component {
                             body_images: this.state.projects.body_images,
                             summary: this.state.projects.summary,
                             body_text: this.state.projects.body_text,
+                            loginresult: this.state.loginresult,
                         }
                     }}>
                         
                         <button className="btn" style={btnModifyStyle}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+                    </div>
+                : 
+                <></>
+                }
                 </div>
             </div>
         );
