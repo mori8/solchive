@@ -23,4 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # database
-/database.json
+database.json
+
+# upload
+public/upload
+
+# login
+.env

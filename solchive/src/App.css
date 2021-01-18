@@ -1,38 +1,205 @@
-.App {
-  text-align: center;
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.header {
+    width: 100%;
+    height: 55px;
+    display: flex;
+    align-items: center;
   }
+  
+  .header .logo {
+    font-size: 1.3em;
+    font-weight: 600;
+    vertical-align: middle;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    color: #333333;
+    font-family: "Carmen Sans";
+  }
+  
+  .spacer {
+    flex-grow: 1;
+  }
+  
+  .header .createBtn {
+    margin-right: 24px;
+    font-weight: 500;
+  }
+  
+  a {
+    color: inherit;
+    background-color: inherit;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+
+  
+  .black {
+    color: black;
+    display: inline-block;
+  }
+  
+.project--wrapper {
+  display: flex;
+  margin: -1rem;
+  flex-wrap: wrap;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
+.project--item {
+  width: 43.5rem;
+  height: 43.5rem;
+  background: white;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 16px 0px;
+  transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
+  margin: 4rem;
+  overflow: hidden;
+  display: inline-block;
   flex-direction: column;
+  position: relative;
+  box-sizing: initial;
+}
+
+.project--contents {
+  display: block;
+  position: relative;
+}
+
+.project--item:hover .project--textarea {
+  display: none;
+}
+
+.project--item:hover .project--image--wrapper {
+  height: 43.5rem;
+}
+
+.project--item--hover {
+  display: none;
+}
+
+.project--item:hover .project--item--hover {
+  display: block;
+  width: 43.5rem;
+  height: 43.5rem;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  padding: 3rem;
+  top: 0;
+  left: 0;
+}
+
+.project--image--wrapper {
+  height: 22.5rem;
+  overflow: hidden;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.project--item--hover .project--title {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.project--item--hover .project--details {
+  font-size: 2rem;
+  color: white;
+  text-align: right;
+  margin: 3rem 1rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.project--item--hover .project--description {
+  color: #dddddd;
+  font-size: 1.3em;
+  line-height: 1.5;
+}
+
+.project--item--hover .project--details:before {
+  content: "Team ";
+}
+
+.project--image--wrapper img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.project--title {
+  font-size: 2.4em;
+  font-weight: 700;
+  width: 35rem;
+  display: block;
+  font-family: "Noto Sans KR";
+}
+
+.project--period {
+  float: right;
+}
+
+.project--textarea {
+  padding: 3rem;
+  height: 22rem;
+  background-color: #F7CAC9;
+}
+
+.project--item:nth-child(even) .project--textarea {
+  position: absolute;
+  width: 100%;
+  top: 22rem;
+  left: 0;
+}
+
+/* Project.js */
+.body--title h1 {
+  margin: 2.4rem auto;
+  text-align: center;
+  font-size: 2.7em;
+  font-weight: bold;
+}
+
+.body--wrapper {
+  margin: 0 auto;
+  width: 75rem;
+  font-family: 'Noto Sans KR';
+}
+
+.body--subinfo {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  color: #555555;
+  font-size: 1.2em;
+}
+
+.body--team:before {
+  content: "Team ";
+  color: #999999;
+}
+
+.body--period:before {
+  content: "진행기간 ";
+  color: #999999;
+}
+
+.body--small--title {
+  margin: 4.5rem 0 2.4rem;
+  font-size: 1.6em;
+  font-weight: 700;
+}
+
+.body--contents {
+  font-size: 1.2em;
 }
