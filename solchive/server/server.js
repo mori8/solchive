@@ -94,28 +94,27 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var period = req.body.period;
     var framework = req.body.framework;
     var body_text = req.body.body_text;
-    var body_images = req.file.filename;  
+    var body_images = 'background.jpg';  
+    if(req.file!=null){
+        body_images=req.file.filename;
+    }
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
 
     var name1=req.body.name1;
     var comment1=req.body.comment1;
-    var name2=req.body.name1;
-    var comment1=req.body.comment2;
-    var name3=req.body.name1;
-    var comment1=req.body.comment3;
-    var name4=req.body.name1;
-    var comment1=req.body.comment4;
-    var name5=req.body.name1;
-    var comment1=req.body.comment5;
+    var name2=req.body.name2;
+    var comment2=req.body.comment2;
+    var name3=req.body.name3;
+    var comment3=req.body.comment3;
+    var name4=req.body.name4;
+    var comment4=req.body.comment4;
+    var name5=req.body.name5;
+    var comment5=req.body.comment5;
 
-    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted];          
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5};         
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
-        res.send(rows);
-    })
-    sql=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, LAST_INSERT_ID()];
-    query=connection.query('INSERT INTO project_comment SET ?', sql, (err, rows, fields) => {
         res.send(rows);
     })
 });
@@ -131,7 +130,6 @@ app.get('/api/project', (req,res) => {
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
     var query=connection.query('SELECT * FROM project WHERE id =?', [id], (err, rows, fields) => {
-        //'(SELECT * FROM project JOIN project_comment ON project.id=project_comment.project_id WHERE id =?)', [id]
         res.send(rows);
     })
 })
@@ -163,21 +161,17 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
 
     var name1=req.body.name1;
     var comment1=req.body.comment1;
-    var name2=req.body.name1;
-    var comment1=req.body.comment2;
-    var name3=req.body.name1;
-    var comment1=req.body.comment3;
-    var name4=req.body.name1;
-    var comment1=req.body.comment4;
-    var name5=req.body.name1;
-    var comment1=req.body.comment5;
+    var name2=req.body.name2;
+    var comment2=req.body.comment2;
+    var name3=req.body.name3;
+    var comment3=req.body.comment3;
+    var name4=req.body.name4;
+    var comment4=req.body.comment4;
+    var name5=req.body.name5;
+    var comment5=req.body.comment5;
 
-    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
-    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? WHERE id =?', sql, (err,rows, fields) => {
-        res.send(rows);
-    })
-    sql=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
-    query=connection.query('UPDATE project_comment SET name1 =? comment1 =? name2 =? comment2 =? name3 =? comment3 =? name4 =? comment4 =? name5 =? comment5 =? WHERE project_id =?', sql, (err, rows, fields) => {
+    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
+    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? name1 =? comment1 =? name2 =? comment2 =? name3 =? comment3 =? name4 =? comment4 =? name5 =? comment5 =? WHERE id =?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
