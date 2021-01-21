@@ -13,6 +13,7 @@ dotenv.config({path:'../.env'});
 const session=require('express-session');
 const cookieParser = require('cookie-parser');
 const MySQLStore = require('express-mysql-session')(session);
+const request=require('request');
 
 app.use(cookieParser());
 
@@ -52,7 +53,8 @@ const connection = mysql.createConnection({
     user: conf.user,
     password: conf.password,
     port: conf.port,
-    database: conf.database
+    database: conf.database,
+    multipleStatements: true
 })
 
 connection.connect();
@@ -133,23 +135,53 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
-
-    var name1=req.body.name1;
-    var comment1=req.body.comment1;
-    var name2=req.body.name2;
-    var comment2=req.body.comment2;
-    var name3=req.body.name3;
-    var comment3=req.body.comment3;
-    var name4=req.body.name4;
-    var comment4=req.body.comment4;
-    var name5=req.body.name5;
-    var comment5=req.body.comment5;
-
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5};         
+    
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};         
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
+        request.post('http://localhost:5000/api/comment', {form:{project_id:rows.insertId}})
         res.send(rows);
     })
 });
+
+app.post('/api/comment', (req, res)=>{
+    var project_id=req.body.project_id;
+    var name1="";
+    if(req.body.name1!=null)
+        name1=req.body.name1;    
+    var name2="";
+    if(req.body.name2!=null)
+        name2=req.body.name2; 
+    var name3="";
+    if(req.body.name3!=null)
+        name3=req.body.name3; 
+    var name4="";
+    if(req.body.name4!=null)
+        name4=req.body.name1; 
+    var name5="";
+    if(req.body.name5!=null)
+        name5=req.body.name5; 
+    
+    var comment1="";
+    if(req.body.comment1!=null)
+        comment1=req.body.comment1;
+    var comment2="";
+    if(req.body.comment2!=null)
+        comment2=req.body.comment2;
+    var comment3="";
+    if(req.body.comment3!=null)
+        comment3=req.body.comment3;
+    var comment4="";
+    if(req.body.comment4!=null)
+        comment4=req.body.comment4;
+    var comment5="";
+    if(req.body.comment5!=null)
+        comment5=req.body.comment5;
+
+    var sql={name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, project_id}
+    var query=connection.query('INSERT INTO project_comment SET ?', sql, (err,rows, fields) => {
+        res.send(rows);
+    })
+})
 
 // READ
 app.get('/api/project', (req,res) => {
@@ -161,7 +193,8 @@ app.get('/api/project', (req,res) => {
 // READ id
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
-    var query=connection.query('SELECT * FROM project WHERE id =?', [id], (err, rows, fields) => {
+    var query=connection.query('SELECT * FROM project JOIN project_comment ON WHERE project.id = project_comment.project_id WHERE id=?', [id], (err, rows, fields) => {
+        console.log(fields);
         res.send(rows);
     })
 })
@@ -223,8 +256,11 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
     if(req.body.comment5!=null)
         comment5=req.body.comment5;
     
-    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
-    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =?, name1 =?, comment1 =?, name2 =?, comment2 =?, name3 =?, comment3 =?, name4 =?, comment4 =?, name5 =?, comment5 =? WHERE id =?;', sql, (err,rows, fields) => {
+    var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
+    var sql2=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
+
+    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? WHERE id =?; UPDATE project_comment SET name1 =?, comment1 =?, name2 =?, comment2 =?, name3 =?, comment3 =?, name4 =?, comment4 =?, name5 =?, comment5 =? WHERE id =?;', sql, sql2, (err,rows, fields) => {
+        res.send(fields);
         res.send(rows);
     })
 });
