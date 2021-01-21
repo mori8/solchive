@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { post } from 'axios';
+import axios, { post } from 'axios';
 import styles from './CreateProject.module.css';
 
 class CreateProject extends Component {
@@ -44,6 +44,7 @@ class CreateProject extends Component {
         e.preventDefault();
         this.addProject().then((res) => {
             console.log(res.data);
+            this.addComment();
         });
         window.location.href = '/';
     }
@@ -66,16 +67,16 @@ class CreateProject extends Component {
         formData.append('body_images', this.state.body_images);
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
-        formData.append('name1', this.state.name1);
-        formData.append('comment1', this.state.comment1);
-        formData.append('name2', this.state.name2);
-        formData.append('comment2', this.state.comment2);
-        formData.append('name3', this.state.name3);
-        formData.append('comment3', this.state.comment3);
-        formData.append('name4', this.state.name4);
-        formData.append('comment4', this.state.comment4);
-        formData.append('name5', this.state.name5);
-        formData.append('comment5', this.state.comment5);
+        // formData.append('name1', this.state.name1);
+        // formData.append('comment1', this.state.comment1);
+        // formData.append('name2', this.state.name2);
+        // formData.append('comment2', this.state.comment2);
+        // formData.append('name3', this.state.name3);
+        // formData.append('comment3', this.state.comment3);
+        // formData.append('name4', this.state.name4);
+        // formData.append('comment4', this.state.comment4);
+        // formData.append('name5', this.state.name5);
+        // formData.append('comment5', this.state.comment5);
 
         const config = {
             'content-type': 'multipart/form-data'
@@ -84,9 +85,27 @@ class CreateProject extends Component {
         return post(url, formData, config);
     }
 
+    addComment = async () => {
+        await axios
+            .post('http://localhost:5000/api/comment', {
+                name1: this.state.name1,
+                comment1: this.state.comment1,
+                name2: this.state.name2,
+                comment2: this.state.comment2,
+                name3: this.state.name3,
+                comment3: this.state.comment3,
+                name4: this.state.name4,
+                comment4: this.state.comment4,
+                name5: this.state.name5,
+                comment5: this.state.comment5,
+            }).then((res) => {
+                console.log(res);
+            });
+    }
+
     addCommentsHandler = () => {
         let commentsWrapper = document.querySelector(".create--comments--wrapper");
-        let comments = document.querySelector(".create--comments").cloneNode(true);
+        let comments = document.querySelector("." + styles.comments).cloneNode(true);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
         this.setState((prevState) => {
@@ -129,7 +148,7 @@ class CreateProject extends Component {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6 create--period">
-                            <label>진행 기간</label>
+                            <label>진행 년도</label>
                             <select name="period" className="form-control" onChange={this.handleValueChange}> 
                                 <option value="2021">2021</option>
                                 <option value="2020">2020</option>

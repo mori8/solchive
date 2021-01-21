@@ -29,7 +29,7 @@
 }
 
 .period:before {
-    content: "진행기간 ";
+    content: "진행년도 ";
     color: #999999;
 }
 

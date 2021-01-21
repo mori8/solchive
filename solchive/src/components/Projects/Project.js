@@ -78,10 +78,11 @@ class Project extends Component {
                         <p className={style.contents}>{this.state.projects.body_text}</p>
                     </div>
                     <div className="body--comments">
-
+                        <p className={style.small_title}>💬 프로젝트 참여 후기</p>
+                        <div>
+                            
+                        </div>
                     </div>
-                </div>
-                <div className="image--section">
                 </div>
                 <div>{ 
                     this.state.loginresult === true ?
