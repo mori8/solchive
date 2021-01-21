@@ -1,0 +1,56 @@
+.title h1 {
+    margin: 2.4rem auto;
+    text-align: center;
+    font-size: 2.7em;
+    font-weight: bold;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 75rem;
+    font-family: 'Noto Sans KR';
+}
+
+.subinfo {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    color: #555555;
+    font-size: 1.2em;
+}
+
+.team:before {
+    content: "Team ";
+    color: #999999;
+}
+
+.period:before {
+    content: "진행기간 ";
+    color: #999999;
+}
+
+.small_title {
+    margin: 4.5rem 0 2.4rem;
+    font-size: 1.6em;
+    font-weight: 700;
+}
+
+.contents {
+    font-size: 1.2em;
+}
+
+.modify_btn {
+    margin: 5px;
+    margin-right: 15px;
+    float: right;
+}
+
+.image {
+    width: 750px;
+    height: 500px;
+    object-fit: cover;
+}

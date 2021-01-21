@@ -1,0 +1,147 @@
+/* MainHeader.js */
+
+.header_wrapper {
+    height: 27rem;
+    width: 100%;
+    font-family: "Carmen Sans";
+    background-color: white;
+    padding: 6.6rem;
+    color: #333;
+}
+
+.header_title {
+    font-weight: 900;
+    margin-bottom: 2rem;
+}
+
+.highlight {
+    background-color: #F7CAC9;
+}
+
+.desc {
+    line-height: 1.4;
+}
+
+
+/* ProjectList.js */
+
+.project_wrapper {
+    margin: 2.4rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 90vw;
+    justify-content: space-around;
+}
+
+
+/* ProjectListItem.js */
+
+.project_wrapper {
+    display: flex;
+    margin: -1rem;
+    flex-wrap: wrap;
+}
+
+.project_item {
+    width: 43.5rem;
+    height: 43.5rem;
+    background: white;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 16px 0px;
+    transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
+    margin: 3rem 0;
+    overflow: hidden;
+    display: inline-block;
+    flex-direction: column;
+    position: relative;
+    box-sizing: initial;
+}
+
+.project_contents {
+    display: block;
+    position: relative;
+}
+
+.project_item:hover .project_textarea {
+    display: none;
+}
+
+.project_item:hover .project_image_wrapper {
+    height: 43.5rem;
+}
+
+.project_item_hover {
+    display: none;
+}
+
+.project_item:hover .project_item_hover {
+    display: block;
+    width: 43.5rem;
+    height: 43.5rem;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    padding: 3rem;
+    top: 0;
+    left: 0;
+}
+
+.project_image_wrapper {
+    height: 22.5rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project_item_hover .project_title {
+    color: white;
+}
+
+.project_item_hover .project_details {
+    font-size: 2rem;
+    color: white;
+    text-align: right;
+    margin: 3rem 1rem;
+}
+
+.project_item_hover .project_description {
+    color: #dddddd;
+    font-size: 1.3em;
+    line-height: 1.5;
+}
+
+.project_item_hover .project_details:before {
+    content: "Team ";
+}
+
+.project_image_wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.project_title {
+    font-size: 2.4em;
+    font-weight: 700;
+    width: 35rem;
+    display: block;
+    font-family: "Noto Sans KR";
+}
+
+.project_period {
+    float: right;
+}
+
+.project_textarea {
+    padding: 3rem;
+    height: 22rem;
+    background-color: #F7CAC9;
+}
+
+.project_item:nth-child(even) .project_textarea {
+    position: absolute;
+    width: 100%;
+    top: 22rem;
+    left: 0;
+}

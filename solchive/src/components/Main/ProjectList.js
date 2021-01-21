@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ProjectListItem from './ProjectListItem';
-import UpdateProject from './UpdateProject';
+import style from './MainStyle.module.css';
 
 class ProjectList extends Component {
     state = {
@@ -24,7 +24,7 @@ class ProjectList extends Component {
     }
 
     render() {
-        const{onUpdate} = this.props;
+        const{ onUpdate } = this.props;
 
         const projectList = this.state.projects.map(
             info => (
@@ -35,21 +35,12 @@ class ProjectList extends Component {
                 />)
         );
 
-        const projectWrapperStyle = {
-            margin: "2.4rem auto 0",
-            display: "flex",
-            flexWrap: "wrap",
-            width: "90vw",
-            justifyContent: "space-around",
-        };
-
         return (
-            <div style={projectWrapperStyle}>
+            <div className={style.project_wrapper}>
                 {projectList}
             </div>
         );
-    }
-    
+    }    
 }
 
 export default ProjectList;

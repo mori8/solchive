@@ -1,0 +1,42 @@
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 70px;
+    margin-top: 7rem;
+}
+
+.header {
+    width: 100%;
+    height: 55px;
+    display: flex;
+    align-items: center;
+}
+
+.header .logo {
+    font-size: 1.3em;
+    font-weight: 600;
+    vertical-align: middle;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    color: #333333;
+    font-family: "Carmen Sans";
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.header .createBtn {
+    margin-right: 24px;
+    font-weight: 500;
+}
+
+a {
+    color: inherit;
+    background-color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}

@@ -1,0 +1,33 @@
+.comments_addbtn {
+    margin-left: 2rem;
+}
+
+.comments {
+    margin: 0 0 4rem;
+}
+
+.inputform {
+    width: 82rem;
+    margin: 15px auto;
+    padding: 20px;
+}
+
+.form_wrapper {
+    width: 90rem;
+    margin: 0 auto;
+}
+
+.form_textarea {
+    display: block;
+    margin: 15px;
+}
+
+.btn_wrapper {
+    margin: 5px;
+    margin-right: 15px;
+    float: right;
+}
+
+.btn_spacer {
+    margin: 5px;
+}

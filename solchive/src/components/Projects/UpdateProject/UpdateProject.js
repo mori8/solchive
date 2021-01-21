@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
-
 import { post } from 'axios';
+import style from './UpdateProject.module.css';
 
 class UpdateProject extends Component {
     constructor(props){
@@ -173,13 +173,14 @@ class UpdateProject extends Component {
    }
     
     addCommentsHandler = () => {
-
         let commentsWrapper = document.querySelector(".create--comments--wrapper");
         let comments = document.querySelector(".create--comments").cloneNode(true);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
-
-        nameInput.setAttribute("name", "name" + ++this.state.index);
+        this.setState((prevState) => {
+            index: ++prevState.index
+        })
+        nameInput.setAttribute("name", "name" + this.state.index);
         nameInput.addEventListener("change", this.handleValueChange);
         nameInput.value = "";
         impressionInput.setAttribute("name", "comment" + this.state.index);
@@ -192,33 +193,7 @@ class UpdateProject extends Component {
     render() {
         const nameRef=createRef();
 
-        const formStyle = {
-            width: "82rem",
-            margin: "15px auto",
-            padding: "20px"
-        }
-
-        const wrapperStyle = {
-            width: "90rem",
-            margin: "0 auto",
-        }
-
-        const textAreaStyle = {
-            display: "block",
-            margin: "15px",
-        }
-
-        const btnDivStyle = {
-            margin: "5px",
-            marginRight: "15px",
-            float: "right",
-        }
-
-        const btnStyle = {
-            margin: "5px",
-        }
-
-        function checkLogin(){
+        function checkLogin() {
             if(this.state.loginresult === false){
                 window.location.href = '/';
             }
@@ -226,9 +201,9 @@ class UpdateProject extends Component {
 
         return (
             
-            <div style={wrapperStyle}>
+            <div className={style.form_wrapper}>
                 <h3>프로젝트 내용 수정하기</h3>
-                <form style={formStyle} onSubmit={this.handleFormModifySubmit} method="post"> 
+                <form className={style.inputform} onSubmit={this.handleFormModifySubmit} method="post"> 
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>프로젝트 제목</label>
@@ -259,15 +234,15 @@ class UpdateProject extends Component {
                             <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control" onChange={this.handleFileChange} ref={this.fileInput}/>
                         </div>
                     </div>
-                    <div className="form-group" style={textAreaStyle}>
+                    <div className={"form-group " + style.form_textarea}>
                         <label>프로젝트에 대해 한 문장으로 간략하게 설명해 주세요.</label>
                         <textarea className="form-control" name="summary" value={this.state.summary} rows="1" onChange={this.handleValueChange}></textarea>
                     </div>
-                    <div className="form-group" style={textAreaStyle}>
+                    <div className={"form-group" + style.form_textarea}>
                         <label>프로젝트에 대해 자세하게 설명해 주세요.</label>
                         <textarea className="form-control" name="body_text" value={this.state.body_text} rows="20" onChange={this.handleValueChange}></textarea>
                     </div>
-                    <div className="form-group create--comments--wrapper" style={textAreaStyle}>
+                    <div className={"form-group create--comments--wrapper" + style.form_textarea}>
                         <label>이 프로젝트에 참가한 팀원들의 소감을 들려주세요. 오른쪽의 + 버튼을 눌러 팀원을 추가할 수 있습니다. (최대 5명)</label>
                         <button type="button" onClick={this.addCommentsHandler} className="btn create--comments--addbtn">+</button>
                         <div className="create--comments" key="1">
@@ -281,8 +256,8 @@ class UpdateProject extends Component {
                             </div>
                         </div>
                     </div>
-                    <div style={btnDivStyle}>
-                        <button type="submit" className="btn btn-primary" style={btnStyle}>수정 완료</button>
+                    <div className={style.btn_wrapper}>
+                        <button type="submit" className={"btn btn-primary" + style.btn_spacer}>수정 완료</button>
                         <button type="button" className="btn btn-secondary">취소</button>
                     </div>
                 </form>

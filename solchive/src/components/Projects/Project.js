@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import '../App.css';
-import DeleteProject from './DeleteProject';
+import { Link } from 'react-router-dom';
+import style from './Projects.module.css';
+import DeleteProject from './DeleteProject/DeleteProject';
 
 class Project extends Component {
-    
     state = {
         projects: [],
         loginresult: false,
@@ -43,7 +42,7 @@ class Project extends Component {
         .then(responseData => {
             console.log(responseData);
             this.setState({
-                loginresult:responseData.loginresult,
+                loginresult: responseData.loginresult,
             });
         }).catch(
             error => { console.log(error);
@@ -52,45 +51,31 @@ class Project extends Component {
     }
 
     render() {
-
-        const btnModifyStyle = {
-            margin: "5px",
-            marginRight: "15px",
-            float: "right",
-        }
-
-        
-        const imgStyle = {
-            width: "750px",
-            height: "500px",
-            objectfit: "cover",
-        }
-
         return (
-            <div className="body--wrapper">
+            <div className={style.wrapper}>
                 <div className="description--section">
-                    <div className="body--title">
+                    <div className={style.title}>
                         <h1>{this.state.projects.title}</h1>
                     </div>
-                    <div className="body--subinfo">
-                        <span className="body--team">{this.state.projects.team}</span>
-                        <div className="spacer"></div>
-                        <span className="body--period">{this.state.projects.period}</span>
+                    <div className={style.subinfo}>
+                        <span className={style.team}>{this.state.projects.team}</span>
+                        <div className={style.spacer}></div>
+                        <span className={style.period}>{this.state.projects.period}</span>
                     </div>
-                    <div className="body--image">
-                        <img style={imgStyle} src={'/upload/' + this.state.projects.body_images}/>
+                    <div>
+                        <img className={style.image} src={'/upload/' + this.state.projects.body_images}/>
                     </div>
                     <div className="body--framework">
-                        <p className="body--small--title">👷🏻 사용 프레임워크</p>
-                        <p className="body--contents">{this.state.projects.framework}</p>
+                        <p className={style.small_title}>👷🏻 사용 프레임워크</p>
+                        <p className={style.contents}>{this.state.projects.framework}</p>
                     </div>
                     <div className="body--short">
-                        <p className="body--small--title">👀 프로젝트 한줄소개</p>
-                        <p className="body--contents">{this.state.projects.summary}</p>
+                        <p className={style.small_title}>👀 프로젝트 한줄소개</p>
+                        <p className={style.contents}>{this.state.projects.summary}</p>
                     </div>
                     <div className="body--content">
-                        <p className="body--small--title">👩🏻 💻 개발 스토리</p>
-                        <p className="body--contents">{this.state.projects.body_text}</p>
+                        <p className={style.small_title}>👩🏻 💻 개발 스토리</p>
+                        <p className={style.contents}>{this.state.projects.body_text}</p>
                     </div>
                     <div className="body--comments">
 
@@ -104,7 +89,7 @@ class Project extends Component {
                         <Link to={{
                             pathname: `/update/${this.state.projects.id}`,
                         }}>
-                        <button className="btn" style={btnModifyStyle}>수정</button>
+                        <button className={"btn " + style.modify_btn}>수정</button>
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
                     </div>

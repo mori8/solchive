@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
+import style from './SectionStyle.module.css';
 
 class Footer extends Component {
     render() {
-        const style = {
-            width: "100%",
-            textAlign: "center",
-            padding: "70px",
-            marginTop: "7rem"
-        }
-
         return (
-            <div style={style}>
+            <div className={style.footer}>
                 <span>2020(c)Copyright SOLUX All right reserved.</span>
             </div>
         );

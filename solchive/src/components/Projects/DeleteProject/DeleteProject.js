@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import style from './DeleteProject.module.css';
 
 class DeleteProject extends Component {
     deleteProject(id){
@@ -12,12 +13,8 @@ class DeleteProject extends Component {
     }
 
     render() {
-        const btnDelStyle = {
-            margin: "5px",
-            float: "right",
-        }
         return (
-            <button className="btn" style={btnDelStyle} onClick={(e) => this.deleteProject(this.props.id)}>삭제</button>        
+            <button className={"btn " + style.delete_btn} onClick={(e) => this.deleteProject(this.props.id)}>삭제</button>        
         );
     }
 }

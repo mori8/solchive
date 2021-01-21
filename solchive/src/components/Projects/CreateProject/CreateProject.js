@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { post } from 'axios';
-import './projects.css';
+import styles from './CreateProject.module.css';
 
 class CreateProject extends Component {
     constructor(props) {
@@ -89,8 +89,10 @@ class CreateProject extends Component {
         let comments = document.querySelector(".create--comments").cloneNode(true);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
-
-        nameInput.setAttribute("name", "name" + ++this.state.index);
+        this.setState((prevState) => {
+            index: ++prevState.index
+        })
+        nameInput.setAttribute("name", "name" + this.state.index);
         nameInput.addEventListener("change", this.handleValueChange);
         nameInput.value = "";
         impressionInput.setAttribute("name", "comment" + this.state.index);
@@ -101,36 +103,10 @@ class CreateProject extends Component {
     }
 
     render() {
-        const formStyle = {
-            width: "82rem",
-            margin: "15px auto",
-            padding: "20px"
-        }
-
-        const wrapperStyle = {
-            width: "90rem",
-            margin: "0 auto",
-        }
-
-        const textAreaStyle = {
-            display: "block",
-            margin: "15px",
-        }
-
-        const btnDivStyle = {
-            margin: "5px",
-            marginRight: "15px",
-            float: "right",
-        }
-
-        const btnStyle = {
-            margin: "5px",
-        }
-
         return (
-            <div style={wrapperStyle}>
+            <div className={styles.form_wrapper}>
                 <h3>프로젝트 생성하기</h3>
-                <form style={formStyle} onSubmit={this.handleFormSubmit} method="post"> 
+                <form className={styles.inputform} onSubmit={this.handleFormSubmit} method="post"> 
                     <div className="form-row">
                         <div className="form-group col-md-6 create--title">
                             <label>프로젝트 제목</label>
@@ -161,21 +137,21 @@ class CreateProject extends Component {
                             <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}/>
                         </div>
                     </div>
-                    <div className="form-group create--summary" style={textAreaStyle}>
+                    <div className={"form-group create--summary " + styles.form_textarea}>
                         <label>프로젝트에 대해 한 문장으로 간략하게 설명해 주세요.</label>
                         <textarea className="form-control" name="summary" value={this.state.summary} rows="1" onChange={this.handleValueChange}></textarea>
                     </div>
-                    <div className="form-group create--bodytext" style={textAreaStyle}>
+                    <div className={"form-group create--bodytext " + styles.form_textarea}>
                         <label>프로젝트에 대해 자세하게 설명해 주세요.</label>
                         <textarea className="form-control" name="body_text" value={this.state.body_text} rows="20" onChange={this.handleValueChange}></textarea>
                     </div>
-                    <div className="form-group create--comments--wrapper" style={textAreaStyle}>
+                    <div className={"form-group create--comments--wrapper " + styles.form_textarea}>
                         <label>이 프로젝트에 참가한 팀원들의 소감을 들려주세요. 오른쪽의 + 버튼을 눌러 팀원을 추가할 수 있습니다. (최대 5명)</label>
-                        <button type="button" onClick={this.addCommentsHandler} className="btn create--comments--addbtn">+</button>
-                        <div className="create--comments" key="1">
+                        <button type="button" onClick={this.addCommentsHandler} className={"btn " + styles.comments_addbtn}>+</button>
+                        <div className={styles.comments} key="1">
                             <div className="form-group create--bodytext">
                                 <label>이름</label>
-                                <input type="text" name="name1" className="form-control create--comment--name" placeholder="이름" onChange={this.handleValueChange}/>
+                                <input type="text" name="name1" className="form-control" placeholder="이름" onChange={this.handleValueChange}/>
                             </div>
                             <div className="form-group create--bodytext">
                                 <label>소감</label>
@@ -183,8 +159,8 @@ class CreateProject extends Component {
                             </div>
                         </div>
                     </div>
-                    <div style={btnDivStyle}>
-                        <button type="submit" className="btn btn-primary" style={btnStyle}>작성하기!</button>
+                    <div className={styles.btn_wrapper}>
+                        <button type="submit" className={"btn btn-primary " + styles.btn_spacer}>작성하기!</button>
                         <button type="button" className="btn btn-secondary">취소</button>
                     </div>
                 </form>

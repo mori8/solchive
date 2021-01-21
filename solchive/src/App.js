@@ -1,13 +1,12 @@
 import './App.css';
 import { Route } from 'react-router-dom'
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Project from './components/Project';
-import ProjectList from './components/ProjectList';
-import CreateProject from './components/CreateProject';
-import UpdateProject from './components/UpdateProject';
-import Login from './components/Login';
-import Main from './components/Main';
+import Header from './components/Sections/Header';
+import Footer from './components/Sections/Footer';
+import Project from './components/Projects/Project';
+import CreateProject from './components/Projects/CreateProject/CreateProject';
+import UpdateProject from './components/Projects/UpdateProject/UpdateProject';
+import Login from './components/Auth/Login';
+import Main from './components/Main/Main';
 import "./fonts/fonts.css";
 
 function App() {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import style from './Login.module.css';
 
 class Login extends Component {
     constructor(props){
@@ -79,15 +80,15 @@ class Login extends Component {
 
         return (
             <div className="wrapper">
-                <div style = {containerStyle} className="container">
-                    <h1 style = {headTitlestyle} >Welcome to SOLCHIVE!</h1>
+                <div className={style.container}>
+                    <h1 className={style.head_style}>Welcome to SOLCHIVE!</h1>
                     <form className="loginForm">
                         <div>
                             <input 
                                 name="user_id"  
                                 value={this.state.user_id} 
                                 onChange={this.handleValueChange}
-                                style = {loginAreastyle} 
+                                className={style.login_input}
                                 type="text" 
                                 placeholder="User ID" 
                             />
@@ -97,13 +98,18 @@ class Login extends Component {
                                 name="user_pw"  
                                 value={this.state.user_pw} 
                                 onChange={this.handleValueChange}
-                                style = {loginAreastyle} 
+                                className={style.login_input} 
                                 type="password" 
                                 placeholder="User PW" 
                             />
                         </div>
                         <div>
-                            <button style = {loginAreastyle} type="submit" onClick={this.projectLogin} id = "login_btn">Login</button>
+                            <button
+                                className={style.login_input}
+                                type="submit" onClick={this.projectLogin}
+                                id="login_btn">
+                                Login
+                            </button>
                         </div>
                     </form>
                 </div>
