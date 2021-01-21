@@ -12,6 +12,40 @@ const dotenv=require('dotenv');
 dotenv.config({path:'../.env'});
 const session=require('express-session');
 const cookieParser = require('cookie-parser');
+const MySQLStore = require('express-mysql-session')(session);
+
+app.use(cookieParser());
+
+const options={
+    host: conf.host,
+    user: conf.user,
+    password: conf.password,
+    port: conf.port,
+    database: conf.database,
+
+    clearExpired: true,
+    checkExpirationInterval: 90000,
+
+        schema: {
+            tableName: 'sessions',
+            columnNames: {
+                session_id: 'session_id',
+                expires: 'expires',
+                data: 'data'
+            }
+        }
+};
+
+app.use(session({
+    name: "session_cookie_name",
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    store: new MySQLStore(options),
+    cookie: { 
+        maxAge: 1000 * 60 * 3,
+    }
+}));
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -23,51 +57,44 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-app.use(cookieParser());
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 1000*60,
-        secure:false,
-        httopOnly: true
-    },
-}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
-})
+})*/
 
+app.get('/', (req, res)=>{
+    session=req.session;
+});
+
+var session_id;
 // LOGIN
 app.post('/chkserver', (req, res) => {
-    if (!req.body) res.send({loginresult:false});
-    else {
       if (      
         req.body.user_id == process.env.LOGIN_ID &&
         req.body.user_pw == process.env.LOGIN_PW
       ) {
-        req.session.user = {};
-        req.session.user.id = req.body.user_id;
-        req.session.user.pw = req.body.user_pw;
-        console.log(req.session.user);
-        console.log("right!");
-        req.session.save(() => {
-            res.send({loginresult : true});
+        req.session.logined=true;
+        console.log(JSON.stringify(req.session));
+        req.session.save(()=>{
+            console.log("right");
+            res.send({loginresult:true});
         });
-      } else {
-            console.log("wrong");
-            res.send({loginresult : false});
       }
-    }
+      else{
+          console.log("wrong");
+          res.send({loginresult:false});
+      }
   });
 
 app.get('/chkserver', (req, res) => {
-    console.log("session: "+req.session.user);
-    if(req.session.user){
+   /* req.session.reload((err)=>{
+        if(err)
+        console.log(err);
+    });*/
+    if(req.session.logined){
         console.log("true");
         res.send({loginresult:true});
     }
@@ -75,7 +102,12 @@ app.get('/chkserver', (req, res) => {
         console.log("false");
         res.send({loginresult:false});
     }
-});
+})
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.clearCookie('sid');
+})
 
 var storage=multer.diskStorage({
     destination: (req, file, cb) => {
@@ -159,19 +191,40 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
         body_images=req.file.filename;
     }
 
-    var name1=req.body.name1;
-    var comment1=req.body.comment1;
-    var name2=req.body.name2;
-    var comment2=req.body.comment2;
-    var name3=req.body.name3;
-    var comment3=req.body.comment3;
-    var name4=req.body.name4;
-    var comment4=req.body.comment4;
-    var name5=req.body.name5;
-    var comment5=req.body.comment5;
-
+    var name1="";
+    if(req.body.name1!=null)
+        name1=req.body.name1;    
+    var name2="";
+    if(req.body.name2!=null)
+        name2=req.body.name2; 
+    var name3="";
+    if(req.body.name3!=null)
+        name3=req.body.name3; 
+    var name4="";
+    if(req.body.name4!=null)
+        name4=req.body.name1; 
+    var name5="";
+    if(req.body.name5!=null)
+        name5=req.body.name5; 
+    
+    var comment1="";
+    if(req.body.comment1!=null)
+        comment1=req.body.comment1;
+    var comment2="";
+    if(req.body.comment2!=null)
+        comment2=req.body.comment2;
+    var comment3="";
+    if(req.body.comment3!=null)
+        comment3=req.body.comment3;
+    var comment4="";
+    if(req.body.comment4!=null)
+        comment4=req.body.comment4;
+    var comment5="";
+    if(req.body.comment5!=null)
+        comment5=req.body.comment5;
+    
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
-    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =? name1 =? comment1 =? name2 =? comment2 =? name3 =? comment3 =? name4 =? comment4 =? name5 =? comment5 =? WHERE id =?', sql, (err,rows, fields) => {
+    var query=connection.query('UPDATE project SET title =?, team =?, period =?, framework =?, body_text =?, body_images =?, summary =?, git_url =?, isDeleted =?, name1 =?, comment1 =?, name2 =?, comment2 =?, name3 =?, comment3 =?, name4 =?, comment4 =?, name5 =?, comment5 =? WHERE id =?;', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
