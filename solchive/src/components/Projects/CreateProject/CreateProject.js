@@ -130,7 +130,11 @@ class CreateProject extends Component {
                     <div className="form-row">
                         <div className="form-group col-md-6 create--period">
                             <label>진행 기간</label>
-                            <input type="text" name="period" className="form-control" placeholder="제목" value={this.state.period} onChange={this.handleValueChange}/>
+                            <select name="period" className="form-control" onChange={this.handleValueChange}> 
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                            </select>
                         </div>
                         <div className="form-group col-md-6 create--bodyimages">
                             <label>대표 이미지</label>

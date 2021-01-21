@@ -38,7 +38,7 @@
 
 .project_wrapper {
     display: flex;
-    margin: -1rem;
+    margin: 1rem auto;
     flex-wrap: wrap;
 }
 
