@@ -189,7 +189,8 @@ app.post('/api/comment', (req, res)=>{
 
 // READ (project)
 app.get('/api/project', (req,res) => {
-    var query=connection.query('SELECT * FROM project WHERE isDeleted=0', (err, rows, fields) => {
+    var query=connection.query('SELECT * FROM project WHERE isDeleted=0 ORDER BY period DESC', (err, rows, fields) => {
+        console.log(rows);
         res.send(rows);
     })
 })
