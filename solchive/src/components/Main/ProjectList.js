@@ -1,20 +1,46 @@
 import React, { Component } from 'react';
-import ProjectListItem from './ProjectListItem';
 import style from './MainStyle.module.css';
+import ProjectWrapperByYear from './ProjectWrapperByYear';
 
 class ProjectList extends Component {
     state = {
         projects: [],
+        sortedProjects: {},
         onUpdate: () => console.warn('onUpdate not defined'),
     }
 
-    componentDidMount() {
-        this.callAPI().then(
+    async componentDidMount() {
+        // async await 아직도 이해 못함 ...
+        await this.callAPI().then(
             res => {
                 this.setState({projects: res});
+                console.log(this.state.projects);
             }).catch(
                 error => { console.log(error);
-            });
+            }
+        );
+        // 초기화
+        const arr = [];
+        this.state.projects.forEach((info) => {
+            if (!arr.includes(info.period))
+                arr.push(info.period);
+        });
+
+        arr.forEach((year) => {
+            this.state.sortedProjects[year] = [];
+            const nextState = JSON.parse(JSON.stringify(this.state.sortedProjects));
+            this.setState({ sortedProjects: nextState });
+        })
+
+        this.state.projects.forEach((info) => {
+            console.log(this.state.sortedProjects[info.period]);
+            this.state.sortedProjects[info.period] = [
+                ...this.state.sortedProjects[info.period],
+                info,
+            ];
+            const nextState = JSON.parse(JSON.stringify(this.state.sortedProjects));
+            this.setState({ sortedProjects: nextState });
+        })
     }
 
     callAPI = async () => {
@@ -26,18 +52,17 @@ class ProjectList extends Component {
     render() {
         const{ onUpdate } = this.props;
 
-        const projectList = this.state.projects.map(
-            info => (
-                <ProjectListItem 
-                    info={info} 
-                    key={info.id}
-                    onUpdate={onUpdate}
-                />)
-        );
-
         return (
             <div className={style.project_wrapper}>
-                {projectList}
+                {Object.keys(this.state.sortedProjects).map((year, key) => {
+                    return (
+                        <ProjectWrapperByYear
+                        year={year}
+                        data={this.state.sortedProjects[year]}
+                        key={key}
+                        />
+                    );
+                })}
             </div>
         );
     }    

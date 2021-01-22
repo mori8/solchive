@@ -194,7 +194,7 @@ app.get('/api/project', (req,res) => {
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
     var query=connection.query('SELECT * FROM project JOIN project_comment ON WHERE project.id = project_comment.project_id WHERE id=?', [id], (err, rows, fields) => {
-        console.log(fields);
+        console.log(rows);
         res.send(rows);
     })
 })
