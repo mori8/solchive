@@ -13,6 +13,7 @@ class Project extends Component {
         this.callAPI().then(
             res => {
                 this.setState({projects: res[0]});
+                console.log(this.state.projects);
         }).catch(
             error => { console.log(error);
         });
@@ -24,7 +25,7 @@ class Project extends Component {
 
     callAPI = async () => {
         const { id } = this.props.match.params;
-        const res = await fetch(`/api/project/${id}`);
+        const res = await fetch('/api/project/' + id);
         const body = await res.json();
         return body;
     }
@@ -36,11 +37,11 @@ class Project extends Component {
         };
         fetch("http://localhost:5000/chkserver", requestOptions)
         .then(res => {
-            console.log(res);
+            // console.log(res);
             return res.json();
         })
         .then(responseData => {
-            console.log(responseData);
+            // console.log(responseData);
             this.setState({
                 loginresult: responseData.loginresult,
             });

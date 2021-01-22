@@ -4,7 +4,7 @@ import style from './MainStyle.module.css';
 
 class ProjectListItem extends Component {
     render() {
-        const { id, title, team, period, summary, body_images } = this.props.info;
+        const { id, title, team, summary, body_images } = this.props.info;
         return (
             <div className={style.project_item}>
                 <Link to={`/projects/${id}`}>

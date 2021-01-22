@@ -43,7 +43,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(options),
-    cookie: { 
+    cookie: {
         maxAge: 1000 * 60 * 3,
     }
 }));
@@ -73,7 +73,7 @@ app.get('/', (req, res)=>{
 
 // LOGIN
 app.post('/chkserver', (req, res) => {
-      if (      
+      if (
         req.body.user_id == process.env.LOGIN_ID &&
         req.body.user_pw == process.env.LOGIN_PW
       ) {
@@ -127,14 +127,14 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var period = req.body.period;
     var framework = req.body.framework;
     var body_text = req.body.body_text;
-    var body_images = 'background.jpg';  
+    var body_images = 'background.jpg';
     if(req.file!=null){
         body_images=req.file.filename;
     }
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
-    
+
     var name1=req.body.name1;
     var name2=req.body.name2;
     var name3=req.body.name3;
@@ -147,7 +147,7 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var comment4=req.body.comment4;
     var comment5=req.body.comment5;
 
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};         
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
         request.post('http://localhost:5000/api/comment', {form:{
             project_id:rows.insertId,
@@ -221,36 +221,36 @@ app.delete('/api/project/:id', (req, res) => {
 // UPDATE
 app.post('/api/update', upload.single('body_images'), (req,res) => {
     var id=req.body.id;
-    var title=req.body.title;  
-    var team=req.body.team; 
-    var period=req.body.period; 
-    var framework=req.body.framework;   
-    var body_text=req.body.body_text;   
-    var body_images=req.body.body_images;  
-    var summary=req.body.summary;  
-    var git_url=req.body.git_url;   
+    var title=req.body.title;
+    var team=req.body.team;
+    var period=req.body.period;
+    var framework=req.body.framework;
+    var body_text=req.body.body_text;
+    var body_images=req.body.body_images;
+    var summary=req.body.summary;
+    var git_url=req.body.git_url;
     var isDeleted=0;
-    
+
     if(req.file!=null){
         body_images=req.file.filename;
     }
 
     var name1="";
     if(req.body.name1!=null)
-        name1=req.body.name1;    
+        name1=req.body.name1;
     var name2="";
     if(req.body.name2!=null)
-        name2=req.body.name2; 
+        name2=req.body.name2;
     var name3="";
     if(req.body.name3!=null)
-        name3=req.body.name3; 
+        name3=req.body.name3;
     var name4="";
     if(req.body.name4!=null)
-        name4=req.body.name1; 
+        name4=req.body.name1;
     var name5="";
     if(req.body.name5!=null)
-        name5=req.body.name5; 
-    
+        name5=req.body.name5;
+
     var comment1="";
     if(req.body.comment1!=null)
         comment1=req.body.comment1;
@@ -272,6 +272,7 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
     //var sql2=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
     var query=connection.query('UPDATE project AS a, project_comment AS b SET a.title =?, a.team =?, a.period =?, a.framework =?, a.body_text =?, a.body_images =?, a.summary =?, a.git_url =?, a.isDeleted =?, b.name1 =?, b.comment1 =?, b.name2 =?, b.comment2 =?, b.name3 =?, b.comment3 =?, b.name4 =?, b.comment4 =?, b.name5 =?, b.comment5 =? WHERE a.id =? AND b.project_id =?;', sql, (err,rows, fields) => {
         console.log(fields);
+
         res.send(rows);
     })
 });
