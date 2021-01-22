@@ -25,7 +25,7 @@ class CreateProject extends Component {
             comment4: "",
             name5: "",
             comment5: "",
-            index: 1
+            index: 2
         };
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
