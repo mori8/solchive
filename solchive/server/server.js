@@ -43,7 +43,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(options),
-    cookie: { 
+    cookie: {
         maxAge: 1000 * 60 * 3,
     }
 }));
@@ -74,7 +74,7 @@ app.get('/', (req, res)=>{
 var session_id;
 // LOGIN
 app.post('/chkserver', (req, res) => {
-      if (      
+      if (
         req.body.user_id == process.env.LOGIN_ID &&
         req.body.user_pw == process.env.LOGIN_PW
       ) {
@@ -128,73 +128,85 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var period = req.body.period;
     var framework = req.body.framework;
     var body_text = req.body.body_text;
-    var body_images = 'background.jpg';  
+    var body_images = 'background.jpg';
     if(req.file!=null){
         body_images=req.file.filename;
     }
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
-    
-    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};         
+
+    var name1=req.body.name1;
+    var name2=req.body.name2;
+    var name3=req.body.name3;
+    var name4=req.body.name4;
+    var name5=req.body.name5;
+
+    var comment1=req.body.comment1;
+    var comment2=req.body.comment2;
+    var comment3=req.body.comment3;
+    var comment4=req.body.comment4;
+    var comment5=req.body.comment5;
+
+    var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
-        request.post('http://localhost:5000/api/comment', {form:{project_id:rows.insertId}})
+        request.post('http://localhost:5000/api/comment', {form:{
+            project_id:rows.insertId,
+            name1: name1,
+            name2: name2,
+            name3: name3,
+            name4: name4,
+            name5: name5,
+            comment1: comment1,
+            comment2: comment2,
+            comment3: comment3,
+            comment4: comment4,
+            comment5: comment5
+        }})
         res.send(rows);
     })
 });
 
 app.post('/api/comment', (req, res)=>{
     var project_id=req.body.project_id;
-    var name1="";
-    if(req.body.name1!=null)
-        name1=req.body.name1;    
-    var name2="";
-    if(req.body.name2!=null)
-        name2=req.body.name2; 
-    var name3="";
-    if(req.body.name3!=null)
-        name3=req.body.name3; 
-    var name4="";
-    if(req.body.name4!=null)
-        name4=req.body.name1; 
-    var name5="";
-    if(req.body.name5!=null)
-        name5=req.body.name5; 
-    
-    var comment1="";
-    if(req.body.comment1!=null)
-        comment1=req.body.comment1;
-    var comment2="";
-    if(req.body.comment2!=null)
-        comment2=req.body.comment2;
-    var comment3="";
-    if(req.body.comment3!=null)
-        comment3=req.body.comment3;
-    var comment4="";
-    if(req.body.comment4!=null)
-        comment4=req.body.comment4;
-    var comment5="";
-    if(req.body.comment5!=null)
-        comment5=req.body.comment5;
+    var name1=req.body.name1;
+    var name2=req.body.name2;
+    var name3=req.body.name3;
+    var name4=req.body.name4;
+    var name5=req.body.name5;
 
+    var comment1=req.body.comment1;
+    var comment2=req.body.comment2;
+    var comment3=req.body.comment3;
+    var comment4=req.body.comment4;
+    var comment5=req.body.comment5;
+
+    console.log(name1+", "+name2+", "+name3+", "+name4+", "+name5+", "+comment1+", "+comment2+", "+comment3+", "+comment4+", "+comment5)
     var sql={name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, project_id}
     var query=connection.query('INSERT INTO project_comment SET ?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 })
 
-// READ
+// READ (project)
 app.get('/api/project', (req,res) => {
     var query=connection.query('SELECT * FROM project WHERE isDeleted=0', (err, rows, fields) => {
         res.send(rows);
     })
 })
 
-// READ id
+// READ with id (project, comment)
 app.get('/api/project/:id', (req,res) => {
     var id=req.params.id;
-    var query=connection.query('SELECT * FROM project JOIN project_comment ON WHERE project.id = project_comment.project_id WHERE id=?', [id], (err, rows, fields) => {
-        console.log(rows);
+    var query=connection.query('SELECT * FROM project WHERE id=?', [id], (err, rows, fields) => {
+        res.send(rows);
+    })
+})
+
+//READ with id (comment)
+app.get('/api/comment/:id', (req, res) =>{
+    var id=req.params.id;
+    var query=connection.query('SELECT * FROM project_comment WHERE project_id =?', [id], (err, rows, fields)=>{
         res.send(rows);
     })
 })
@@ -210,36 +222,36 @@ app.delete('/api/project/:id', (req, res) => {
 // UPDATE
 app.post('/api/update', upload.single('body_images'), (req,res) => {
     var id=req.body.id;
-    var title=req.body.title;  
-    var team=req.body.team; 
-    var period=req.body.period; 
-    var framework=req.body.framework;   
-    var body_text=req.body.body_text;   
-    var body_images=req.body.body_images;  
-    var summary=req.body.summary;  
-    var git_url=req.body.git_url;   
+    var title=req.body.title;
+    var team=req.body.team;
+    var period=req.body.period;
+    var framework=req.body.framework;
+    var body_text=req.body.body_text;
+    var body_images=req.body.body_images;
+    var summary=req.body.summary;
+    var git_url=req.body.git_url;
     var isDeleted=0;
-    
+
     if(req.file!=null){
         body_images=req.file.filename;
     }
 
     var name1="";
     if(req.body.name1!=null)
-        name1=req.body.name1;    
+        name1=req.body.name1;
     var name2="";
     if(req.body.name2!=null)
-        name2=req.body.name2; 
+        name2=req.body.name2;
     var name3="";
     if(req.body.name3!=null)
-        name3=req.body.name3; 
+        name3=req.body.name3;
     var name4="";
     if(req.body.name4!=null)
-        name4=req.body.name1; 
+        name4=req.body.name1;
     var name5="";
     if(req.body.name5!=null)
-        name5=req.body.name5; 
-    
+        name5=req.body.name5;
+
     var comment1="";
     if(req.body.comment1!=null)
         comment1=req.body.comment1;
@@ -255,7 +267,7 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
     var comment5="";
     if(req.body.comment5!=null)
         comment5=req.body.comment5;
-    
+
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, id];
     var sql2=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
 
