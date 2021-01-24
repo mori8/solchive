@@ -25,7 +25,7 @@ const options={
     database: conf.database,
 
     clearExpired: true,
-    checkExpirationInterval: 90000,
+    checkExpirationInterval: 90000, 
 
         schema: {
             tableName: 'sessions',
@@ -44,7 +44,7 @@ app.use(session({
     saveUninitialized: false,
     store: new MySQLStore(options),
     cookie: {
-        maxAge: 1000 * 60 * 3,
+        maxAge: 24000 * 60 * 60,  //24시간
     }
 }));
 
@@ -53,8 +53,7 @@ const connection = mysql.createConnection({
     user: conf.user,
     password: conf.password,
     port: conf.port,
-    database: conf.database,
-    multipleStatements: true
+    database: conf.database
 })
 
 connection.connect();
@@ -91,18 +90,17 @@ app.post('/chkserver', (req, res) => {
   });
 
 app.get('/chkserver', (req, res) => {
-   /* req.session.reload((err)=>{
-        if(err)
-        console.log(err);
-    });*/
-    if(req.session){    //이건 무조건 true;
-        console.log("true");
-        res.send({loginresult:true});
-    }
-    else{
-        console.log("false");
-        res.send({loginresult:false});
-    }
+    var query=connection.query('SELECT data FROM sessions', (err, rows, fields) =>{
+        console.log(rows.length);
+        if(rows.length){    //이건 무조건 true;
+            console.log("true");
+            res.send({loginresult:true});
+        }
+        else{
+            console.log("false");
+            res.send({loginresult:false});
+        }
+    })
 })
 
 app.get('/logout', (req, res) => {
@@ -120,7 +118,7 @@ var storage=multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
-// CREATE
+// CREATE (project)
 app.post('/api/project', upload.single('body_images'), (req, res) => {
     var title = req.body.title;
     var team = req.body.team;
@@ -165,7 +163,7 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
         res.send(rows);
     })
 });
-
+//CREATE (comment)
 app.post('/api/comment', (req, res)=>{
     var project_id=req.body.project_id;
     var name1=req.body.name1;
@@ -190,7 +188,6 @@ app.post('/api/comment', (req, res)=>{
 // READ (project)
 app.get('/api/project', (req,res) => {
     var query=connection.query('SELECT * FROM project WHERE isDeleted=0 ORDER BY period DESC', (err, rows, fields) => {
-        console.log(rows);
         res.send(rows);
     })
 })
