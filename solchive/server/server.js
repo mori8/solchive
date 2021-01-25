@@ -44,7 +44,7 @@ app.use(session({
     saveUninitialized: false,
     store: new MySQLStore(options),
     cookie: {
-        maxAge: 24000 * 60 * 60,  //24시간
+        maxAge: 1000 * 60 * 60,  //1시간
     }
 }));
 
