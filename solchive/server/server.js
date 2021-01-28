@@ -42,7 +42,7 @@ app.use(session({
     cookie: {
         secure:false,
         httpOnley:true,
-        maxAge: 1000 * 60 * 5,  //5분
+        maxAge: 1000 * 60 * 3,  //3분
     }
 }));
 app.use(passport.initialize());
@@ -74,7 +74,7 @@ passport.use('local', new LocalStrategy({
     passwordField: 'user_pw',
     passReqToCallback: true
 }, function(req, user_id, user_pw, done) {
-    if(user_id=="solux1004" && user_pw=="soljam"){
+    if(user_id==process.env.LOGIN_ID && user_pw==process.env.LOGIN_PW){
         const user={
             user_id: user_id,
             user_pw: user_pw
@@ -94,17 +94,14 @@ app.post('/chkserver', (req, res, next)=>{
 
 		req.logIn(user, function(err) {
       if (err) { return next(err); }
-      console.log("login: "+JSON.stringify(user));
       return res.json(user);
     });
 
     })(req, res, next);
-    console.log("next");
 })
 
 app.get('/chkserver', function(req,res) {
     var id = req.user;
-    console.log(id);
 	if(!req.user) res.json(false);
 	else res.json({loginresult:id});
 });
