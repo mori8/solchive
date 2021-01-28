@@ -97,7 +97,7 @@ class UpdateProject extends Component {
 
     chkId = async () => {
         const requestOptions = {
-            method: 'POST',
+            method: 'get',
             headers: { 'Content-Type': 'application/json' },
         };
         fetch("http://localhost:5000/chkserver", requestOptions)

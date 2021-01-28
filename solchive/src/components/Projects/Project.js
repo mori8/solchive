@@ -32,7 +32,8 @@ class Project extends Component {
 
     chkId = async () => {
         const requestOptions = {
-            method: 'POST',
+            method: 'get',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
         };
         fetch("http://localhost:5000/chkserver", requestOptions)
@@ -41,7 +42,7 @@ class Project extends Component {
             return res.json();
         })
         .then(responseData => {
-            // console.log(responseData);
+            console.log(responseData);
             this.setState({
                 loginresult: responseData.loginresult,
             });
@@ -86,7 +87,7 @@ class Project extends Component {
                     </div>
                 </div>
                 <div>{ 
-                    this.state.loginresult === true ?
+                    this.state.loginresult === "solux1004" ?
                     <div>
                         <Link to={{
                             pathname: `/update/${this.state.projects.id}`,
