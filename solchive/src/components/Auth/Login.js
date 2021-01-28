@@ -34,7 +34,6 @@ class Login extends Component {
         fetch(url,{
             method: 'POST',
             credentials: 'include',
-            // crossDomain: true,
             headers:{
                 'Content-Type': 'application/json'
             },
