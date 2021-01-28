@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { post } from 'axios';
+import axios,{ post } from 'axios';
 import style from './UpdateProject.module.css';
 
 class UpdateProject extends Component {
@@ -16,20 +16,22 @@ class UpdateProject extends Component {
             summary: "",
             body_text: "",
             name1: "",
-            comment1: "",
             name2: "",
-            comment2: "",
             name3: "",
-            comment3: "",
             name4: "",
-            comment4: "",
             name5: "",
-            comment5: "",
+            comment: [
+                {index: 1 , userName: "", impression: ""},
+                {index: 2 , userName: "", impression: ""},
+                {index: 3 , userName: "", impression: ""},
+                {index: 4 , userName: "", impression: ""},
+                {index: 5 , userName: "", impression: ""},
+            ],
             index: 1,
             loginresult: false,
         }
-        console.log(this.state);
-        
+        console.log(this.state.comment[1].userName);
+        //this.state.comment.push;
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
         this.fileInput = React.createRef();
@@ -38,11 +40,36 @@ class UpdateProject extends Component {
     }
 
     componentDidMount(){
-
         this.callAPI().then(
             res => {
-                this.setState(res[0]);
                 console.log(res[0]);
+                this.setState(res[0]);
+            }
+        ).catch(
+            error => {console.log(error);}
+        );
+
+        this.callCommentAPI().then(
+            res => {
+                
+                console.log(res[0]);
+                if(res[0].name2 !== ""){
+                    this.addCommentsHandler();
+                }
+                if(res[0].name3 !== ""){
+                    this.addCommentsHandler();
+                }
+                if(res[0].name4 !== ""){
+                    this.addCommentsHandler();
+                }
+                if(res[0].name5 !== ""){
+                    this.addCommentsHandler();
+                }
+                
+                this.setState({
+                    //comment[0].userName: res[0].name1,
+
+                });
             }
         ).catch(
             error => {console.log(error);}
@@ -61,6 +88,13 @@ class UpdateProject extends Component {
         return body;
     }
 
+    callCommentAPI = async () => {
+        const { id } = this.props.match.params;
+        const res = await fetch(`/api/comment/${id}`);
+        const body = await res.json();
+        return body;
+    }
+
     chkId = async () => {
         const requestOptions = {
             method: 'POST',
@@ -74,7 +108,7 @@ class UpdateProject extends Component {
         .then(responseData => {
             console.log(responseData);
             this.setState({
-                loginresult: responseData.loginresult,
+                loginresult: true,
             });
             if(this.state.loginresult === false){
                 alert("로그인 후 이용해 주시길 바랍니다. 감사합니다.");
@@ -86,34 +120,6 @@ class UpdateProject extends Component {
         console.log(this.state.loginresult);
     }
 
-    /*
-    componentDidMount(){
-
-        this.setState({
-            id: this.props.location.state.id,
-            title: this.props.location.state.title,
-            framework: this.props.location.state.framework,
-            team: this.props.location.state.team,
-            git_url: this.props.location.state.git_url,
-            period: this.props.location.state.period,
-            body_images: this.props.location.state.body_images,
-            summary: this.props.location.state.summary,
-            body_text: this.props.location.state.body_text,
-            name1: this.props.location.name1,
-            comment1: this.props.location.state.comment1,
-            name2: this.props.location.name2,
-            comment2: this.props.location.state.comment2,
-            name3: this.props.location.name3,
-            comment3: this.props.location.state.comment3,
-            name4: this.props.location.name4,
-            comment4: this.props.location.state.comment4,
-            name5: this.props.location.name5,
-            comment5: this.props.location.state.comment5,
-            loginresult: this.props.location.state.loginresult,
-        })
-    }
-    */
-
     handleFileChange(e) {
         this.setState({
             body_images: e.target.files[0],
@@ -122,9 +128,12 @@ class UpdateProject extends Component {
 
     handleFormModifySubmit(e){
         e.preventDefault();
-        this.updateProject();
+        this.updateProject().then((res) => {
+            console.log(res);
+            //this.addComment();
+        });
         alert("수정 완료되었습니다.");
-        window.location.href = '/';
+        //window.location.href = '/';
     }
 
     handleValueChange(e) {
@@ -134,7 +143,6 @@ class UpdateProject extends Component {
         console.log(this.state);
     }
 
-    
     updateProject = async () => {
 
         const url = 'http://localhost:5000/api/update';
@@ -149,16 +157,16 @@ class UpdateProject extends Component {
         formData.append('body_images', this.state.body_images);
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
-        formData.append('name1', this.state.name1);
-        formData.append('comment1', this.state.comment1);
-        formData.append('name2', this.state.name2);
-        formData.append('comment2', this.state.comment2);
-        formData.append('name3', this.state.name3);
-        formData.append('comment3', this.state.comment3);
-        formData.append('name4', this.state.name4);
-        formData.append('comment4', this.state.comment4);
-        formData.append('name5', this.state.name5);
-        formData.append('comment5', this.state.comment5);
+        formData.append('name1', this.state.comment[0].userName);
+        formData.append('comment1', this.state.comment[0].impression);
+        formData.append('name2', this.state.comment[1].userName);
+        formData.append('comment2', this.state.comment[1].impression);
+        formData.append('name3', this.state.comment[2].userName);
+        formData.append('comment3', this.state.comment[2].impression);
+        formData.append('name4', this.state.comment[3].userName);
+        formData.append('comment4', this.state.comment[3].impression);
+        formData.append('name5', this.state.comment[4].userName);
+        formData.append('comment5', this.state.comment[4].impression);
         console.log(this.state.body_images);
         
         const config = {
@@ -170,34 +178,90 @@ class UpdateProject extends Component {
           }).catch(err => {
             console.log(err.message);
         });
-   }
-    
+    }
+    /*
+    addComment = async () => {
+        await axios
+            .post('http://localhost:5000/api/comment', {
+                
+
+                name1: this.comment[0].userName,    
+                comment1: this.state.comment[0].impression,
+                name2: this.comment[1].userName,    
+                comment2: this.state.comment[1].impression,
+                name3: this.comment[2].userName,    
+                comment3: this.state.comment[2].impression,
+                name4: this.comment[3].userName,    
+                comment4: this.state.comment[3].impression,
+                name5: this.comment[4].userName,    
+                comment5: this.state.comment[4].impression,
+
+                name1: this.state.name.name1,
+                comment1: this.state.comment1,
+                name2: this.state.name.name2,
+                comment2: this.state.comment2,
+                name3: this.state.name.name3,
+                comment3: this.state.comment3,
+                name4: this.state.name.name4,
+                comment4: this.state.comment4,
+                name5: this.state.name.name5,
+                comment5: this.state.comment5,
+                
+                name[0]: this.state.name1,
+                comment[0]: this.state.comment1,
+                name[1]: this.state.name2,
+                comment[1]: this.state.comment2,
+                name[2]: this.state.name3,
+                comment[2]: this.state.comment3,
+                name[3]: this.state.name4,
+                comment[3]: this.state.comment4,
+                name[4]: this.state.name5,
+                comment[4]: this.state.comment5,
+
+            }).then((res) => {
+                console.log(res);
+            });
+    }
+    */
     addCommentsHandler = () => {
-        let commentsWrapper = document.querySelector(".create--comments--wrapper");
-        let comments = document.querySelector(".create--comments").cloneNode(true);
+        let commentsWrapper = document.querySelector(".update--comments--wrapper");
+        let comments = document.querySelector("." + style.comments).cloneNode(true);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
         this.setState((prevState) => {
             index: ++prevState.index
         })
         nameInput.setAttribute("name", "name" + this.state.index);
+        //nameInput.setAttribute("value", this.state.comment[this.state.index].userName);
         nameInput.addEventListener("change", this.handleValueChange);
-        nameInput.value = "";
+        //nameInput.value = "";
         impressionInput.setAttribute("name", "comment" + this.state.index);
+        //impressionInput.setAttribute("value", this.state.comment[this.state.index].impression);
         impressionInput.addEventListener("change", this.handleValueChange);
-        impressionInput.value = "";
-
+        //impressionInput.value = "";
+        console.log(comments);
         commentsWrapper.appendChild(comments);
     }
 
+    subtractCommentHandler = () => {
+        let comments = document.querySelector("." + style.comments);
+        let nameInput = comments.childNodes[0].childNodes[1];
+        let impressionInput = comments.childNodes[1].childNodes[1];
+        this.setState((prevState) => {
+            index: --prevState.index
+        })
+
+        nameInput.value = "";
+        impressionInput.value = "";
+        
+        comments.remove();
+
+
+    }
+
+
     render() {
         const nameRef=createRef();
-
-        function checkLogin() {
-            if(this.state.loginresult === false){
-                window.location.href = '/';
-            }
-        }
 
         return (
             
@@ -225,9 +289,13 @@ class UpdateProject extends Component {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label>진행 기간</label>
-                            <input type="text" name="period" className="form-control" placeholder="제목" value={this.state.period} onChange={this.handleValueChange}/>
+                        <div className="form-group col-md-6 create--period">
+                            <label>진행 년도</label>
+                            <select name="period" className="form-control" onChange={this.handleValueChange}> 
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                            </select>
                         </div>
                         <div className="form-group col-md-6">
                         <label>대표 이미지</label>
@@ -238,21 +306,22 @@ class UpdateProject extends Component {
                         <label>프로젝트에 대해 한 문장으로 간략하게 설명해 주세요.</label>
                         <textarea className="form-control" name="summary" value={this.state.summary} rows="1" onChange={this.handleValueChange}></textarea>
                     </div>
-                    <div className={"form-group" + style.form_textarea}>
+                    <div className={"form-group " + style.form_textarea}>
                         <label>프로젝트에 대해 자세하게 설명해 주세요.</label>
                         <textarea className="form-control" name="body_text" value={this.state.body_text} rows="20" onChange={this.handleValueChange}></textarea>
                     </div>
-                    <div className={"form-group create--comments--wrapper" + style.form_textarea}>
+                    <div className={"form-group update--comments--wrapper " + style.form_textarea}>
                         <label>이 프로젝트에 참가한 팀원들의 소감을 들려주세요. 오른쪽의 + 버튼을 눌러 팀원을 추가할 수 있습니다. (최대 5명)</label>
-                        <button type="button" onClick={this.addCommentsHandler} className="btn create--comments--addbtn">+</button>
-                        <div className="create--comments" key="1">
-                            <div className="form-group create--bodytext">
+                        <button type="button" onClick={this.addCommentsHandler} className={"btn " + style.comments_addbtn}>+</button>
+                        <div className={style.comments} key="1">
+                            <div className="form-group update--bodytext">
                                 <label>이름</label>
-                                <input type="text" name="name1" className="form-control create--comment--name" placeholder="이름" onChange={this.handleValueChange}/>
+                                <input type="text" name="name1" className="form-control" value={this.state.name1} placeholder="이름" onChange={this.handleValueChange}/>
+                                <button onClick={this.subtractCommentHandler}>삭제</button>
                             </div>
-                            <div className="form-group create--bodytext">
+                            <div className="form-group update--bodytext">
                                 <label>소감</label>
-                                <textarea className="form-control create--comment--impression" name="comment1"  onChange={this.handleValueChange}></textarea>
+                                <textarea className="form-control update--comment--impression" name="comment1" value={this.state.comment1}  onChange={this.handleValueChange}></textarea>
                             </div>
                         </div>
                     </div>
