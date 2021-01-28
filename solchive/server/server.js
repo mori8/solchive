@@ -12,41 +12,10 @@ const dotenv=require('dotenv');
 dotenv.config({path:'../.env'});
 const session=require('express-session');
 const cookieParser = require('cookie-parser');
-const MySQLStore = require('express-mysql-session')(session);
 const request=require('request');
-
-app.use(cookieParser());
-
-const options={
-    host: conf.host,
-    user: conf.user,
-    password: conf.password,
-    port: conf.port,
-    database: conf.database,
-
-    clearExpired: true,
-    checkExpirationInterval: 90000, 
-
-        schema: {
-            tableName: 'sessions',
-            columnNames: {
-                session_id: 'session_id',
-                expires: 'expires',
-                data: 'data'
-            }
-        }
-};
-
-app.use(session({
-    name: "session_cookie_name",
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    store: new MySQLStore(options),
-    cookie: {
-        maxAge: 1000 * 60 * 60,  //1시간
-    }
-}));
+const passport=require('passport');
+const LocalStrategy=require('passport-local').Strategy;
+const { nextTick } = require('process');
 
 const connection = mysql.createConnection({
     host: conf.host,
@@ -60,53 +29,82 @@ connection.connect();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+app.use(cookieParser());
+app.use(session({
+    name: "session_cookie",
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure:false,
+        httpOnley:true,
+        maxAge: 1000 * 60 * 3,  //3분
+    }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-/*app.get('/', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-})*/
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, origin');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    (req.method === 'OPTIONS') ?
+    res.send(200) :
+    next();
+})
 
-app.get('/', (req, res)=>{
-    session=req.session;
+//passport.serialize
+passport.serializeUser((user, done)=>{
+    console.log('passport sessoion save: ', user.user_id);
+    done(null, user.user_id);
+})
+
+passport.deserializeUser((id, done)=>{
+    console.log('passport sessoion get id: ', id);
+    done(null, id);
+})
+
+passport.use('local', new LocalStrategy({
+    usernameField: 'user_id',
+    passwordField: 'user_pw',
+    passReqToCallback: true
+}, function(req, user_id, user_pw, done) {
+    if(user_id==process.env.LOGIN_ID && user_pw==process.env.LOGIN_PW){
+        const user={
+            user_id: user_id,
+            user_pw: user_pw
+        }
+        console.log("id,pw 조회 성공");
+        return done(null, user)
+    }
+    else
+        return done(null, false, {'message' : 'Incorrect email or password'})
+    }
+));
+
+app.post('/chkserver', (req, res, next)=>{
+    passport.authenticate('local', function(err, user, info){
+        if(err) res.status(500).json(err);
+		if (!user) return res.status(401).json(info.message);
+
+		req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.json(user);
+    });
+
+    })(req, res, next);
+})
+
+app.get('/chkserver', function(req,res) {
+    var id = req.user;
+	if(!req.user) res.json(false);
+	else res.json({loginresult:id});
 });
-
-// LOGIN
-app.post('/chkserver', (req, res) => {
-      if (
-        req.body.user_id == process.env.LOGIN_ID &&
-        req.body.user_pw == process.env.LOGIN_PW
-      ) {
-        req.session.logined=true;
-        console.log(JSON.stringify(req.session));
-        req.session.save(()=>{
-            console.log("right");
-            res.send({loginresult:true});
-        });
-      }
-      else{
-          console.log("wrong");
-          res.send({loginresult:false});
-      }
-  });
-
-app.get('/chkserver', (req, res) => {
-    var query=connection.query('SELECT data FROM sessions', (err, rows, fields) =>{
-        console.log(rows.length);
-        if(rows.length){    //이건 무조건 true;
-            console.log("true");
-            res.send({loginresult:true});
-        }
-        else{
-            console.log("false");
-            res.send({loginresult:false});
-        }
-    })
-})
-
-app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.clearCookie('sid');
-})
 
 var storage=multer.diskStorage({
     destination: (req, file, cb) => {

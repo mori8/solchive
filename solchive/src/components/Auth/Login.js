@@ -33,17 +33,18 @@ class Login extends Component {
 
         fetch(url,{
             method: 'POST',
+            credentials: 'include',
+            // crossDomain: true,
             headers:{
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userInfo)
-            
+            body: JSON.stringify(userInfo),
         })
         .then((response)=>{
             return response.json();
         })
         .then((res)=>{
-            if(res.loginresult){
+            if(res.user_id){
                 alert("로그인에 성공했습니다.");
                 window.location.href = '/';
             }
