@@ -20,6 +20,11 @@ class UpdateProject extends Component {
             name3: "",
             name4: "",
             name5: "",
+            comment1: "",
+            comment2: "",
+            comment3: "",
+            comment4: "",
+            comment5: "",
             comment: [
                 {index: 1 , userName: "", impression: ""},
                 {index: 2 , userName: "", impression: ""},
@@ -30,7 +35,8 @@ class UpdateProject extends Component {
             index: 1,
             loginresult: false,
         }
-        console.log(this.state.comment[1].userName);
+        
+        console.log(this.state.comment[2].userName);
         //this.state.comment.push;
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormModifySubmit = this.handleFormModifySubmit.bind(this);
@@ -40,6 +46,11 @@ class UpdateProject extends Component {
     }
 
     componentDidMount(){
+
+        this.chkId().catch(
+            error => { console.log(error);
+        });
+
         this.callAPI().then(
             res => {
                 console.log(res[0]);
@@ -66,18 +77,18 @@ class UpdateProject extends Component {
                     this.addCommentsHandler();
                 }
                 
-                this.setState({
-                    //comment[0].userName: res[0].name1,
-
-                });
+                this.setState(
+                    res[0]
+                );
+                console.log(res[0]);
             }
         ).catch(
             error => {console.log(error);}
         );
 
-        this.chkId().catch(
-            error => { console.log(error);
-        });
+        
+        this.state.comment[2].userName = this.state.name2;
+        console.log(this.state.comment[2].userName);
 
     }
 
@@ -99,6 +110,7 @@ class UpdateProject extends Component {
         const requestOptions = {
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
         };
         fetch("http://localhost:5000/chkserver", requestOptions)
         .then(res => {
@@ -108,8 +120,10 @@ class UpdateProject extends Component {
         .then(responseData => {
             console.log(responseData);
             this.setState({
-                loginresult: true,
+                loginresult: responseData.loginresult,
             });
+            
+            console.log(responseData.loginresult);
             if(this.state.loginresult === false){
                 alert("로그인 후 이용해 주시길 바랍니다. 감사합니다.");
                 window.location.href = '/login';
@@ -117,7 +131,6 @@ class UpdateProject extends Component {
         }).catch(
             error => { console.log(error);
         });
-        console.log(this.state.loginresult);
     }
 
     handleFileChange(e) {
@@ -157,16 +170,16 @@ class UpdateProject extends Component {
         formData.append('body_images', this.state.body_images);
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
-        formData.append('name1', this.state.comment[0].userName);
-        formData.append('comment1', this.state.comment[0].impression);
-        formData.append('name2', this.state.comment[1].userName);
-        formData.append('comment2', this.state.comment[1].impression);
-        formData.append('name3', this.state.comment[2].userName);
-        formData.append('comment3', this.state.comment[2].impression);
-        formData.append('name4', this.state.comment[3].userName);
-        formData.append('comment4', this.state.comment[3].impression);
-        formData.append('name5', this.state.comment[4].userName);
-        formData.append('comment5', this.state.comment[4].impression);
+        formData.append('name1', this.state.name1);
+        formData.append('comment1', this.state.comment1);
+        formData.append('name2', this.state.name2);
+        formData.append('comment2', this.state.comment2);
+        formData.append('name3', this.state.name3);
+        formData.append('comment3', this.state.comment3);
+        formData.append('name4', this.state.name4);
+        formData.append('comment4', this.state.comment4);
+        formData.append('name5', this.state.name5);
+        formData.append('comment5', this.state.comment5);
         console.log(this.state.body_images);
         
         const config = {
