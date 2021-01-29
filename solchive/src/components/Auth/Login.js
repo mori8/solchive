@@ -63,25 +63,10 @@ class Login extends Component {
 
     render() {
 
-        const containerStyle = {
-            textAlign: "center",
-            padding: "50px"
-        }
-
-        const headTitlestyle ={
-            margin: "30px",
-        }
-
-        const loginAreastyle = {
-            margin: "5px",
-            width: "300px",
-            height: "35px"
-        }
-
         return (
             <div className="wrapper">
                 <div className={style.container}>
-                    <h1 className={style.head_style}>Welcome to SOLCHIVE!</h1>
+                    <h1 className={style.head_title}>Welcome to SOLCHIVE!</h1>
                     <form className="loginForm">
                         <div>
                             <input 

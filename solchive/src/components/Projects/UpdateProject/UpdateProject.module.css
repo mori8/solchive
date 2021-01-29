@@ -19,15 +19,15 @@
 
 .form_textarea {
     display: block;
-    margin: 15px;
+    margin: 1.5rem;
 }
 
 .btn_wrapper {
-    margin: 5px;
-    margin-right: 15px;
+    margin: 0.5rem;
+    margin-right: 1.5rem;
     float: right;
 }
 
 .btn_spacer {
-    margin: 5px;
+    margin: 0.5rem;
 }
