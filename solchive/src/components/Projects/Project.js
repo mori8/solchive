@@ -34,7 +34,8 @@ class Project extends Component {
 
     chkId = async () => {
         const requestOptions = {
-            method: 'POST',
+            method: 'get',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
         };
         fetch("http://localhost:5000/chkserver", requestOptions)
@@ -43,7 +44,7 @@ class Project extends Component {
             return res.json();
         })
         .then(responseData => {
-            // console.log(responseData);
+            console.log(responseData);
             this.setState({
                 loginresult: responseData.loginresult,
             });
@@ -74,19 +75,16 @@ class Project extends Component {
                         <Question question={"💬 프로젝트 참여 후기를 들려주세요!"} answer={null}/>
                         <ImpressionList id={this.props.match.params.id}/>
                     </div>
-                    <div>{ 
-                        this.state.loginresult === true ?
-                        <div>
-                            <Link to={{
-                                pathname: `/update/${this.state.projects.id}`,
-                            }}>
-                            <button className={"btn " + style.modify_btn}>수정</button>
-                        </Link>
-                        <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
-                        </div>
-                    : 
-                    <></>
-                    }
+                </div>
+                <div>{
+                    this.state.loginresult === "solux1004" ?
+                    <div>
+                        <Link to={{
+                            pathname: `/update/${this.state.projects.id}`,
+                        }}>
+                        <button className={"btn " + style.modify_btn}>수정</button>
+                    </Link>
+                    <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
                     </div>
                 </div>
             </div>

@@ -33,17 +33,17 @@ class Login extends Component {
 
         fetch(url,{
             method: 'POST',
+            credentials: 'include',
             headers:{
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userInfo)
-            
+            body: JSON.stringify(userInfo),
         })
         .then((response)=>{
             return response.json();
         })
         .then((res)=>{
-            if(res.loginresult){
+            if(res.user_id){
                 alert("로그인에 성공했습니다.");
                 window.location.href = '/';
             }
@@ -63,25 +63,10 @@ class Login extends Component {
 
     render() {
 
-        const containerStyle = {
-            textAlign: "center",
-            padding: "50px"
-        }
-
-        const headTitlestyle ={
-            margin: "30px",
-        }
-
-        const loginAreastyle = {
-            margin: "5px",
-            width: "300px",
-            height: "35px"
-        }
-
         return (
             <div className="wrapper">
                 <div className={style.container}>
-                    <h1 className={style.head_style}>Welcome to SOLCHIVE!</h1>
+                    <h1 className={style.head_title}>Welcome to SOLCHIVE!</h1>
                     <form className="loginForm">
                         <div>
                             <input 
