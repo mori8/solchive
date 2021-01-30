@@ -4,7 +4,7 @@ import style from './Projects.module.css';
 import DeleteProject from './DeleteProject/DeleteProject';
 import Question from './Question/Question';
 import QuestionIndex from './QuestionIndex/QuestionIndex';
-import ImpressionList from './Impression/ImpressionList';
+import ImpressionWrapper from './Impression/ImpressionWrapper';
 
 class Project extends Component {
     state = {
@@ -72,21 +72,21 @@ class Project extends Component {
                         <Question question={"👷🏻 어떤 프레임워크를 사용했나요?"} answer={this.state.projects.framework}/>
                         <Question question={"👀 프로젝트에 대해 간단하게 설명해 주세요!"} answer={this.state.projects.summary}/>
                         <Question question={"😇 개발하면서 가장 힘들었던 점은 무엇이었나요?"} answer={this.state.projects.body_text}/>
-                        <Question question={"💬 프로젝트 참여 후기를 들려주세요!"} answer={null}/>
-                        <ImpressionList id={this.props.match.params.id}/>
+                        <ImpressionWrapper projectId={this.props.match.params.id}/>
                     </div>
                 </div>
-                <div>{
+                <div> {
                     this.state.loginresult === "solux1004" ?
                     <div>
                         <Link to={{
                             pathname: `/update/${this.state.projects.id}`,
                         }}>
                         <button className={"btn " + style.modify_btn}>수정</button>
-                    </Link>
-                    <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+                        </Link>
+                        <DeleteProject id={this.props.match.params.id}>삭제</DeleteProject>
                     </div>
-                </div>
+                    : <></>
+                } </div>
             </div>
         );
     }
