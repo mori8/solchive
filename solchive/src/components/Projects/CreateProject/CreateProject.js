@@ -25,12 +25,46 @@ class CreateProject extends Component {
             comment4: "",
             name5: "",
             comment5: "",
-            index: 2
+            index: 2,
+            loginresult: "",
         };
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
         this.addProject = this.addProject.bind(this);
+    }
+
+    componentDidMount(){
+        this.chkId().catch(
+            error => { console.log(error);
+        });
+    }
+
+    chkId = async () => {
+        const requestOptions = {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+        };
+        fetch("http://localhost:5000/chkserver", requestOptions)
+        .then(res => {
+            console.log(res);
+            return res.json();
+        })
+        .then(responseData => {
+            console.log(responseData);
+            this.setState({
+                loginresult: responseData.loginresult,
+            });
+            
+            console.log(responseData.loginresult);
+            if(this.state.loginresult === false){
+                alert("로그인 후 이용해 주시길 바랍니다. 감사합니다.");
+                window.location.href = '/login';
+            }
+        }).catch(
+            error => { console.log(error);
+        });
     }
 
     handleFileChange(e) {
