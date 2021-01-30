@@ -86,6 +86,9 @@ class Project extends Component {
                     </Link>
                     <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
                     </div>
+                    :
+                    <> </>
+                }
                 </div>
             </div>
         );
