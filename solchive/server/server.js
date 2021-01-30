@@ -102,7 +102,7 @@ app.post('/chkserver', (req, res, next)=>{
 
 app.get('/chkserver', function(req,res) {
     var id = req.user;
-	if(!req.user) res.json(false);
+	if(!req.user) res.json({loginresult:false});
 	else res.json({loginresult:id});
 });
 
@@ -242,7 +242,7 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
         name3=req.body.name3;
     var name4="";
     if(req.body.name4!=null)
-        name4=req.body.name1;
+        name4=req.body.name4;
     var name5="";
     if(req.body.name5!=null)
         name5=req.body.name5;
