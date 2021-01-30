@@ -14,7 +14,6 @@ class ProjectList extends Component {
         await this.callAPI().then(
             res => {
                 this.setState({projects: res});
-                console.log(this.state.projects);
             }).catch(
                 error => { console.log(error);
             }
@@ -33,7 +32,6 @@ class ProjectList extends Component {
         })
 
         this.state.projects.forEach((info) => {
-            console.log(this.state.sortedProjects[info.period]);
             this.state.sortedProjects[info.period] = [
                 ...this.state.sortedProjects[info.period],
                 info,

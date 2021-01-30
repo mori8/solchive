@@ -1,0 +1,25 @@
+.answer_wrapper {
+    display: flex;
+    align-items: flex-end;
+    float: right;
+}
+
+.interviewee:before {
+    vertical-align: middle;
+    content: '';
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-width: 0.9rem;
+    border-style: solid;
+    border-color: transparent transparent transparent ghostwhite;
+}
+
+.contents {
+    display: inline-block;
+    font-size: 1.2em;
+    border-radius: 2.3rem;
+    background-color: ghostwhite;
+    padding: 2rem 3rem;
+    
+}

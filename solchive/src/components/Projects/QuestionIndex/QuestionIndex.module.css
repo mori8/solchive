@@ -1,0 +1,15 @@
+.questionindex_wrapper {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: auto;
+    margin-top: 135px;
+}
+
+.question {
+    cursor: pointer;
+    display: inline-block;
+    line-height: 2;
+    color: #888;
+}
