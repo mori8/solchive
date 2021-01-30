@@ -102,7 +102,7 @@ app.post('/chkserver', (req, res, next)=>{
 
 app.get('/chkserver', function(req,res) {
     var id = req.user;
-	if(!req.user) res.json(false);
+	if(!req.user) res.json({loginresult:false});
 	else res.json({loginresult:id});
 });
 
