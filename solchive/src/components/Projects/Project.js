@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import style from './Projects.module.css';
 import DeleteProject from './DeleteProject/DeleteProject';
+import Question from './Question/Question';
+import QuestionIndex from './QuestionIndex/QuestionIndex';
+import ImpressionList from './Impression/ImpressionList';
 
 class Project extends Component {
     state = {
@@ -10,12 +13,11 @@ class Project extends Component {
     }
 
     componentDidMount() {
-        this.callAPI().then(
-            res => {
-                this.setState({projects: res[0]});
-                console.log(this.state.projects);
-        }).catch(
-            error => { console.log(error);
+        this.callAPI().then((res) => {
+            this.setState({projects: res[0]});
+            console.log(this.state.projects);
+        }).catch((error) => {
+            console.log(error);
         });
 
         this.chkId().catch(
@@ -45,59 +47,47 @@ class Project extends Component {
             this.setState({
                 loginresult: responseData.loginresult,
             });
-        }).catch(
-            error => { console.log(error);
+        }).catch(error => { console.log(error);
         });
 
     }
 
     render() {
         return (
-            <div className={style.wrapper}>
-                <div className="description--section">
-                    <div className={style.title}>
-                        <h1>{this.state.projects.title}</h1>
-                    </div>
-                    <div className={style.subinfo}>
-                        <span className={style.team}>{this.state.projects.team}</span>
-                        <div className={style.spacer}></div>
-                        <span className={style.period}>{this.state.projects.period}</span>
-                    </div>
-                    <div>
-                        <img className={style.image} src={'/upload/' + this.state.projects.body_images}/>
-                    </div>
-                    <div className="body--framework">
-                        <p className={style.small_title}>👷🏻 사용 프레임워크</p>
-                        <p className={style.contents}>{this.state.projects.framework}</p>
-                    </div>
-                    <div className="body--short">
-                        <p className={style.small_title}>👀 프로젝트 한줄소개</p>
-                        <p className={style.contents}>{this.state.projects.summary}</p>
-                    </div>
-                    <div className="body--content">
-                        <p className={style.small_title}>👩🏻 💻 개발 스토리</p>
-                        <p className={style.contents}>{this.state.projects.body_text}</p>
-                    </div>
-                    <div className="body--comments">
-                        <p className={style.small_title}>💬 프로젝트 참여 후기</p>
-                        <div>
-                            
+            <div className={style.main_wrapper}>
+                <div className={style.wrapper}>
+                    <div className="description--section">
+                        <div className={style.title}>
+                            <h1>{this.state.projects.title}</h1>
                         </div>
+                        <div className={style.subinfo}>
+                            <span className={style.team}>{this.state.projects.team}</span>
+                            <div className={style.spacer}></div>
+                            <span className={style.period}>{this.state.projects.period}</span>
+                        </div>
+                        <div>
+                            <img className={style.image} src={'/upload/' + this.state.projects.body_images}/>
+                        </div>
+                        <Question question={"👷🏻 어떤 프레임워크를 사용했나요?"} answer={this.state.projects.framework}/>
+                        <Question question={"👀 프로젝트에 대해 간단하게 설명해 주세요!"} answer={this.state.projects.summary}/>
+                        <Question question={"😇 개발하면서 가장 힘들었던 점은 무엇이었나요?"} answer={this.state.projects.body_text}/>
+                        <Question question={"💬 프로젝트 참여 후기를 들려주세요!"} answer={null}/>
+                        <ImpressionList id={this.props.match.params.id}/>
                     </div>
-                </div>
-                <div>{ 
-                    this.state.loginresult === true ?
-                    <div>
-                        <Link to={{
-                            pathname: `/update/${this.state.projects.id}`,
-                        }}>
-                        <button className={"btn " + style.modify_btn}>수정</button>
-                    </Link>
-                    <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+                    <div>{ 
+                        this.state.loginresult === true ?
+                        <div>
+                            <Link to={{
+                                pathname: `/update/${this.state.projects.id}`,
+                            }}>
+                            <button className={"btn " + style.modify_btn}>수정</button>
+                        </Link>
+                        <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+                        </div>
+                    : 
+                    <></>
+                    }
                     </div>
-                : 
-                <></>
-                }
                 </div>
             </div>
         );
