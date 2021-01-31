@@ -102,7 +102,7 @@ app.post('/chkserver', (req, res, next)=>{
 
 app.get('/chkserver', function(req,res) {
     var id = req.user;
-	if(!req.user) res.json(false);
+	if(!req.user) res.json({loginresult:false});
 	else res.json({loginresult:id});
 });
 
@@ -242,7 +242,7 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
         name3=req.body.name3;
     var name4="";
     if(req.body.name4!=null)
-        name4=req.body.name1;
+        name4=req.body.name4;
     var name5="";
     if(req.body.name5!=null)
         name5=req.body.name5;
@@ -265,10 +265,7 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
     
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id, id];
     console.log(name1+", "+name2+", "+name3+", "+name4+", "+name5+", "+comment1+", "+comment2+", "+comment3+", "+comment4+", "+comment5)
-    //var sql2=[name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id];
-    var query=connection.query('UPDATE project AS a, project_comment AS b SET a.title =?, a.team =?, a.period =?, a.framework =?, a.body_text =?, a.body_images =?, a.summary =?, a.git_url =?, a.isDeleted =?, b.name1 =?, b.comment1 =?, b.name2 =?, b.comment2 =?, b.name3 =?, b.comment3 =?, b.name4 =?, b.comment4 =?, b.name5 =?, b.comment5 =? WHERE a.id =? AND b.project_id =?;', sql, (err,rows, fields) => {
-        console.log(fields);
-
+    var query=connection.query('UPDATE project AS a, project_comment AS b SET a.title =?, a.team =?, a.period =?, a.framework =?, a.body_text =?, a.body_images =?, a.summary =?, a.git_url =?, a.isDeleted =?, b.name1 =?, b.comment1 =?, b.name2 =?, b.comment2 =?, b.name3 =?, b.comment3 =?, b.name4 =?, b.comment4 =?, b.name5 =?, b.comment5 =? WHERE a.id =? AND b.project_id =?', sql, (err,rows, fields) => {
         res.send(rows);
     })
 });
