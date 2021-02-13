@@ -68,8 +68,11 @@ class CreateProject extends PureComponent {
     }
 
     handleFileChange(e) {
+        const files = e.target.files;
         this.setState({
-            body_images: e.target.files[0],
+            //body_images: e.target.files[0],
+            //file_name: e.target.value
+            body_images: files,
             file_name: e.target.value
         });
     }
@@ -168,7 +171,7 @@ class CreateProject extends PureComponent {
                 </div>
                 <div className="form-group col-md-6 create--bodyimages">
                     <label>대표 이미지</label>
-                    <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange}/>
+                    <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange} multiple="multiple" />
                 </div>
                 <div className={"form-group create--summary " + styles.form_textarea}>
                     <label>프로젝트에 대해 한 문장으로 간략하게 설명해 주세요.</label>
