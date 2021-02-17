@@ -12,7 +12,7 @@ class CreateProject extends PureComponent {
             framework: "",
             body_text: "",
             body_images: null,
-            file_name: "",
+            file_name: null,
             summary: "",
             git_url: "",
             name1: "",
@@ -68,21 +68,22 @@ class CreateProject extends PureComponent {
     }
 
     handleFileChange(e) {
-        const files = e.target.files;
         this.setState({
-            //body_images: e.target.files[0],
-            //file_name: e.target.value
-            body_images: files,
+            body_images: e.target.files,
             file_name: e.target.value
         });
+        console.log(e.target.files[0]);
+        console.log(e.target.value);
     }
 
     handleFormSubmit(e) {
         e.preventDefault();
         this.addProject().then((res) => {
+
+            console.log(res);
             console.log(res.data);
         });
-        window.location.href = '/';
+        //window.location.href = '/';
     }
 
     handleValueChange(e) {
@@ -100,7 +101,9 @@ class CreateProject extends PureComponent {
         formData.append('period', this.state.period);
         formData.append('framework', this.state.framework);
         formData.append('body_text', this.state.body_text);
-        formData.append('body_images', this.state.body_images);
+        for(let i =0; i< this.state.body_images.length; i++){
+            formData.append("body_images", this.state.body_images[i]);
+        }
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
         formData.append('name1', this.state.name1);
@@ -114,10 +117,13 @@ class CreateProject extends PureComponent {
         formData.append('name5', this.state.name5);
         formData.append('comment5', this.state.comment5);
 
+        console.log(formData.body_images);
+        console.log(this.state.body_images);
+
         const config = {
             'content-type': 'multipart/form-data'
         }
-
+        console.log(formData);
         return post(url, formData, config);
     }
 
@@ -171,7 +177,7 @@ class CreateProject extends PureComponent {
                 </div>
                 <div className="form-group col-md-6 create--bodyimages">
                     <label>대표 이미지</label>
-                    <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange} multiple="multiple" />
+                    <input type="file" name="body_images" id="body_images" file={this.state.body_images} value={this.state.file_name} className="form-control" onChange={this.handleFileChange} multiple />
                 </div>
                 <div className={"form-group create--summary " + styles.form_textarea}>
                     <label>프로젝트에 대해 한 문장으로 간략하게 설명해 주세요.</label>

@@ -120,11 +120,8 @@ class UpdateProject extends Component {
     }
 
     handleFileChange(e) {
-        const files = e.target.files;
         this.setState({
-            //body_images: e.target.files[0],
-            //file_name: e.target.value
-            body_images: files,
+            body_images: e.target.files,
             file_name: e.target.value
         });
     }
@@ -156,7 +153,9 @@ class UpdateProject extends Component {
         formData.append('period', this.state.period);
         formData.append('framework', this.state.framework);
         formData.append('body_text', this.state.body_text);
-        formData.append('body_images', this.state.body_images);
+        for(let i =0; i< this.state.body_images.length; i++){
+            formData.append("body_images", this.state.body_images[i]);
+        }
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
         formData.append('name1', this.state.name1);
