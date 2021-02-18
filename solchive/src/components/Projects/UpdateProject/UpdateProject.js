@@ -132,6 +132,7 @@ class UpdateProject extends Component {
             alert("수정 완료되었습니다.");
             window.location.href = '/';
         });
+
     }
 
     handleValueChange(e) {

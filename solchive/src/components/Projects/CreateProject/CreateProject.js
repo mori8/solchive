@@ -81,7 +81,6 @@ class CreateProject extends PureComponent {
         this.addProject().then((res) => {
             window.location.href = '/';
         });
-        
     }
 
     handleValueChange(e) {
