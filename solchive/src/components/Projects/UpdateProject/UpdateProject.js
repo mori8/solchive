@@ -25,7 +25,7 @@ class UpdateProject extends Component {
             comment3: "",
             comment4: "",
             comment5: "",
-            index: 1,
+            index: 2,
             loginresult: "",
         }
         
@@ -43,30 +43,19 @@ class UpdateProject extends Component {
             error => { console.log(error);
         });
 
-        this.callAPI().then(
-            res => {
-                console.log(res[0]);
-                this.setState(res[0]);
-            }
-        ).catch(
-            error => {console.log(error);}
-        );
-
         this.callCommentAPI().then(
             res => {
-                
-                console.log(res[0]);
                 if(res[0].name2 !== ""){
-                    this.addCommentsHandler(res[0].name2, res[0].comment2);
+                    this.addCommentsUpHandler(res[0].name2, res[0].comment2);
                 }
                 if(res[0].name3 !== ""){
-                    this.addCommentsHandler(res[0].name3, res[0].comment3);
+                    this.addCommentsUpHandler(res[0].name3, res[0].comment3);
                 }
                 if(res[0].name4 !== ""){
-                    this.addCommentsHandler(res[0].name4, res[0].comment4);
+                    this.addCommentsUpHandler(res[0].name4, res[0].comment4);
                 }
                 if(res[0].name5 !== ""){
-                    this.addCommentsHandler(res[0].name5, res[0].comment5);
+                    this.addCommentsUpHandler(res[0].name5, res[0].comment5);
                 }
                 
                 this.setState(
@@ -78,6 +67,14 @@ class UpdateProject extends Component {
             error => {console.log(error);}
         );
 
+        this.callAPI().then(
+            res => {
+                console.log(res[0]);
+                this.setState(res[0]);
+            }
+        ).catch(
+            error => {console.log(error);}
+        );
         
     }
 
@@ -124,7 +121,8 @@ class UpdateProject extends Component {
 
     handleFileChange(e) {
         this.setState({
-            body_images: e.target.files[0],
+            body_images: e.target.files,
+            file_name: e.target.value
         });
     }
 
@@ -132,7 +130,6 @@ class UpdateProject extends Component {
         e.preventDefault();
         this.updateProject().then((res) => {
             console.log(res);
-            //this.addComment();
         });
         alert("수정 완료되었습니다.");
         //window.location.href = '/';
@@ -156,7 +153,9 @@ class UpdateProject extends Component {
         formData.append('period', this.state.period);
         formData.append('framework', this.state.framework);
         formData.append('body_text', this.state.body_text);
-        formData.append('body_images', this.state.body_images);
+        for(let i =0; i< this.state.body_images.length; i++){
+            formData.append("body_images", this.state.body_images[i]);
+        }
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
         formData.append('name1', this.state.name1);
@@ -181,65 +180,34 @@ class UpdateProject extends Component {
             console.log(err.message);
         });
     }
-    /*
-    addComment = async () => {
-        await axios
-            .post('http://localhost:5000/api/comment', {
-                
 
-                name1: this.comment[0].userName,    
-                comment1: this.state.comment[0].impression,
-                name2: this.comment[1].userName,    
-                comment2: this.state.comment[1].impression,
-                name3: this.comment[2].userName,    
-                comment3: this.state.comment[2].impression,
-                name4: this.comment[3].userName,    
-                comment4: this.state.comment[3].impression,
-                name5: this.comment[4].userName,    
-                comment5: this.state.comment[4].impression,
-
-                name1: this.state.name.name1,
-                comment1: this.state.comment1,
-                name2: this.state.name.name2,
-                comment2: this.state.comment2,
-                name3: this.state.name.name3,
-                comment3: this.state.comment3,
-                name4: this.state.name.name4,
-                comment4: this.state.comment4,
-                name5: this.state.name.name5,
-                comment5: this.state.comment5,
-                
-                name[0]: this.state.name1,
-                comment[0]: this.state.comment1,
-                name[1]: this.state.name2,
-                comment[1]: this.state.comment2,
-                name[2]: this.state.name3,
-                comment[2]: this.state.comment3,
-                name[3]: this.state.name4,
-                comment[3]: this.state.comment4,
-                name[4]: this.state.name5,
-                comment[4]: this.state.comment5,
-
-            }).then((res) => {
-                console.log(res);
-            });
-    }
-    */
-    addCommentsHandler = (userName, userComment) => {
+    addCommentsUpHandler = (userName, userComment) => {
         let commentsWrapper = document.querySelector(".update--comments--wrapper");
         let comments = document.querySelector("." + style.comments).cloneNode(true);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
+        
+        nameInput.setAttribute("name", "name" + this.state.index);
+        nameInput.addEventListener("change", this.handleValueChange);
+        if(userComment !== undefined){
+            nameInput.value = userName;
+        }else{
+            nameInput.value = "";
+        }
+        
+        impressionInput.setAttribute("name", "comment" + this.state.index);
+        impressionInput.addEventListener("change", this.handleValueChange);
+        
+        if(userComment !== undefined){
+            impressionInput.value = userComment;
+        }else{
+            impressionInput.value = "";
+        }
+        
+
         this.setState((prevState) => {
             index: ++prevState.index
         })
-        nameInput.setAttribute("name", "name" + this.state.index);
-        nameInput.addEventListener("change", this.handleValueChange);
-        nameInput.value = userName;
-        impressionInput.setAttribute("name", "comment" + this.state.index);
-        impressionInput.addEventListener("change", this.handleValueChange);
-        impressionInput.value = userComment;
-        console.log(comments);
         commentsWrapper.appendChild(comments);
     }
 
@@ -247,14 +215,19 @@ class UpdateProject extends Component {
         let comments = document.querySelector("." + style.comments);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
+        
         this.setState((prevState) => {
             index: --prevState.index
         })
+        
+        nameInput.addEventListener("change", this.handleValueChange);
+        impressionInput.addEventListener("change", this.handleValueChange);
 
         nameInput.value = "";
         impressionInput.value = "";
         
         comments.remove();
+
 
 
     }
@@ -299,7 +272,7 @@ class UpdateProject extends Component {
                         </div>
                         <div className="form-group col-md-6">
                         <label>대표 이미지</label>
-                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control" onChange={this.handleFileChange} ref={this.fileInput}/>
+                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control"  multiple="multiple" onChange={this.handleFileChange} ref={this.fileInput}/>
                         </div>
                     </div>
                     <div className={"form-group " + style.form_textarea}>
@@ -312,12 +285,12 @@ class UpdateProject extends Component {
                     </div>
                     <div className={"form-group update--comments--wrapper " + style.form_textarea}>
                         <label>이 프로젝트에 참가한 팀원들의 소감을 들려주세요. 오른쪽의 + 버튼을 눌러 팀원을 추가할 수 있습니다. (최대 5명)</label>
-                        <button type="button" onClick={this.addCommentsHandler} className={"btn " + style.comments_addbtn}>+</button>
+                        <button type="button" onClick={this.addCommentsUpHandler} className={"btn " + style.comments_addbtn}>+</button>
                         <div className={style.comments} key="1">
                             <div className="form-group update--bodytext">
                                 <label>이름</label>
                                 <input type="text" name="name1" className="form-control" value={this.state.name1} placeholder="이름" onChange={this.handleValueChange}/>
-                                {/*<button onClick={this.subtractCommentHandler}>삭제</button>*/}
+                                <button type="button" onClick={this.subtractCommentHandler}>삭제</button>
                             </div>
                             <div className="form-group update--bodytext">
                                 <label>소감</label>

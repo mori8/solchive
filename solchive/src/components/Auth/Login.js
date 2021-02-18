@@ -2,20 +2,12 @@ import React, { Component } from 'react';
 import style from './Login.module.css';
 
 class Login extends Component {
-    constructor(props){
-		super(props);
-		this.state ={
-			user_id:'',
-			user_pw:''
-		};
+    state = {
+        user_id:'',
+        user_pw:''
+    };
 
-		this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.projectLogin = this.projectLogin.bind(this);
-	}
-
-    handleSubmit(e){
-
+    handleSubmit = (e) => {
         e.preventDefault();
         this.projectLogin().then((res) => {
             console.log(res.data);
@@ -54,7 +46,7 @@ class Login extends Component {
         });
     }
 
-    handleValueChange(e) {
+    handleValueChange = (e) => {
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
@@ -62,7 +54,6 @@ class Login extends Component {
     }
 
     render() {
-
         return (
             <div className="wrapper">
                 <div className={style.container}>

@@ -2,20 +2,27 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import style from './Projects.module.css';
 import DeleteProject from './DeleteProject/DeleteProject';
+import Question from './Question/Question';
+import QuestionIndex from './QuestionIndex/QuestionIndex';
+import ImpressionWrapper from './Impression/ImpressionWrapper';
 
 class Project extends Component {
     state = {
         projects: [],
+        files: [],
         loginresult: false,
     }
 
     componentDidMount() {
-        this.callAPI().then(
-            res => {
-                this.setState({projects: res[0]});
-                console.log(this.state.projects);
-        }).catch(
-            error => { console.log(error);
+        this.callAPI().then((res) => {
+            this.setState({projects: res[0]});
+            console.log(this.state.projects);
+            var str = this.state.projects.body_images;
+            var file = str.split(',');
+            this.setState({files:file});
+            console.log(this.state.files[0]);
+        }).catch((error) => {
+            console.log(error);
         });
 
         this.chkId().catch(
@@ -46,60 +53,78 @@ class Project extends Component {
             this.setState({
                 loginresult: responseData.loginresult,
             });
-        }).catch(
-            error => { console.log(error);
+        }).catch(error => { console.log(error);
         });
 
     }
 
+    addImage(){
+        return <div className="image-form">
+        { 
+          this.state.files.map(imageURL => 
+          (<img className={style.image} src={'/upload/' + imageURL}/>)) 
+        }
+        </div>
+    }
+
+/*
+    addImageHandler = () => {
+        
+        let imgTag = null;
+
+        if(this.state.files !== null){        
+            console.log(this.state.files);
+            
+            for(let i =0; i < this.state.files.length; i++){
+                imgTag = (
+                    <img className={style.image} src={'/upload/' + this.state.files[i]}/>
+                )
+                
+                console.log(this.state.files[i]);
+                
+            }
+            return imgTag;
+        }
+    }
+
+*/
+
     render() {
         return (
-            <div className={style.wrapper}>
-                <div className="description--section">
-                    <div className={style.title}>
-                        <h1>{this.state.projects.title}</h1>
-                    </div>
-                    <div className={style.subinfo}>
-                        <span className={style.team}>{this.state.projects.team}</span>
-                        <div className={style.spacer}></div>
-                        <span className={style.period}>{this.state.projects.period}</span>
-                    </div>
-                    <div>
-                        <img className={style.image} src={'/upload/' + this.state.projects.body_images}/>
-                    </div>
-                    <div className="body--framework">
-                        <p className={style.small_title}>👷🏻 사용 프레임워크</p>
-                        <p className={style.contents}>{this.state.projects.framework}</p>
-                    </div>
-                    <div className="body--short">
-                        <p className={style.small_title}>👀 프로젝트 한줄소개</p>
-                        <p className={style.contents}>{this.state.projects.summary}</p>
-                    </div>
-                    <div className="body--content">
-                        <p className={style.small_title}>👩🏻 💻 개발 스토리</p>
-                        <p className={style.contents}>{this.state.projects.body_text}</p>
-                    </div>
-                    <div className="body--comments">
-                        <p className={style.small_title}>💬 프로젝트 참여 후기</p>
-                        <div>
-                            
+            <div className={style.main_wrapper}>
+                <div className={style.wrapper}>
+                    <div className="description--section">
+                        <div className={style.title}>
+                            <h1>{this.state.projects.title}</h1>
                         </div>
+                        <div className={style.subinfo}>
+                            <span className={style.team}>{this.state.projects.team}</span>
+                            <div className={style.spacer}></div>
+                            <span className={style.period}>{this.state.projects.period}</span>
+                        </div>
+                        <div className={style.img}>
+                            {
+                                this.addImage()
+                            }
+                        </div>
+                        <Question question={"👷🏻 어떤 프레임워크를 사용했나요?"} answer={this.state.projects.framework}/>
+                        <Question question={"👀 프로젝트에 대해 간단하게 설명해 주세요!"} answer={this.state.projects.summary}/>
+                        <Question question={"😇 개발하면서 가장 힘들었던 점은 무엇이었나요?"} answer={this.state.projects.body_text}/>
+                        <ImpressionWrapper projectId={this.props.match.params.id}/>
                     </div>
                 </div>
-                <div>{ 
+                <div> {
                     this.state.loginresult === "solux1004" ?
                     <div>
                         <Link to={{
                             pathname: `/update/${this.state.projects.id}`,
                         }}>
                         <button className={"btn " + style.modify_btn}>수정</button>
-                    </Link>
-                    <DeleteProject id = {this.props.match.params.id}>삭제</DeleteProject>
+                        </Link>
+                        <DeleteProject id={this.props.match.params.id}>삭제</DeleteProject>
                     </div>
-                : 
-                <></>
-                }
-                </div>
+                    : <></>
+                } </div>
             </div>
         );
     }
