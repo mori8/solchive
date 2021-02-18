@@ -129,10 +129,9 @@ class UpdateProject extends Component {
     handleFormModifySubmit(e){
         e.preventDefault();
         this.updateProject().then((res) => {
-            console.log(res);
+            alert("수정 완료되었습니다.");
+            window.location.href = '/';
         });
-        alert("수정 완료되었습니다.");
-        window.location.href = '/';
     }
 
     handleValueChange(e) {
