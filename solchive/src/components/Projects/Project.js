@@ -9,6 +9,7 @@ import ImpressionWrapper from './Impression/ImpressionWrapper';
 class Project extends Component {
     state = {
         projects: [],
+        files: [],
         loginresult: false,
     }
 
@@ -16,6 +17,10 @@ class Project extends Component {
         this.callAPI().then((res) => {
             this.setState({projects: res[0]});
             console.log(this.state.projects);
+            var str = this.state.projects.body_images;
+            var file = str.split(',');
+            this.setState({files:file});
+            console.log(this.state.files[0]);
         }).catch((error) => {
             console.log(error);
         });
@@ -53,6 +58,37 @@ class Project extends Component {
 
     }
 
+    addImage(){
+        return <div className="image-form">
+        { 
+          this.state.files.map(imageURL => 
+          (<img className={style.image} src={'/upload/' + imageURL}/>)) 
+        }
+        </div>
+    }
+
+/*
+    addImageHandler = () => {
+        
+        let imgTag = null;
+
+        if(this.state.files !== null){        
+            console.log(this.state.files);
+            
+            for(let i =0; i < this.state.files.length; i++){
+                imgTag = (
+                    <img className={style.image} src={'/upload/' + this.state.files[i]}/>
+                )
+                
+                console.log(this.state.files[i]);
+                
+            }
+            return imgTag;
+        }
+    }
+
+*/
+
     render() {
         return (
             <div className={style.main_wrapper}>
@@ -66,8 +102,10 @@ class Project extends Component {
                             <div className={style.spacer}></div>
                             <span className={style.period}>{this.state.projects.period}</span>
                         </div>
-                        <div>
-                            <img className={style.image} src={'/upload/' + this.state.projects.body_images}/>
+                        <div className={style.img}>
+                            {
+                                this.addImage()
+                            }
                         </div>
                         <Question question={"👷🏻 어떤 프레임워크를 사용했나요?"} answer={this.state.projects.framework}/>
                         <Question question={"👀 프로젝트에 대해 간단하게 설명해 주세요!"} answer={this.state.projects.summary}/>
