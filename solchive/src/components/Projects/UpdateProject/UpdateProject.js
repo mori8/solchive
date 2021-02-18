@@ -153,8 +153,10 @@ class UpdateProject extends Component {
         formData.append('period', this.state.period);
         formData.append('framework', this.state.framework);
         formData.append('body_text', this.state.body_text);
-        for(let i =0; i< this.state.body_images.length; i++){
-            formData.append("body_images", this.state.body_images[i]);
+        if(this.state.body_images !== null){
+            for(let i =0; i< this.state.body_images.length; i++){
+                formData.append("body_images", this.state.body_images[i]);
+            }
         }
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
