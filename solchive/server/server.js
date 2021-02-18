@@ -135,8 +135,7 @@ app.post('/api/project', upload.array('body_images'), (req, res) => {
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
-    //var questions="";
-    //var likes=0;
+    
     var name1=req.body.name1;
     var name2=req.body.name2;
     var name3=req.body.name3;
@@ -229,7 +228,7 @@ app.post('/api/update', upload.array('body_images'), (req,res) => {
     var period=req.body.period;
     var framework=req.body.framework;
     var body_text=req.body.body_text;
-    var body_images=req.body.body_images;
+    var body_images;
     if(req.files[0]!=null){
         body_images = req.files[0].filename;
         for(var i=1; i<req.files.length; i++){
@@ -237,46 +236,27 @@ app.post('/api/update', upload.array('body_images'), (req,res) => {
             body_images += req.files[i].filename;
         }
     }
-    else body_images = 'background.jpg';
+    else
+        body_images=req.body.body_images.join("");
     var summary=req.body.summary;
     var git_url=req.body.git_url;
     var isDeleted=0;
-    //var questions="";
-    //var likes=req.body.likes;
 
-    var name1="";
-    if(req.body.name1!=null)
-        name1=req.body.name1;
-    var name2="";
-    if(req.body.name2!=null)
-        name2=req.body.name2;
-    var name3="";
-    if(req.body.name3!=null)
-    var name4="";
-    if(req.body.name4!=null)
-        name4=req.body.name4;
-    var name5="";
-    if(req.body.name5!=null)
-        name5=req.body.name5;
+    var name1=req.body.name1;
+    var name2=req.body.name2;
+    var name3=req.body.name3;
+    var name4=req.body.name4;
+    var name5=req.body.name5;
 
-    var comment1="";
-    if(req.body.comment1!=null)
-        comment1=req.body.comment1;
-    var comment2="";
-    if(req.body.comment2!=null)
-        comment2=req.body.comment2;
-    var comment3="";
-    if(req.body.comment3!=null)
-        comment3=req.body.comment3;
-    var comment4="";
-    if(req.body.comment4!=null)
-        comment4=req.body.comment4;
-    var comment5="";
-    if(req.body.comment5!=null)
-        comment5=req.body.comment5;
-    
+    var comment1=req.body.comment1;
+    var comment2=req.body.comment2;
+    var comment3=req.body.comment3;
+    var comment4=req.body.comment4;
+    var comment5=req.body.comment5;
+
     var sql=[title, team, period, framework, body_text, body_images, summary, git_url, isDeleted, name1, comment1, name2, comment2, name3, comment3, name4, comment4, name5, comment5, id, id];
     var query=connection.query('UPDATE project AS a, comment AS b SET a.title =?, a.team =?, a.period =?, a.framework =?, a.body_text =?, a.body_images =?, a.summary =?, a.git_url =?, a.isDeleted =?, b.name1 =?, b.comment1 =?, b.name2 =?, b.comment2 =?, b.name3 =?, b.comment3 =?, b.name4 =?, b.comment4 =?, b.name5 =?, b.comment5 =? WHERE a.id =? AND b.project_id =?', sql, (err,rows, fields) => {
+        console.log(rows);
         res.send(rows);
     })
 });
