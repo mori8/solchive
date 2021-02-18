@@ -148,7 +148,6 @@ app.post('/api/project', upload.array('body_images'), (req, res) => {
     var comment5=req.body.comment5;
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
-
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
         request.post('http://localhost:5000/api/comment', {form:{
             project_id:rows.insertId,
@@ -166,6 +165,7 @@ app.post('/api/project', upload.array('body_images'), (req, res) => {
         res.send(rows);
     })
 });
+
 //CREATE (comment)
 app.post('/api/comment', (req, res)=>{
     var project_id=req.body.project_id;
