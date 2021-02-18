@@ -83,7 +83,7 @@ class CreateProject extends PureComponent {
             console.log(res);
             console.log(res.data);
         });
-        //window.location.href = '/';
+        window.location.href = '/';
     }
 
     handleValueChange(e) {
