@@ -117,22 +117,26 @@ var storage=multer.diskStorage({
 const upload = multer({storage: storage});
 
 // CREATE (project)
-app.post('/api/project', upload.single('body_images'), (req, res) => {
+app.post('/api/project', upload.array('body_images'), (req, res) => {
     var title = req.body.title;
     var team = req.body.team;
     var period = req.body.period;
     var framework = req.body.framework;
     var body_text = req.body.body_text;
     var body_images = 'background.jpg';
-    if(req.file!=null){
-        body_images=req.file.filename;
+    if(req.files[0]!=null){
+        body_images = req.files[0].filename;
+        for(var i=1; i<req.files.length; i++){
+            body_images += ",";
+            body_images += req.files[i].filename;
+        }
     }
+    console.log(body_images);
     var summary = req.body.summary;
     var git_url = req.body.git_url;
     var isDeleted = 0;
     //var questions="";
     //var likes=0;
-
     var name1=req.body.name1;
     var name2=req.body.name2;
     var name3=req.body.name3;
@@ -146,6 +150,7 @@ app.post('/api/project', upload.single('body_images'), (req, res) => {
     var comment5=req.body.comment5;
 
     var sql={title, team, period, framework, body_text, body_images, summary, git_url, isDeleted};
+
     var query=connection.query('INSERT INTO project SET ?', sql, (err,rows, fields) => {
         request.post('http://localhost:5000/api/comment', {form:{
             project_id:rows.insertId,
@@ -217,7 +222,7 @@ app.delete('/api/project/:id', (req, res) => {
 })
 
 // UPDATE
-app.post('/api/update', upload.single('body_images'), (req,res) => {
+app.post('/api/update', upload.array('body_images'), (req,res) => {
     var id=req.body.id;
     var title=req.body.title;
     var team=req.body.team;
@@ -225,15 +230,19 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
     var framework=req.body.framework;
     var body_text=req.body.body_text;
     var body_images=req.body.body_images;
+    if(req.files[0]!=null){
+        body_images = req.files[0].filename;
+        for(var i=1; i<req.files.length; i++){
+            body_images += ",";
+            body_images += req.files[i].filename;
+        }
+    }
+    else body_images = 'background.jpg';
     var summary=req.body.summary;
     var git_url=req.body.git_url;
     var isDeleted=0;
     //var questions="";
     //var likes=req.body.likes;
-
-    if(req.file!=null){
-        body_images=req.file.filename;
-    }
 
     var name1="";
     if(req.body.name1!=null)
@@ -243,7 +252,6 @@ app.post('/api/update', upload.single('body_images'), (req,res) => {
         name2=req.body.name2;
     var name3="";
     if(req.body.name3!=null)
-        name3=req.body.name3;
     var name4="";
     if(req.body.name4!=null)
         name4=req.body.name4;
