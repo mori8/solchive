@@ -8,7 +8,7 @@ class CreateProject extends PureComponent {
         this.state = {
             title: "",
             team: "",
-            period: "",
+            period: 2021,
             framework: "",
             body_text: "",
             body_images: null,
@@ -79,11 +79,8 @@ class CreateProject extends PureComponent {
     handleFormSubmit(e) {
         e.preventDefault();
         this.addProject().then((res) => {
-
-            console.log(res);
-            console.log(res.data);
+            window.location.href = '/';
         });
-        //window.location.href = '/';
     }
 
     handleValueChange(e) {
