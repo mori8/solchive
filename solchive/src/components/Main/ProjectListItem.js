@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 import style from './MainStyle.module.css';
 
 class ProjectListItem extends Component {
+
     render() {
         const { id, title, team, summary, body_images } = this.props.info;
+        
+        var str = body_images;
+        var file = str.split(',');
+
         return (
             <div className={style.project_item}>
                 <Link to={`/projects/${id}`}>
@@ -15,7 +20,7 @@ class ProjectListItem extends Component {
                             </div>
                         </div>
                         <div className={style.project_image_wrapper}>
-                            <img src={'/upload/'+ body_images}/>
+                            <img src={'/upload/'+ file[0]}/>
                         </div>
                     </div>
                     <div className={style.project_item_hover}>
