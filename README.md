@@ -5,12 +5,15 @@
 # solchive 소개
 
 ### 0. database
+
 ![database](https://user-images.githubusercontent.com/69200763/108874887-f62b9280-763f-11eb-857f-43fad662c44c.png)
+* AWS의 RDS에서 solchivedb 데이터베이스를 생성
 
 ![project](https://user-images.githubusercontent.com/69200763/108874911-fe83cd80-763f-11eb-9557-a1273143c5d2.png)
+* database에서 project 테이블을 생성하여 프로젝트의 이름, 팀, 기간, 프레임 워크, 본문, 이미지, 요약, 깃허브주소, 삭제확인변수를 저장
 
 ![comment](https://user-images.githubusercontent.com/69200763/108874922-02afeb00-7640-11eb-9925-52822cc63201.png)
-
+* comment 테이블을 생성하여 프로젝트 참여자의 이름과 후기를 저장하고 project 테이블과 연결하여 project 테이블이 삭제되면 같이 삭제되도록 구현
 
 
 ### 1. 로그인 화면
