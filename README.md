@@ -5,7 +5,12 @@
 # solchive 소개
 
 ### 0. database
-file:///C:/Users/songf/Desktop/database.png
+![database](https://user-images.githubusercontent.com/69200763/108874887-f62b9280-763f-11eb-857f-43fad662c44c.png)
+
+![project](https://user-images.githubusercontent.com/69200763/108874911-fe83cd80-763f-11eb-9557-a1273143c5d2.png)
+
+![comment](https://user-images.githubusercontent.com/69200763/108874922-02afeb00-7640-11eb-9925-52822cc63201.png)
+
 
 
 ### 1. 로그인 화면
