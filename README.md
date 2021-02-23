@@ -18,7 +18,7 @@
 
 ### 2. 게시물 추가 및 불러오기 구현
 
-
+![image](https://user-images.githubusercontent.com/61380136/108871545-9e3f5c80-763c-11eb-8c7d-6dcde5258646.png)
 
 <프론트>
 * 
