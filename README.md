@@ -13,7 +13,7 @@
 * database에서 project 테이블을 생성하여 프로젝트의 이름, 팀, 기간, 프레임 워크, 본문, 이미지, 요약, 깃허브주소, 삭제확인변수를 저장
 
 ![comment](https://user-images.githubusercontent.com/69200763/108874922-02afeb00-7640-11eb-9925-52822cc63201.png)
-* comment 테이블을 생성하여 프로젝트 참여자의 이름과 후기를 저장하고 project 테이블과 연결하여 project 테이블이 삭제되면 같이 삭제되도록 구현
+* comment 테이블을 생성하여 프로젝트 참여자의 이름과 후기를 저장하고 project 테이블과 연결하여 project 테이블과 같이 삭제, 수정되도록 구현
 
 
 ### 1. 로그인 화면
