@@ -7,6 +7,7 @@
 ### 1. 로그인 화면
 
 ![image](https://user-images.githubusercontent.com/61380136/108865301-74833700-7636-11eb-9c41-2ced3f5b4719.png)
+![image](https://user-images.githubusercontent.com/61380136/108866225-5833ca00-7637-11eb-80b3-1d487eebfaca.png)
 
 * 실제 있는 아이디와 비밀번호인지 확인하여 실제 있는 아이디일 경우 로그인되도록 구현
 * 로그인했을 때만 프로젝트 추가, 수정, 삭제 버튼이 보이도록 구현
