@@ -20,7 +20,7 @@ class ProjectListItem extends Component {
                             </div>
                         </div>
                         <div className={style.project_image_wrapper}>
-                            <img src={'/upload/'+ file[0]}/>
+                            <img src={'/upload/'+ file[0]} alt="선택한 이미지가 없습니다."/>
                         </div>
                     </div>
                     <div className={style.project_item_hover}>

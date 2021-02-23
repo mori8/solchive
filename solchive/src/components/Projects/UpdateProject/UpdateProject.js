@@ -177,7 +177,6 @@ class UpdateProject extends Component {
         }
 
         return post(url, formData, config).then(res => {
-            alert('성공')
           }).catch(err => {
             console.log(err.message);
         });
@@ -212,7 +211,7 @@ class UpdateProject extends Component {
         })
         commentsWrapper.appendChild(comments);
     }
-
+/*
     subtractCommentHandler = () => {
         let comments = document.querySelector("." + style.comments);
         let nameInput = comments.childNodes[0].childNodes[1];
@@ -229,11 +228,8 @@ class UpdateProject extends Component {
         impressionInput.value = "";
         
         comments.remove();
-
-
-
     }
-
+*/
 
     render() {
         const nameRef=createRef();
@@ -292,7 +288,6 @@ class UpdateProject extends Component {
                             <div className="form-group update--bodytext">
                                 <label>이름</label>
                                 <input type="text" name="name1" className="form-control" value={this.state.name1} placeholder="이름" onChange={this.handleValueChange}/>
-                                <button type="button" onClick={this.subtractCommentHandler}>삭제</button>
                             </div>
                             <div className="form-group update--bodytext">
                                 <label>소감</label>
