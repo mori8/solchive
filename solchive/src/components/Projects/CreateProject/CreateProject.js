@@ -3,38 +3,31 @@ import axios, { post } from 'axios';
 import styles from './CreateProject.module.css';
 
 class CreateProject extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: "",
-            team: "",
-            period: "",
-            framework: "",
-            body_text: "",
-            body_images: null,
-            file_name: "",
-            summary: "",
-            git_url: "",
-            name1: "",
-            comment1: "",
-            name2: "",
-            comment2: "",
-            name3: "",
-            comment3: "",
-            name4: "",
-            comment4: "",
-            name5: "",
-            comment5: "",
-            index: 2,
-            loginresult: "",
-        };
-        this.handleFileChange = this.handleFileChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.handleValueChange = this.handleValueChange.bind(this);
-        this.addProject = this.addProject.bind(this);
-    }
+    state = {
+        title: "",
+        team: "",
+        period: "",
+        framework: "",
+        body_text: "",
+        body_images: null,
+        file_name: "",
+        summary: "",
+        git_url: "",
+        name1: "",
+        comment1: "",
+        name2: "",
+        comment2: "",
+        name3: "",
+        comment3: "",
+        name4: "",
+        comment4: "",
+        name5: "",
+        comment5: "",
+        index: 2,
+        loginresult: "",
+    };
 
-    componentDidMount(){
+    componentDidMount() {
         this.chkId().catch(
             error => { console.log(error);
         });
@@ -67,14 +60,14 @@ class CreateProject extends PureComponent {
         });
     }
 
-    handleFileChange(e) {
+    handleFileChange = (e) => {
         this.setState({
             body_images: e.target.files[0],
             file_name: e.target.value
         });
     }
 
-    handleFormSubmit(e) {
+    handleFormSubmit = (e) => {
         e.preventDefault();
         this.addProject().then((res) => {
             console.log(res.data);
@@ -82,7 +75,7 @@ class CreateProject extends PureComponent {
         window.location.href = '/';
     }
 
-    handleValueChange(e) {
+    handleValueChange = (e) => {
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         console.log(nextState);

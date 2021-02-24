@@ -42,7 +42,7 @@ class ProjectList extends Component {
     }
 
     callAPI = async () => {
-        const res = await fetch('/api/project');
+        const res = await fetch('http://localhost:5000/api/project');
         const body = await res.json();
         return body;
     }

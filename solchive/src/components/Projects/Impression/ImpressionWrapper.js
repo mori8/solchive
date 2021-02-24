@@ -5,10 +5,11 @@ import style from './Impression.module.css';
 class ImpressionWrapper extends Component {
     state = {
         impressions: [],
+        impressionComponents: [],
     }
 
     BACKGROUND_COLORS = ['#aac9c2', '#b6b4c2', '#c9bbc8', '#e5c1cd', '#f3dbcf'];
-    IMOJIES = ['🧛🏻‍♀️', '🧝‍♀️', '🤵🏼‍♀️', '👩🏻‍🔬', '👩‍🎤'];
+    EMOJIS = ['🧛🏻‍♀️', '🧝‍♀️', '🤵🏼‍♀️', '👩🏻‍🔬', '👩‍🎤'];
     impressionList = [];
 
     async componentDidMount() {
@@ -22,12 +23,14 @@ class ImpressionWrapper extends Component {
             let com = "comment" + i;
             let name = "name" + i;
             if (this.state.impressions && this.state.impressions[com] !== "" && this.state.impressions[name] !== "") {
-                this.impressionList.push(<Impression
-                    name={this.state.impressions[name]}
-                    text={this.state.impressions[com]}
-                    imoji={this.IMOJIES[i-1]}
-                    bgColor={this.BACKGROUND_COLORS[i-1]}
-                />);
+                this.setState((prevState) => ({
+                    impressionComponents: [ ...prevState.impressionComponents, <Impression
+                        name={this.state.impressions[name]}
+                        text={this.state.impressions[com]}
+                        emoji={this.EMOJIS[i-1]}
+                        bgColor={this.BACKGROUND_COLORS[i-1]}
+                    />]
+                }))
             }
         }
     }

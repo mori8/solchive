@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 
 //passport.serialize
 passport.serializeUser((user, done)=>{
-    console.log('passport sessoion save: ', user.user_id);
+    console.log('passport session save: ', user.user_id);
     done(null, user.user_id);
 })
 
@@ -93,8 +93,8 @@ app.post('/chkserver', (req, res, next)=>{
 		if (!user) return res.status(401).json(info.message);
 
 		req.logIn(user, function(err) {
-      if (err) { return next(err); }
-      return res.json(user);
+        if (err) { return next(err); }
+        return res.json(user);
     });
 
     })(req, res, next);
@@ -188,6 +188,7 @@ app.post('/api/comment', (req, res)=>{
 // READ (project)
 app.get('/api/project', (req,res) => {
     var query=connection.query('SELECT * FROM project WHERE isDeleted=0 ORDER BY period DESC', (err, rows, fields) => {
+        console.log(rows);
         res.send(rows);
     })
 })

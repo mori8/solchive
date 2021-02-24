@@ -27,7 +27,7 @@ class Project extends Component {
 
     callAPI = async () => {
         const { id } = this.props.match.params;
-        const res = await fetch('/api/project/' + id);
+        const res = await fetch('http://localhost:5000/api/project/' + id);
         const body = await res.json();
         return body;
     }
