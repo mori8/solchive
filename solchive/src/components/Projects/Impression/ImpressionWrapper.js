@@ -37,7 +37,7 @@ class ImpressionWrapper extends Component {
 
     callAPI = async () => {
         const id = this.props.projectId;
-        const res = await fetch('/api/comment/' + id);
+        const res = await fetch('http://localhost:5000/api/comment/' + id);
         const body = await res.json();
         return body;
     }
@@ -50,7 +50,7 @@ class ImpressionWrapper extends Component {
                     <p className={style.small_title}>💬 프로젝트 참여 후기를 들려주세요!</p>
                 </div> 
                 <div className={style.wrapper}>
-                    {this.impressionList}
+                    {this.state.impressionComponents}
                 </div>
             </>
         

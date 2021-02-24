@@ -173,15 +173,15 @@ class CreateProject extends PureComponent {
                 </div>
                 <div className={"form-group create--summary " + styles.form_textarea}>
                     <label>프로젝트에 대해 한 문장으로 간략하게 설명해 주세요.</label>
-                    <textarea className="form-control" name="summary" value={this.state.summary} rows="1" onChange={this.handleValueChange}></textarea>
+                    <textarea className="form-control" name="summary" value={this.state.summary} rows="2" onChange={this.handleValueChange}></textarea>
                 </div>
                     <div className="form-row">
 
                     </div>
 
                     <div className={"form-group create--bodytext " + styles.form_textarea}>
-                        <label>프로젝트에 대해 자세하게 설명해 주세요.</label>
-                        <textarea className="form-control" name="body_text" value={this.state.body_text} rows="20" onChange={this.handleValueChange}></textarea>
+                        <label>프로젝트를 진행하면서 가장 힘들었던 점은 무엇이었나요?</label>
+                        <textarea className="form-control" name="body_text" value={this.state.body_text} rows="2" onChange={this.handleValueChange}></textarea>
                     </div>
                     <div className={"form-group create--comments--wrapper " + styles.form_textarea}>
                         <label>이 프로젝트에 참가한 팀원들의 소감을 들려주세요. 오른쪽의 + 버튼을 눌러 팀원을 추가할 수 있습니다. (최대 5명)</label>
