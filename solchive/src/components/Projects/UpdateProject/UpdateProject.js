@@ -121,17 +121,18 @@ class UpdateProject extends Component {
 
     handleFileChange(e) {
         this.setState({
-            body_images: e.target.files[0],
+            body_images: e.target.files,
+            file_name: e.target.value
         });
     }
 
     handleFormModifySubmit(e){
         e.preventDefault();
         this.updateProject().then((res) => {
-            console.log(res);
+            alert("수정 완료되었습니다.");
+            window.location.href = '/';
         });
-        alert("수정 완료되었습니다.");
-        window.location.href = '/';
+
     }
 
     handleValueChange(e) {
@@ -152,7 +153,11 @@ class UpdateProject extends Component {
         formData.append('period', this.state.period);
         formData.append('framework', this.state.framework);
         formData.append('body_text', this.state.body_text);
-        formData.append('body_images', this.state.body_images);
+        if(this.state.body_images !== null){
+            for(let i =0; i< this.state.body_images.length; i++){
+                formData.append("body_images", this.state.body_images[i]);
+            }
+        }
         formData.append('summary', this.state.summary);
         formData.append('git_url', this.state.git_url);
         formData.append('name1', this.state.name1);
@@ -172,7 +177,6 @@ class UpdateProject extends Component {
         }
 
         return post(url, formData, config).then(res => {
-            alert('성공')
           }).catch(err => {
             console.log(err.message);
         });
@@ -207,23 +211,25 @@ class UpdateProject extends Component {
         })
         commentsWrapper.appendChild(comments);
     }
-
+/*
     subtractCommentHandler = () => {
         let comments = document.querySelector("." + style.comments);
         let nameInput = comments.childNodes[0].childNodes[1];
         let impressionInput = comments.childNodes[1].childNodes[1];
+        
         this.setState((prevState) => {
             index: --prevState.index
         })
+        
+        nameInput.addEventListener("change", this.handleValueChange);
+        impressionInput.addEventListener("change", this.handleValueChange);
 
         nameInput.value = "";
         impressionInput.value = "";
         
         comments.remove();
-
-
     }
-
+*/
 
     render() {
         const nameRef=createRef();
@@ -264,7 +270,7 @@ class UpdateProject extends Component {
                         </div>
                         <div className="form-group col-md-6">
                         <label>대표 이미지</label>
-                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control" onChange={this.handleFileChange} ref={this.fileInput}/>
+                            <input type="file" name="body_images" id="body_images" file={this.state.body_images} className="form-control"  multiple="multiple" onChange={this.handleFileChange} ref={this.fileInput}/>
                         </div>
                     </div>
                     <div className={"form-group " + style.form_textarea}>
@@ -282,7 +288,6 @@ class UpdateProject extends Component {
                             <div className="form-group update--bodytext">
                                 <label>이름</label>
                                 <input type="text" name="name1" className="form-control" value={this.state.name1} placeholder="이름" onChange={this.handleValueChange}/>
-                                {/*<button onClick={this.subtractCommentHandler}>삭제</button>*/}
                             </div>
                             <div className="form-group update--bodytext">
                                 <label>소감</label>
